@@ -20,7 +20,7 @@
                 @if(config('layout.aside.self.display') == false)
                     <div class="header-logo">
                         <a href="{{ url('/') }}">
-                            <img alt="Logo" src="{{ asset('media/logos/'.$kt_logo_image) }}"/>
+                            <!-- <img alt="Logo" src="{{ asset('media/logos/'.$kt_logo_image) }}"/> -->
                         </a>
                     </div>
                 @endif
