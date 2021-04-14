@@ -33,10 +33,10 @@ class PagesController extends Controller
     }
 
     // KTDatatables
-    public function ktDatatables()
+    public function spp()
     {
-        $page_title = 'KTDatatables';
-        $page_description = 'This is KTdatatables test page';
+        $page_title = 'Sistem Permintaan Pembelian';
+        $page_description = 'SPP ';
 
         return view('pages.ktdatatables', compact('page_title', 'page_description'));
     }

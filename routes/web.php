@@ -23,7 +23,7 @@ Route::get('identity/list/json', [EmployeeController::class, 'getIdentityCard'])
 
 // Demo routes
 Route::get('/datatables', 'PagesController@datatables');
-Route::get('/ktdatatables', 'PagesController@ktDatatables');
+Route::get('/spp', 'PagesController@spp');
 Route::get('/select2', 'PagesController@select2');
 Route::get('/jquerymask', 'PagesController@jQueryMask');
 Route::get('/icons/custom-icons', 'PagesController@customIcons');
@@ -35,6 +35,7 @@ Route::get('/icons/svg', 'PagesController@svg');
 
 // Quick search dummy route to display html elements in search dropdown (header search)
 Route::get('/quick-search', 'PagesController@quickSearch')->name('quick-search');
+
 
 
 

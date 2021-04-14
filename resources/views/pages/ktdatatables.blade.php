@@ -4,1595 +4,352 @@
 {{-- Content --}}
 @section('content')
 
-    <div class="card card-custom">
-        <div class="card-header flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">HTML Table
-                    <div class="text-muted pt-2 font-size-sm">Datatable initialized from HTML table</div>
-                </h3>
-            </div>
-            <div class="card-toolbar">
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline mr-2">
-                    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="svg-icon svg-icon-md">
-                                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                            <rect x="0" y="0" width="24" height="24"/>
-                                                            <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3"/>
-                                                            <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000"/>
-                                                        </g>
-                                                    </svg>
-                                                    <!--end::Svg Icon-->
-                                                </span>Export
-                    </button>
-                    <!--begin::Dropdown Menu-->
-                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                        <!--begin::Navigation-->
-                        <ul class="navi flex-column navi-hover py-2">
-                            <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                                                <span class="navi-icon">
-                                                                    <i class="la la-print"></i>
-                                                                </span>
-                                    <span class="navi-text">Print</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                                                <span class="navi-icon">
-                                                                    <i class="la la-copy"></i>
-                                                                </span>
-                                    <span class="navi-text">Copy</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                                                <span class="navi-icon">
-                                                                    <i class="la la-file-excel-o"></i>
-                                                                </span>
-                                    <span class="navi-text">Excel</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                                                <span class="navi-icon">
-                                                                    <i class="la la-file-text-o"></i>
-                                                                </span>
-                                    <span class="navi-text">CSV</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                                                <span class="navi-icon">
-                                                                    <i class="la la-file-pdf-o"></i>
-                                                                </span>
-                                    <span class="navi-text">PDF</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
-                    </div>
-                    <!--end::Dropdown Menu-->
-                </div>
-                <!--end::Dropdown-->
-                <!--begin::Button-->
-                <a href="#" class="btn btn-primary font-weight-bolder">
-                                            <span class="svg-icon svg-icon-md">
-                                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <rect x="0" y="0" width="24" height="24"/>
-                                                        <circle fill="#000000" cx="9" cy="15" r="6"/>
-                                                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3"/>
-                                                    </g>
-                                                </svg>
-                                                <!--end::Svg Icon-->
-                                            </span>New Record</a>
-                <!--end::Button-->
-            </div>
+
+<div class="card card-custom">
+    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-title">
+            <h3 class="card-label">Daftar Permintaan Pembelian
+            <span class="d-blocktext-muted pt-2 font-size-sm">Methods API examples</span></h3>
         </div>
-        <div class="card-body">
-            <!--begin: Search Form-->
-            <!--begin::Search Form-->
-            <div class="mb-7">
-                <div class="row align-items-center">
-                    <div class="col-lg-9 col-xl-8">
-                        <div class="row align-items-center">
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query"/>
-                                    <span>
-                                                                    <i class="flaticon2-search-1 text-muted"></i>
-                                                                </span>
-                                </div>
+        <div class="card-toolbar">
+            <!--begin::Dropdown-->
+            <div class="dropdown dropdown-inline mr-2">
+                <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="svg-icon svg-icon-md">
+                    <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
+                            <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>Export</button>
+                <!--begin::Dropdown Menu-->
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <!--begin::Navigation-->
+                    <ul class="navi flex-column navi-hover py-2">
+                        <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">Choose an option:</li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="la la-print"></i>
+                                </span>
+                                <span class="navi-text">Print</span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="la la-copy"></i>
+                                </span>
+                                <span class="navi-text">Copy</span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="la la-file-excel-o"></i>
+                                </span>
+                                <span class="navi-text">Excel</span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="la la-file-text-o"></i>
+                                </span>
+                                <span class="navi-text">CSV</span>
+                            </a>
+                        </li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon">
+                                    <i class="la la-file-pdf-o"></i>
+                                </span>
+                                <span class="navi-text">PDF</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--end::Navigation-->
+                </div>
+                <!--end::Dropdown Menu-->
+            </div>
+            <!--end::Dropdown-->
+            <!--begin::Button-->
+            <div class="mr-2">
+            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModalScrollable">
+            <span class="svg-icon svg-icon-md">
+                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>New Record</a>
+            <!--end::Button-->
+            </div>
+
+            <a href="#" class="btn btn-light-success font-weight-bold" data-toggle="modal" data-target="#kt_datatable_modal_3"> 
+            <span class="svg-icon svg-icon-md">
+                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span> Demo List Data Popup </span></a>
+
+            
+        </div>
+
+    </div>
+    <div class="card-body">
+        <!--begin: Search Form-->
+        <!--begin::Search Form-->
+        <div class="mb-7">
+            <div class="row align-items-center">
+                <div class="col-lg-9 col-xl-8">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 my-2 my-md-0">
+                            <div class="input-icon">
+                                <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                <span>
+                                    <i class="flaticon2-search-1 text-muted"></i>
+                                </span>
                             </div>
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
-                                    <select class="form-control" id="kt_datatable_search_status">
-                                        <option value="">All</option>
-                                        <option value="1">Pending</option>
-                                        <option value="2">Delivered</option>
-                                        <option value="3">Canceled</option>
-                                        <option value="4">Success</option>
-                                        <option value="5">Info</option>
-                                        <option value="6">Danger</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col-md-4 my-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
+                                <select class="form-control" id="kt_datatable_search_status">
+                                    <option value="">All</option>
+                                    <option value="1">Pending</option>
+                                    <option value="2">Delivered</option>
+                                    <option value="3">Canceled</option>
+                                    <option value="4">Success</option>
+                                    <option value="5">Info</option>
+                                    <option value="6">Danger</option>
+                                </select>
                             </div>
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <label class="mr-3 mb-0 d-none d-md-block">Type:</label>
-                                    <select class="form-control" id="kt_datatable_search_type">
-                                        <option value="">All</option>
-                                        <option value="1">Online</option>
-                                        <option value="2">Retail</option>
-                                        <option value="3">Direct</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col-md-4 my-2 my-md-0">
+                            <div class="d-flex align-items-center">
+                                <label class="mr-3 mb-0 d-none d-md-block">Type:</label>
+                                <select class="form-control" id="kt_datatable_search_type">
+                                    <option value="">All</option>
+                                    <option value="1">Online</option>
+                                    <option value="2">Retail</option>
+                                    <option value="3">Direct</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                        <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                </div>
+                <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
+                    <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                </div>
+            </div>
+        </div>
+        <!--end::Search Form-->
+        <!--end: Search Form-->
+        <!-- <div class="row py-5">
+            <div class="col-lg-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">ID:</span>
+                    </div>
+                    <input type="text" class="form-control" id="kt_datatable_check_input" value="1" />
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary font-weight-bold" type="button" id="kt_datatable_check">Select row</button>
                     </div>
                 </div>
             </div>
-            <!--end::Search Form-->
-            <!--end: Search Form-->
-            <!--begin: Datatable-->
-            <table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
-                <thead>
-                <tr>
-                    <th title="Field #1">Order ID</th>
-                    <th title="Field #2">Car Make</th>
-                    <th title="Field #3">Car Model</th>
-                    <th title="Field #4">Color</th>
-                    <th title="Field #5">Deposit Paid</th>
-                    <th title="Field #6">Order Date</th>
-                    <th title="Field #7">Status</th>
-                    <th title="Field #8">Type</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>0006-3629</td>
-                    <td>Land Rover</td>
-                    <td>Range Rover</td>
-                    <td>Orange</td>
-                    <td>$22672.60</td>
-                    <td>2016-11-28</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>66403-315</td>
-                    <td>GMC</td>
-                    <td>Jimmy</td>
-                    <td>Goldenrod</td>
-                    <td>$55141.29</td>
-                    <td>2017-04-29</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>54868-5055</td>
-                    <td>Ford</td>
-                    <td>Club Wagon</td>
-                    <td>Goldenrod</td>
-                    <td>$70991.52</td>
-                    <td>2017-03-16</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>44924-112</td>
-                    <td>GMC</td>
-                    <td>Envoy</td>
-                    <td>Indigo</td>
-                    <td>$42615.31</td>
-                    <td>2016-09-04</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>0378-0357</td>
-                    <td>Saab</td>
-                    <td>9-5</td>
-                    <td>Teal</td>
-                    <td>$74919.63</td>
-                    <td>2017-09-21</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0363-0590</td>
-                    <td>Suzuki</td>
-                    <td>Grand Vitara</td>
-                    <td>Crimson</td>
-                    <td>$72908.80</td>
-                    <td>2017-04-03</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>35356-778</td>
-                    <td>Dodge</td>
-                    <td>Ram 2500</td>
-                    <td>Goldenrod</td>
-                    <td>$13569.00</td>
-                    <td>2016-03-22</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>48951-3040</td>
-                    <td>Mitsubishi</td>
-                    <td>Eclipse</td>
-                    <td>Aquamarine</td>
-                    <td>$22471.73</td>
-                    <td>2016-04-17</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0487-9801</td>
-                    <td>Pontiac</td>
-                    <td>GTO</td>
-                    <td>Green</td>
-                    <td>$43149.39</td>
-                    <td>2016-05-27</td>
-                    <td align="right">4</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>54753-003</td>
-                    <td>Audi</td>
-                    <td>S4</td>
-                    <td>Turquoise</td>
-                    <td>$39286.74</td>
-                    <td>2016-07-23</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>34460-6006</td>
-                    <td>Audi</td>
-                    <td>Allroad</td>
-                    <td>Mauv</td>
-                    <td>$47394.02</td>
-                    <td>2016-06-21</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>62802-106</td>
-                    <td>GMC</td>
-                    <td>Sierra 1500</td>
-                    <td>Teal</td>
-                    <td>$47469.52</td>
-                    <td>2016-05-06</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>43269-664</td>
-                    <td>Buick</td>
-                    <td>Terraza</td>
-                    <td>Orange</td>
-                    <td>$94980.73</td>
-                    <td>2017-08-17</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>65862-602</td>
-                    <td>Ford</td>
-                    <td>Crown Victoria</td>
-                    <td>Green</td>
-                    <td>$36215.40</td>
-                    <td>2016-09-01</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>18527-119</td>
-                    <td>Toyota</td>
-                    <td>Sequoia</td>
-                    <td>Mauv</td>
-                    <td>$46000.92</td>
-                    <td>2016-05-17</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>55910-994</td>
-                    <td>Mercedes-Benz</td>
-                    <td>C-Class</td>
-                    <td>Turquoise</td>
-                    <td>$76272.22</td>
-                    <td>2016-01-10</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>49349-441</td>
-                    <td>Audi</td>
-                    <td>Cabriolet</td>
-                    <td>Red</td>
-                    <td>$33624.99</td>
-                    <td>2017-07-31</td>
-                    <td align="right">2</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0573-0232</td>
-                    <td>Hyundai</td>
-                    <td>Tucson</td>
-                    <td>Puce</td>
-                    <td>$97796.98</td>
-                    <td>2017-02-10</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>49643-326</td>
-                    <td>Lexus</td>
-                    <td>IS</td>
-                    <td>Pink</td>
-                    <td>$88864.37</td>
-                    <td>2016-06-01</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0944-2627</td>
-                    <td>Audi</td>
-                    <td>S4</td>
-                    <td>Maroon</td>
-                    <td>$25024.94</td>
-                    <td>2016-12-16</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>33992-1210</td>
-                    <td>BMW</td>
-                    <td>7 Series</td>
-                    <td>Green</td>
-                    <td>$89144.60</td>
-                    <td>2017-06-02</td>
-                    <td align="right">4</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>53808-0478</td>
-                    <td>Volkswagen</td>
-                    <td>Eurovan</td>
-                    <td>Red</td>
-                    <td>$69113.93</td>
-                    <td>2017-12-17</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>51531-0332</td>
-                    <td>Mitsubishi</td>
-                    <td>Tredia</td>
-                    <td>Aquamarine</td>
-                    <td>$28062.46</td>
-                    <td>2016-03-14</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>49852-181</td>
-                    <td>Ford</td>
-                    <td>Thunderbird</td>
-                    <td>Green</td>
-                    <td>$75325.45</td>
-                    <td>2016-12-12</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>49614-133</td>
-                    <td>Jeep</td>
-                    <td>Grand Cherokee</td>
-                    <td>Mauv</td>
-                    <td>$45865.14</td>
-                    <td>2017-01-11</td>
-                    <td align="right">2</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0264-1800</td>
-                    <td>Hyundai</td>
-                    <td>XG350</td>
-                    <td>Khaki</td>
-                    <td>$82969.08</td>
-                    <td>2017-10-27</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>36987-2784</td>
-                    <td>Lexus</td>
-                    <td>LX</td>
-                    <td>Puce</td>
-                    <td>$50958.79</td>
-                    <td>2016-09-20</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>43319-050</td>
-                    <td>Lexus</td>
-                    <td>GS</td>
-                    <td>Orange</td>
-                    <td>$13672.91</td>
-                    <td>2017-11-23</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>33261-026</td>
-                    <td>Chevrolet</td>
-                    <td>SSR</td>
-                    <td>Teal</td>
-                    <td>$25036.57</td>
-                    <td>2017-10-28</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>60505-0381</td>
-                    <td>Chrysler</td>
-                    <td>New Yorker</td>
-                    <td>Yellow</td>
-                    <td>$35660.00</td>
-                    <td>2017-01-21</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>29500-2438</td>
-                    <td>Saturn</td>
-                    <td>S-Series</td>
-                    <td>Khaki</td>
-                    <td>$79451.58</td>
-                    <td>2017-09-24</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>21695-901</td>
-                    <td>Volvo</td>
-                    <td>XC70</td>
-                    <td>Goldenrod</td>
-                    <td>$34678.63</td>
-                    <td>2016-12-26</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>48951-7062</td>
-                    <td>Mercedes-Benz</td>
-                    <td>CLm-Class</td>
-                    <td>Yellow</td>
-                    <td>$86018.69</td>
-                    <td>2016-07-16</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>57520-0214</td>
-                    <td>Suzuki</td>
-                    <td>Grand Vitara</td>
-                    <td>Orange</td>
-                    <td>$48087.48</td>
-                    <td>2017-06-13</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0143-1240</td>
-                    <td>Mazda</td>
-                    <td>Miata MX-5</td>
-                    <td>Green</td>
-                    <td>$72500.87</td>
-                    <td>2017-04-26</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>34666-091</td>
-                    <td>Cadillac</td>
-                    <td>DeVille</td>
-                    <td>Goldenrod</td>
-                    <td>$54846.02</td>
-                    <td>2016-12-29</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>65044-1300</td>
-                    <td>Subaru</td>
-                    <td>Impreza</td>
-                    <td>Yellow</td>
-                    <td>$64200.42</td>
-                    <td>2016-07-08</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>54868-6195</td>
-                    <td>Dodge</td>
-                    <td>Caravan</td>
-                    <td>Yellow</td>
-                    <td>$35142.11</td>
-                    <td>2016-11-25</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>36987-1837</td>
-                    <td>Volkswagen</td>
-                    <td>New Beetle</td>
-                    <td>Maroon</td>
-                    <td>$44383.94</td>
-                    <td>2016-03-29</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>50580-669</td>
-                    <td>Lotus</td>
-                    <td>Exige</td>
-                    <td>Orange</td>
-                    <td>$73977.83</td>
-                    <td>2017-10-29</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>65044-4703</td>
-                    <td>Toyota</td>
-                    <td>Solara</td>
-                    <td>Fuscia</td>
-                    <td>$23480.69</td>
-                    <td>2016-12-03</td>
-                    <td align="right">2</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>50730-8628</td>
-                    <td>Suzuki</td>
-                    <td>SX4</td>
-                    <td>Green</td>
-                    <td>$77498.41</td>
-                    <td>2017-11-14</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>64896-672</td>
-                    <td>Volvo</td>
-                    <td>940</td>
-                    <td>Violet</td>
-                    <td>$85460.14</td>
-                    <td>2016-08-09</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>17772-121</td>
-                    <td>Dodge</td>
-                    <td>Grand Caravan</td>
-                    <td>Crimson</td>
-                    <td>$70315.20</td>
-                    <td>2017-06-07</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>57520-1032</td>
-                    <td>Chevrolet</td>
-                    <td>Express 3500</td>
-                    <td>Yellow</td>
-                    <td>$35840.40</td>
-                    <td>2016-10-26</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>62206-4760</td>
-                    <td>Dodge</td>
-                    <td>Viper</td>
-                    <td>Aquamarine</td>
-                    <td>$87294.01</td>
-                    <td>2016-09-06</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>49349-123</td>
-                    <td>BMW</td>
-                    <td>X3</td>
-                    <td>Khaki</td>
-                    <td>$20584.12</td>
-                    <td>2016-09-26</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>49726-026</td>
-                    <td>Hummer</td>
-                    <td>H2</td>
-                    <td>Pink</td>
-                    <td>$99359.45</td>
-                    <td>2016-03-22</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0378-6540</td>
-                    <td>Bentley</td>
-                    <td>Continental Flying Spur</td>
-                    <td>Fuscia</td>
-                    <td>$31824.99</td>
-                    <td>2017-08-28</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>65977-5037</td>
-                    <td>Chevrolet</td>
-                    <td>3500</td>
-                    <td>Violet</td>
-                    <td>$11410.89</td>
-                    <td>2017-10-17</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>10337-061</td>
-                    <td>Mercury</td>
-                    <td>Grand Marquis</td>
-                    <td>Goldenrod</td>
-                    <td>$78350.91</td>
-                    <td>2017-08-10</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0407-1401</td>
-                    <td>GMC</td>
-                    <td>Sonoma Club Coupe</td>
-                    <td>Goldenrod</td>
-                    <td>$58769.66</td>
-                    <td>2017-11-24</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>55315-531</td>
-                    <td>Chrysler</td>
-                    <td>Town &amp; Country</td>
-                    <td>Pink</td>
-                    <td>$68769.98</td>
-                    <td>2016-10-04</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>13107-031</td>
-                    <td>Mazda</td>
-                    <td>Mazda6</td>
-                    <td>Teal</td>
-                    <td>$98059.90</td>
-                    <td>2017-08-27</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>52584-978</td>
-                    <td>Cadillac</td>
-                    <td>CTS</td>
-                    <td>Teal</td>
-                    <td>$92723.12</td>
-                    <td>2016-10-21</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>65044-1451</td>
-                    <td>Volkswagen</td>
-                    <td>Touareg</td>
-                    <td>Aquamarine</td>
-                    <td>$14614.66</td>
-                    <td>2017-08-18</td>
-                    <td align="right">2</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>57297-201</td>
-                    <td>Chrysler</td>
-                    <td>300C</td>
-                    <td>Indigo</td>
-                    <td>$88757.67</td>
-                    <td>2016-09-24</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>55154-6256</td>
-                    <td>GMC</td>
-                    <td>Yukon XL 1500</td>
-                    <td>Goldenrod</td>
-                    <td>$38738.02</td>
-                    <td>2016-04-21</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>50169-0007</td>
-                    <td>Honda</td>
-                    <td>Prelude</td>
-                    <td>Indigo</td>
-                    <td>$24546.46</td>
-                    <td>2017-09-23</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>61786-001</td>
-                    <td>Toyota</td>
-                    <td>Avalon</td>
-                    <td>Turquoise</td>
-                    <td>$71384.57</td>
-                    <td>2017-11-27</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>58232-0527</td>
-                    <td>Cadillac</td>
-                    <td>Catera</td>
-                    <td>Khaki</td>
-                    <td>$42349.91</td>
-                    <td>2016-08-18</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>0075-0626</td>
-                    <td>Lamborghini</td>
-                    <td>Diablo</td>
-                    <td>Maroon</td>
-                    <td>$19993.34</td>
-                    <td>2017-02-28</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>52584-928</td>
-                    <td>Mitsubishi</td>
-                    <td>Galant</td>
-                    <td>Indigo</td>
-                    <td>$27921.88</td>
-                    <td>2017-05-11</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>63868-106</td>
-                    <td>Isuzu</td>
-                    <td>Trooper</td>
-                    <td>Aquamarine</td>
-                    <td>$95391.97</td>
-                    <td>2016-10-21</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>54868-5918</td>
-                    <td>Daewoo</td>
-                    <td>Leganza</td>
-                    <td>Purple</td>
-                    <td>$99652.50</td>
-                    <td>2016-09-24</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>62097-0003</td>
-                    <td>BMW</td>
-                    <td>X5</td>
-                    <td>Orange</td>
-                    <td>$98667.84</td>
-                    <td>2016-05-07</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>49349-222</td>
-                    <td>Land Rover</td>
-                    <td>Discovery</td>
-                    <td>Blue</td>
-                    <td>$29519.94</td>
-                    <td>2017-05-14</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>64725-2957</td>
-                    <td>Honda</td>
-                    <td>Odyssey</td>
-                    <td>Teal</td>
-                    <td>$83826.93</td>
-                    <td>2017-09-13</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>59088-962</td>
-                    <td>Dodge</td>
-                    <td>Journey</td>
-                    <td>Goldenrod</td>
-                    <td>$90702.32</td>
-                    <td>2017-02-15</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>60681-1804</td>
-                    <td>Pontiac</td>
-                    <td>Firefly</td>
-                    <td>Goldenrod</td>
-                    <td>$50858.26</td>
-                    <td>2017-11-28</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>58668-3251</td>
-                    <td>Nissan</td>
-                    <td>Murano</td>
-                    <td>Yellow</td>
-                    <td>$43973.10</td>
-                    <td>2016-01-27</td>
-                    <td align="right">2</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>16590-870</td>
-                    <td>Toyota</td>
-                    <td>Solara</td>
-                    <td>Yellow</td>
-                    <td>$79845.88</td>
-                    <td>2016-09-04</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0159-2200</td>
-                    <td>Honda</td>
-                    <td>Prelude</td>
-                    <td>Yellow</td>
-                    <td>$21019.04</td>
-                    <td>2016-07-06</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>36987-2048</td>
-                    <td>Ford</td>
-                    <td>F350</td>
-                    <td>Violet</td>
-                    <td>$28398.23</td>
-                    <td>2016-09-09</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>66116-471</td>
-                    <td>GMC</td>
-                    <td>Vandura G2500</td>
-                    <td>Pink</td>
-                    <td>$41272.55</td>
-                    <td>2016-08-16</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>46122-194</td>
-                    <td>Buick</td>
-                    <td>Century</td>
-                    <td>Green</td>
-                    <td>$38542.57</td>
-                    <td>2017-04-08</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>60505-2665</td>
-                    <td>Ford</td>
-                    <td>E-Series</td>
-                    <td>Orange</td>
-                    <td>$17418.92</td>
-                    <td>2017-09-05</td>
-                    <td align="right">4</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>49999-958</td>
-                    <td>Maserati</td>
-                    <td>Coupe</td>
-                    <td>Yellow</td>
-                    <td>$82070.50</td>
-                    <td>2017-11-21</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>43353-763</td>
-                    <td>Porsche</td>
-                    <td>Carrera GT</td>
-                    <td>Yellow</td>
-                    <td>$98546.87</td>
-                    <td>2017-03-20</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>55714-4528</td>
-                    <td>Buick</td>
-                    <td>LaCrosse</td>
-                    <td>Green</td>
-                    <td>$13443.37</td>
-                    <td>2016-08-29</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>62037-560</td>
-                    <td>Chevrolet</td>
-                    <td>Equinox</td>
-                    <td>Green</td>
-                    <td>$46644.32</td>
-                    <td>2016-09-27</td>
-                    <td align="right">1</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>36987-2934</td>
-                    <td>Pontiac</td>
-                    <td>Grand Am</td>
-                    <td>Teal</td>
-                    <td>$46571.89</td>
-                    <td>2016-10-30</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>65044-5054</td>
-                    <td>Toyota</td>
-                    <td>Camry</td>
-                    <td>Turquoise</td>
-                    <td>$73062.72</td>
-                    <td>2016-02-19</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>69015-110</td>
-                    <td>Ford</td>
-                    <td>F-Series</td>
-                    <td>Goldenrod</td>
-                    <td>$58325.82</td>
-                    <td>2017-12-10</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>63868-172</td>
-                    <td>Maybach</td>
-                    <td>57</td>
-                    <td>Goldenrod</td>
-                    <td>$27746.98</td>
-                    <td>2016-09-16</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>11673-136</td>
-                    <td>Isuzu</td>
-                    <td>Hombre</td>
-                    <td>Pink</td>
-                    <td>$25289.00</td>
-                    <td>2016-06-08</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>68391-319</td>
-                    <td>Mercury</td>
-                    <td>Mystique</td>
-                    <td>Maroon</td>
-                    <td>$94443.18</td>
-                    <td>2017-01-19</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>51334-289</td>
-                    <td>Toyota</td>
-                    <td>Camry</td>
-                    <td>Crimson</td>
-                    <td>$54495.33</td>
-                    <td>2016-08-26</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>51531-4189</td>
-                    <td>Mazda</td>
-                    <td>Mazda2</td>
-                    <td>Orange</td>
-                    <td>$61069.76</td>
-                    <td>2016-07-17</td>
-                    <td align="right">2</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>76260-105</td>
-                    <td>Buick</td>
-                    <td>Riviera</td>
-                    <td>Aquamarine</td>
-                    <td>$73556.08</td>
-                    <td>2017-02-09</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>35000-120</td>
-                    <td>Chevrolet</td>
-                    <td>Citation</td>
-                    <td>Teal</td>
-                    <td>$93666.82</td>
-                    <td>2016-08-09</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>16714-271</td>
-                    <td>Ford</td>
-                    <td>Edge</td>
-                    <td>Orange</td>
-                    <td>$88055.07</td>
-                    <td>2017-08-23</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>76214-032</td>
-                    <td>Chrysler</td>
-                    <td>Pacifica</td>
-                    <td>Orange</td>
-                    <td>$90127.90</td>
-                    <td>2016-12-20</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>36987-2910</td>
-                    <td>Ford</td>
-                    <td>Escort</td>
-                    <td>Blue</td>
-                    <td>$31400.58</td>
-                    <td>2017-05-24</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>52584-631</td>
-                    <td>Dodge</td>
-                    <td>Dakota</td>
-                    <td>Purple</td>
-                    <td>$11543.58</td>
-                    <td>2016-12-03</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>36987-2632</td>
-                    <td>BMW</td>
-                    <td>530</td>
-                    <td>Purple</td>
-                    <td>$88325.98</td>
-                    <td>2016-06-26</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>50436-0127</td>
-                    <td>Buick</td>
-                    <td>LeSabre</td>
-                    <td>Fuscia</td>
-                    <td>$74403.19</td>
-                    <td>2016-07-30</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>50227-0511</td>
-                    <td>Chrysler</td>
-                    <td>Town &amp; Country</td>
-                    <td>Khaki</td>
-                    <td>$70358.02</td>
-                    <td>2016-02-22</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>51079-201</td>
-                    <td>Chevrolet</td>
-                    <td>Suburban 2500</td>
-                    <td>Maroon</td>
-                    <td>$50056.31</td>
-                    <td>2017-02-13</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>52456-018</td>
-                    <td>Porsche</td>
-                    <td>Cayman</td>
-                    <td>Maroon</td>
-                    <td>$54197.10</td>
-                    <td>2016-08-16</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>64942-1096</td>
-                    <td>Buick</td>
-                    <td>Electra</td>
-                    <td>Blue</td>
-                    <td>$10415.17</td>
-                    <td>2016-11-13</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>41250-994</td>
-                    <td>Mazda</td>
-                    <td>CX-7</td>
-                    <td>Pink</td>
-                    <td>$10107.79</td>
-                    <td>2016-01-02</td>
-                    <td align="right">6</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>55714-4405</td>
-                    <td>GMC</td>
-                    <td>Sonoma Club Coupe</td>
-                    <td>Crimson</td>
-                    <td>$72222.41</td>
-                    <td>2017-06-27</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>65862-460</td>
-                    <td>Ford</td>
-                    <td>E-Series</td>
-                    <td>Fuscia</td>
-                    <td>$33476.23</td>
-                    <td>2017-09-24</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>49852-164</td>
-                    <td>Toyota</td>
-                    <td>Tundra</td>
-                    <td>Puce</td>
-                    <td>$48155.56</td>
-                    <td>2017-03-09</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>17238-625</td>
-                    <td>Chevrolet</td>
-                    <td>Express 3500</td>
-                    <td>Crimson</td>
-                    <td>$57862.14</td>
-                    <td>2017-05-08</td>
-                    <td align="right">5</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0603-5449</td>
-                    <td>Land Rover</td>
-                    <td>Discovery Series II</td>
-                    <td>Purple</td>
-                    <td>$96847.00</td>
-                    <td>2017-06-24</td>
-                    <td align="right">4</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>0615-7757</td>
-                    <td>GMC</td>
-                    <td>Canyon</td>
-                    <td>Violet</td>
-                    <td>$98422.58</td>
-                    <td>2017-04-01</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>55264-021</td>
-                    <td>Mazda</td>
-                    <td>Mazda2</td>
-                    <td>Orange</td>
-                    <td>$20775.71</td>
-                    <td>2016-07-12</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>37808-961</td>
-                    <td>BMW</td>
-                    <td>M3</td>
-                    <td>Turquoise</td>
-                    <td>$11082.97</td>
-                    <td>2016-08-28</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>13107-119</td>
-                    <td>Dodge</td>
-                    <td>Ram 1500</td>
-                    <td>Orange</td>
-                    <td>$60145.34</td>
-                    <td>2017-10-19</td>
-                    <td align="right">6</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0268-0825</td>
-                    <td>Pontiac</td>
-                    <td>Grand Am</td>
-                    <td>Teal</td>
-                    <td>$64669.18</td>
-                    <td>2016-09-01</td>
-                    <td align="right">4</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>49348-047</td>
-                    <td>Chrysler</td>
-                    <td>Concorde</td>
-                    <td>Aquamarine</td>
-                    <td>$97877.37</td>
-                    <td>2016-10-13</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>58668-2691</td>
-                    <td>Porsche</td>
-                    <td>Panamera</td>
-                    <td>Maroon</td>
-                    <td>$47292.30</td>
-                    <td>2016-07-28</td>
-                    <td align="right">2</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>76168-009</td>
-                    <td>Chevrolet</td>
-                    <td>Tahoe</td>
-                    <td>Blue</td>
-                    <td>$82565.90</td>
-                    <td>2016-12-25</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>61941-0042</td>
-                    <td>Saturn</td>
-                    <td>VUE</td>
-                    <td>Crimson</td>
-                    <td>$92470.85</td>
-                    <td>2017-07-04</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>68428-047</td>
-                    <td>Kia</td>
-                    <td>Mentor</td>
-                    <td>Pink</td>
-                    <td>$20117.71</td>
-                    <td>2016-12-03</td>
-                    <td align="right">1</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>63214-102</td>
-                    <td>Chevrolet</td>
-                    <td>SSR</td>
-                    <td>Aquamarine</td>
-                    <td>$26697.23</td>
-                    <td>2016-06-28</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>64760-019</td>
-                    <td>Acura</td>
-                    <td>RL</td>
-                    <td>Crimson</td>
-                    <td>$26345.59</td>
-                    <td>2017-03-12</td>
-                    <td align="right">2</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>0378-6120</td>
-                    <td>Ford</td>
-                    <td>Econoline E350</td>
-                    <td>Turquoise</td>
-                    <td>$69574.74</td>
-                    <td>2016-04-21</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>10742-8597</td>
-                    <td>Kia</td>
-                    <td>Sorento</td>
-                    <td>Red</td>
-                    <td>$37394.42</td>
-                    <td>2017-05-11</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>60429-616</td>
-                    <td>GMC</td>
-                    <td>Yukon XL 2500</td>
-                    <td>Crimson</td>
-                    <td>$88038.77</td>
-                    <td>2017-10-14</td>
-                    <td align="right">5</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>68180-882</td>
-                    <td>Peugeot</td>
-                    <td>207</td>
-                    <td>Green</td>
-                    <td>$39938.08</td>
-                    <td>2017-11-09</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>55714-8001</td>
-                    <td>Lincoln</td>
-                    <td>LS</td>
-                    <td>Maroon</td>
-                    <td>$42066.09</td>
-                    <td>2016-05-12</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>42507-092</td>
-                    <td>Volkswagen</td>
-                    <td>Golf</td>
-                    <td>Purple</td>
-                    <td>$66158.98</td>
-                    <td>2017-10-11</td>
-                    <td align="right">4</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>58411-154</td>
-                    <td>Volvo</td>
-                    <td>S40</td>
-                    <td>Goldenrod</td>
-                    <td>$64825.98</td>
-                    <td>2017-12-02</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>46987-325</td>
-                    <td>Dodge</td>
-                    <td>Ram 3500</td>
-                    <td>Teal</td>
-                    <td>$42231.35</td>
-                    <td>2017-07-27</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>41520-958</td>
-                    <td>GMC</td>
-                    <td>Vandura G3500</td>
-                    <td>Yellow</td>
-                    <td>$64432.81</td>
-                    <td>2016-03-06</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0268-6317</td>
-                    <td>Infiniti</td>
-                    <td>FX</td>
-                    <td>Khaki</td>
-                    <td>$51991.87</td>
-                    <td>2016-07-19</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>53489-119</td>
-                    <td>Lexus</td>
-                    <td>GS</td>
-                    <td>Violet</td>
-                    <td>$16309.60</td>
-                    <td>2016-08-15</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>57261-786</td>
-                    <td>Subaru</td>
-                    <td>Alcyone SVX</td>
-                    <td>Red</td>
-                    <td>$58552.98</td>
-                    <td>2017-05-12</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>53329-822</td>
-                    <td>Chrysler</td>
-                    <td>PT Cruiser</td>
-                    <td>Violet</td>
-                    <td>$32530.48</td>
-                    <td>2016-04-05</td>
-                    <td align="right">6</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>0615-4545</td>
-                    <td>Dodge</td>
-                    <td>Ram Wagon B150</td>
-                    <td>Aquamarine</td>
-                    <td>$75206.57</td>
-                    <td>2016-08-12</td>
-                    <td align="right">2</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>66761-122</td>
-                    <td>Pontiac</td>
-                    <td>Trans Sport</td>
-                    <td>Mauv</td>
-                    <td>$28790.67</td>
-                    <td>2016-05-14</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>55289-241</td>
-                    <td>Chevrolet</td>
-                    <td>Silverado 1500</td>
-                    <td>Puce</td>
-                    <td>$68297.88</td>
-                    <td>2016-11-11</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>36987-1451</td>
-                    <td>Land Rover</td>
-                    <td>Defender 90</td>
-                    <td>Puce</td>
-                    <td>$30368.78</td>
-                    <td>2017-10-16</td>
-                    <td align="right">2</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0781-5805</td>
-                    <td>Mercury</td>
-                    <td>Sable</td>
-                    <td>Mauv</td>
-                    <td>$56681.99</td>
-                    <td>2016-11-16</td>
-                    <td align="right">3</td>
-                    <td align="right">1</td>
-                </tr>
-                <tr>
-                    <td>0409-4646</td>
-                    <td>Jeep</td>
-                    <td>Cherokee</td>
-                    <td>Red</td>
-                    <td>$26926.81</td>
-                    <td>2017-04-05</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>49643-017</td>
-                    <td>Chevrolet</td>
-                    <td>Express 3500</td>
-                    <td>Aquamarine</td>
-                    <td>$18094.00</td>
-                    <td>2016-07-23</td>
-                    <td align="right">4</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>50458-602</td>
-                    <td>Buick</td>
-                    <td>Skylark</td>
-                    <td>Indigo</td>
-                    <td>$85442.74</td>
-                    <td>2017-02-27</td>
-                    <td align="right">3</td>
-                    <td align="right">2</td>
-                </tr>
-                <tr>
-                    <td>51785-424</td>
-                    <td>Bentley</td>
-                    <td>Continental</td>
-                    <td>Khaki</td>
-                    <td>$35290.47</td>
-                    <td>2017-12-04</td>
-                    <td align="right">1</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>55648-771</td>
-                    <td>Buick</td>
-                    <td>LeSabre</td>
-                    <td>Violet</td>
-                    <td>$56243.46</td>
-                    <td>2016-02-04</td>
-                    <td align="right">3</td>
-                    <td align="right">3</td>
-                </tr>
-                <tr>
-                    <td>0187-0063</td>
-                    <td>Mercedes-Benz</td>
-                    <td>S-Class</td>
-                    <td>Goldenrod</td>
-                    <td>$97306.72</td>
-                    <td>2017-11-06</td>
-                    <td align="right">5</td>
-                    <td align="right">3</td>
-                </tr>
-                </tbody>
-            </table>
-            <!--end: Datatable-->
+            <div class="col-lg-10">
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_reload">Reload</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_check_all">Select all rows</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_uncheck_all">Unselect all rows</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_hide_column">Hide Date</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_show_column">Show Date</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_remove_row">Remove active row</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_sort_asc">Sort Status [asc]</button>
+                <button class="btn btn-light font-weight-bold" type="button" id="kt_datatable_sort_desc">Sort Status [desc]</button>
+            </div>
+        </div> -->
+        <!--begin: Datatable-->
+        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+        <!--end: Datatable-->
+    </div>
+
+    
+
+    <!-- modal -->
+
+    <div id="kt_datatable_modal_3" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="min-height: 590px;">
+                <div class="modal-header py-5">
+                    <h5 class="modal-title">Datatable
+                    <span class="d-block text-muted font-size-sm">Local data source</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--begin: Search Form-->
+                    <!--begin::Search Form-->
+                    <div class="mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query_4" />
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
+                                            <select class="form-control" id="kt_datatable_search_status_4">
+                                                <option value="">All</option>
+                                                <option value="1">Pending</option>
+                                                <option value="2">Delivered</option>
+                                                <option value="3">Canceled</option>
+                                                <option value="4">Success</option>
+                                                <option value="5">Info</option>
+                                                <option value="6">Danger</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <label class="mr-3 mb-0 d-none d-md-block">Type:</label>
+                                            <select class="form-control" id="kt_datatable_search_type_4">
+                                                <option value="">All</option>
+                                                <option value="1">Online</option>
+                                                <option value="2">Retail</option>
+                                                <option value="3">Direct</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
+                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Search Form-->
+                    <!--end: Search Form-->
+                    <!--begin: Datatable-->
+                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_3"></div>
+                    <!--end: Datatable-->
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Modal-->
+            <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="card-body">
+                                    <div class="form-group mb-8">
+                                        <div class="alert alert-custom alert-default" role="alert">
+                                            <div class="alert-icon">
+                                                <span class="svg-icon svg-icon-primary svg-icon-xl">
+                                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24" />
+                                                            <path d="M7.07744993,12.3040451 C7.72444571,13.0716094 8.54044565,13.6920474 9.46808594,14.1079953 L5,23 L4.5,18 L7.07744993,12.3040451 Z M14.5865511,14.2597864 C15.5319561,13.9019016 16.375416,13.3366121 17.0614026,12.6194459 L19.5,18 L19,23 L14.5865511,14.2597864 Z M12,3.55271368e-14 C12.8284271,3.53749572e-14 13.5,0.671572875 13.5,1.5 L13.5,4 L10.5,4 L10.5,1.5 C10.5,0.671572875 11.1715729,3.56793164e-14 12,3.55271368e-14 Z" fill="#000000" opacity="0.3" />
+                                                            <path d="M12,10 C13.1045695,10 14,9.1045695 14,8 C14,6.8954305 13.1045695,6 12,6 C10.8954305,6 10,6.8954305 10,8 C10,9.1045695 10.8954305,10 12,10 Z M12,13 C9.23857625,13 7,10.7614237 7,8 C7,5.23857625 9.23857625,3 12,3 C14.7614237,3 17,5.23857625 17,8 C17,10.7614237 14.7614237,13 12,13 Z" fill="#000000" fill-rule="nonzero" />
+                                                        </g>
+                                                    </svg>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email address
+                                        <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" placeholder="Enter email" />
+                                        <span class="form-text text-muted">We'll never share your email with anyone else.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password
+                                        <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Static:</label>
+                                        <p class="form-control-plaintext text-muted">email@example.com</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleSelect1">Example select
+                                        <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="exampleSelect1">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleSelect2">Example multiple select
+                                        <span class="text-danger">*</span></label>
+                                        <select multiple="multiple" class="form-control" id="exampleSelect2">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-1">
+                                        <label for="exampleTextarea">Example textarea
+                                        <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    </div>
+                                   
+                                </div>
+                                <div class="card-footer">
+                                    <button type="reset" class="btn btn-primary mr-2">Submit</button>
+                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                            <!--end::Form-->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- -->
+</div>
 
 @endsection
 
@@ -1603,5 +360,542 @@
 
 {{-- Scripts Section --}}
 @section('scripts')
-    <script src="{{ asset('js/pages/crud/ktdatatable/base/html-table.js') }}" type="text/javascript"></script>
+    <!-- <script src="{{ asset('js/pages/crud/ktdatatable/base/html-table.js') }}" type="text/javascript"></script> -->
+<script>
+        "use strict";
+// Class definition
+
+var KTDefaultDatatableDemo = function() {
+    // Private functions
+
+    // basic demo
+    var demo = function() {
+
+        var options = {
+            // datasource definition
+            data: {
+                type: 'remote',
+                source: {
+                    read: {
+                        url: 'https://preview.keenthemes.com/metronic/theme/html/tools/preview/api/datatables/demos/default.php',
+                    },
+                },
+                pageSize: 1, // display 20 records per page
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true,
+            },
+
+            // layout definition
+            layout: {
+                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                height: 550, // datatable's body's fixed height
+                footer: false, // display/hide footer
+            },
+
+            // column sorting
+            sortable: true,
+
+            pagination: true,
+
+            search: {
+                input: $('#kt_datatable_search_query'),
+                key: 'generalSearch'
+            },
+
+            // columns definition
+            columns: [
+                {
+                    field: 'ID',
+                    title: '#',
+                    sortable: false,
+                    type: 'number',
+                    width: 30,
+                    selector: true,
+                    textAlign: 'center',
+                    template: function(row) {
+                        return row.RecordID;
+                    },
+                },
+                {
+                    field: 'RecordID',
+                    title: 'ID',
+                    width: 30,
+                    type: 'number',
+                }, {
+                    field: 'OrderID',
+                    title: 'Order ID',
+                }, {
+                    field: 'Country',
+                    title: 'Country',
+                    template: function(row) {
+                        return row.Country + ' ' + row.ShipCountry;
+                    },
+                }, {
+                    field: 'ShipDate',
+                    title: 'Ship Date',
+                    type: 'date',
+                    format: 'MM/DD/YYYY',
+                }, {
+                    field: 'CompanyName',
+                    title: 'Company Name',
+                }, {
+                    field: 'Status',
+                    title: 'Status',
+                    // callback function support for column rendering
+                    template: function(row) {
+                        var status = {
+                            1: {'title': 'Pending', 'class': 'label-light-primary'},
+                            2: {'title': 'Delivered', 'class': ' label-light-danger'},
+                            3: {'title': 'Canceled', 'class': ' label-light-primary'},
+                            4: {'title': 'Success', 'class': ' label-light-success'},
+                            5: {'title': 'Info', 'class': ' label-light-info'},
+                            6: {'title': 'Danger', 'class': ' label-light-danger'},
+                            7: {'title': 'Warning', 'class': ' label-light-warning'},
+                        };
+                        return '<span class="label ' + status[row.Status].class + ' label-inline font-weight-bold label-lg">' + status[row.Status].title + '</span>';
+                    },
+                }, {
+                    field: 'Type',
+                    title: 'Type',
+                    autoHide: false,
+                    // callback function support for column rendering
+                    template: function(row) {
+                        var status = {
+                            1: {'title': 'Online', 'state': 'danger'},
+                            2: {'title': 'Retail', 'state': 'primary'},
+                            3: {'title': 'Direct', 'state': 'success'},
+                        };
+                        return '<span class="label label-' + status[row.Type].state + ' label-dot mr-2"></span><span class="font-weight-bold text-' + status[row.Type].state + '">' +
+                            status[row.Type].title + '</span>';
+                    },
+                }, {
+                    field: 'Actions',
+                    title: 'Actions',
+                    sortable: false,
+                    width: 125,
+                    overflow: 'visible',
+                    autoHide: false,
+                    template: function() {
+                        return '\
+                            <div class="dropdown dropdown-inline">\
+                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+                                    <i class="la la-cog"></i>\
+                                </a>\
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+                                    <ul class="nav nav-hoverable flex-column">\
+                                        <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>\
+                                        <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>\
+                                        <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Edit details">\
+                                <i class="la la-edit"></i>\
+                            </a>\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                                <i class="la la-trash"></i>\
+                            </a>\
+                        ';
+                    },
+                }],
+
+        };
+
+        var datatable = $('#kt_datatable').KTDatatable(options);
+
+        // both methods are supported
+        // datatable.methodName(args); or $(datatable).KTDatatable(methodName, args);
+
+        $('#kt_datatable_destroy').on('click', function() {
+            // datatable.destroy();
+            $('#kt_datatable').KTDatatable('destroy');
+        });
+
+        $('#kt_datatable_init').on('click', function() {
+            datatable = $('#kt_datatable').KTDatatable(options);
+        });
+
+        $('#kt_datatable_reload').on('click', function() {
+            // datatable.reload();
+            $('#kt_datatable').KTDatatable('reload');
+        });
+
+        $('#kt_datatable_sort_asc').on('click', function() {
+            datatable.sort('Status', 'asc');
+        });
+
+        $('#kt_datatable_sort_desc').on('click', function() {
+            datatable.sort('Status', 'desc');
+        });
+
+        // get checked record and get value by column name
+        $('#kt_datatable_get').on('click', function() {
+            // select active rows
+            datatable.rows('.datatable-row-active');
+            // check selected nodes
+            if (datatable.nodes().length > 0) {
+                // get column by field name and get the column nodes
+                var value = datatable.columns('CompanyName').nodes().text();
+                console.log(value);
+            }
+        });
+
+        // record selection
+        $('#kt_datatable_check').on('click', function() {
+            var input = $('#kt_datatable_check_input').val();
+            datatable.setActive(input);
+        });
+
+        $('#kt_datatable_check_all').on('click', function() {
+            // datatable.setActiveAll(true);
+            $('#kt_datatable').KTDatatable('setActiveAll', true);
+        });
+
+        $('#kt_datatable_uncheck_all').on('click', function() {
+            // datatable.setActiveAll(false);
+            $('#kt_datatable').KTDatatable('setActiveAll', false);
+        });
+
+        $('#kt_datatable_hide_column').on('click', function() {
+            datatable.columns('ShipDate').visible(false);
+        });
+
+        $('#kt_datatable_show_column').on('click', function() {
+            datatable.columns('ShipDate').visible(true);
+        });
+
+        $('#kt_datatable_remove_row').on('click', function() {
+            datatable.rows('.datatable-row-active').remove();
+        });
+
+        $('#kt_datatable_search_status').on('change', function() {
+            datatable.search($(this).val().toLowerCase(), 'Status');
+        });
+
+        $('#kt_datatable_search_type').on('change', function() {
+            datatable.search($(this).val().toLowerCase(), 'Type');
+        });
+
+        $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+
+    };
+
+    return {
+        // public functions
+        init: function() {
+            demo();
+        },
+    };
+}();
+
+jQuery(document).ready(function() {
+    KTDefaultDatatableDemo.init();
+});
+
+</script>
+
+<script type="text/javascript">
+    'use strict';
+    // Class definition
+
+    var KTDatatableModal = function() {
+
+
+
+        var initDatatableModal3 = function() {
+            var modal = $('#kt_datatable_modal_3');
+
+            var datatable = $('#kt_datatable_3').KTDatatable({
+                // datasource definition
+                data: {
+                    type: 'remote',
+                    source: {
+                        read: {
+                            url: 'https://preview.keenthemes.com/metronic/theme/html/tools/preview/api/datatables/demos/default.php',
+                        },
+                    },
+                    pageSize: 10, // display 20 records per page
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true,
+                },
+
+                // layout definition
+                layout: {
+                    scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+                    height: 400, // datatable's body's fixed height
+                    minHeight: 400,
+                    footer: false, // display/hide footer
+                },
+
+                // column sorting
+                sortable: true,
+
+                pagination: true,
+
+                search: {
+                    input: modal.find('#kt_datatable_search_query'),
+                    delay: 400,
+                    key: 'generalSearch'
+                },
+
+                // columns definition
+                columns: [{
+                    field: 'RecordID',
+                    title: '#',
+                    sortable: 'asc',
+                    width: 30,
+                    type: 'number',
+                    selector: false,
+                    textAlign: 'center',
+                }, {
+                    field: 'OrderID',
+                    title: 'Profile Picture',
+                    template: function(data, i) {
+                        var number = KTUtil.getRandomInt(1, 14);
+                        var user_img = 'background-image:url(\'assets/media/users/100_' + number + '.jpg\')';
+
+                        var output = '';
+                        if (number > 8) {
+                            output = '<div class="d-flex align-items-center">\
+                                <div class="symbol symbol-40 flex-shrink-0" style="' + user_img + '">\
+                                    <div class="symbol-label"></div>\
+                                </div>\
+                                <div class="ml-2">\
+                                    <div class="text-dark-75 font-weight-bold line-height-sm">' + data.CompanyAgent + '</div>\
+                                    <a href="#" class="font-size-sm text-dark-50 text-hover-primary">' +
+                                    data.CompanyEmail + '</a>\
+                                </div>\
+                            </div>';
+                        }
+                        else {
+                            var stateNo = KTUtil.getRandomInt(0, 7);
+                            var states = [
+                                'success',
+                                'primary',
+                                'danger',
+                                'success',
+                                'warning',
+                                'dark',
+                                'primary',
+                                'info'];
+                            var state = states[stateNo];
+
+                            output = '<div class="d-flex align-items-center">\
+                                <div class="symbol symbol-40 symbol-'+state+' flex-shrink-0">\
+                                    <div class="symbol-label">' + data.CompanyAgent.substring(0, 1) + '</div>\
+                                </div>\
+                                <div class="ml-2">\
+                                    <div class="text-dark-75 font-weight-bold line-height-sm">' + data.CompanyAgent + '</div>\
+                                    <a href="#" class="font-size-sm text-dark-50 text-hover-primary">' +
+                                    data.CompanyEmail + '</a>\
+                                </div>\
+                            </div>';
+                        }
+
+                        return output;
+                    },
+                }, {
+                    field: 'CompanyAgent',
+                    title: 'Name',
+                }, {
+                    field: 'ShipDate',
+                    title: 'Ship Date',
+                    type: 'date',
+                    format: 'MM/DD/YYYY',
+                }, {
+                    field: 'ShipCountry',
+                    title: 'Ship Country',
+                }, {
+                    field: 'Status',
+                    title: 'Status',
+                    // callback function support for column rendering
+                    template: function(row) {
+                        var status = {
+                            1: {
+                                'title': 'Pending',
+                                'class': 'label-light-primary'
+                            },
+                            2: {
+                                'title': 'Delivered',
+                                'class': ' label-light-success'
+                            },
+                            3: {
+                                'title': 'Canceled',
+                                'class': ' label-light-primary'
+                            },
+                            4: {
+                                'title': 'Success',
+                                'class': ' label-light-success'
+                            },
+                            5: {
+                                'title': 'Info',
+                                'class': ' label-light-info'
+                            },
+                            6: {
+                                'title': 'Danger',
+                                'class': ' label-light-danger'
+                            },
+                            7: {
+                                'title': 'Warning',
+                                'class': ' label-light-warning'
+                            },
+                        };
+                        return '<span class="label ' + status[row.Status].class + ' label-inline label-pill">' + status[row.Status].title + '</span>';
+                    },
+                }, {
+                    field: 'Type',
+                    title: 'Type',
+                    autoHide: false,
+                    // callback function support for column rendering
+                    template: function(row) {
+                        var status = {
+                            1: {
+                                'title': 'Online',
+                                'state': 'danger'
+                            },
+                            2: {
+                                'title': 'Retail',
+                                'state': 'primary'
+                            },
+                            3: {
+                                'title': 'Direct',
+                                'state': 'success'
+                            },
+                        };
+                        return '<span class="label label-' + status[row.Type].state + ' label-dot"></span>&nbsp;<span class="font-weight-bold text-' + status[row.Type].state + '">' +
+                            status[row.Type].title + '</span>';
+                    },
+                }, {
+                    field: 'Actions',
+                    title: 'Actions',
+                    sortable: false,
+                    width: 125,
+                    overflow: 'visible',
+                    autoHide: false,
+                    template: function() {
+                        return '\
+                            <div class="dropdown dropdown-inline">\
+                                <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" data-toggle="dropdown">\
+                                    <span class="svg-icon svg-icon-md">\
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                                <rect x="0" y="0" width="24" height="24"/>\
+                                                <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000"/>\
+                                            </g>\
+                                        </svg>\
+                                    </span>\
+                                </a>\
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+                                    <ul class="navi flex-column navi-hover py-2">\
+                                        <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
+                                            Choose an action:\
+                                        </li>\
+                                        <li class="navi-item">\
+                                            <a href="#" class="navi-link">\
+                                                <span class="navi-icon"><i class="la la-print"></i></span>\
+                                                <span class="navi-text">Print</span>\
+                                            </a>\
+                                        </li>\
+                                        <li class="navi-item">\
+                                            <a href="#" class="navi-link">\
+                                                <span class="navi-icon"><i class="la la-copy"></i></span>\
+                                                <span class="navi-text">Copy</span>\
+                                            </a>\
+                                        </li>\
+                                        <li class="navi-item">\
+                                            <a href="#" class="navi-link">\
+                                                <span class="navi-icon"><i class="la la-file-excel-o"></i></span>\
+                                                <span class="navi-text">Excel</span>\
+                                            </a>\
+                                        </li>\
+                                        <li class="navi-item">\
+                                            <a href="#" class="navi-link">\
+                                                <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
+                                                <span class="navi-text">CSV</span>\
+                                            </a>\
+                                        </li>\
+                                        <li class="navi-item">\
+                                            <a href="#" class="navi-link">\
+                                                <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>\
+                                                <span class="navi-text">PDF</span>\
+                                            </a>\
+                                        </li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">\
+                                <span class="svg-icon svg-icon-md">\
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                            <rect x="0" y="0" width="24" height="24"/>\
+                                            <path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/>\
+                                            <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/>\
+                                        </g>\
+                                    </svg>\
+                                </span>\
+                            </a>\
+                            <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete">\
+                                <span class="svg-icon svg-icon-md">\
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+                                            <rect x="0" y="0" width="24" height="24"/>\
+                                            <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
+                                            <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
+                                        </g>\
+                                    </svg>\
+                                </span>\
+                            </a>\
+                        ';
+                    },
+                }],
+
+            });
+
+            $('#kt_datatable_search_status_4').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Status');
+            });
+
+            $('#kt_datatable_search_type_4').on('change', function() {
+                datatable.search($(this).val().toLowerCase(), 'Type');
+            });
+
+            $('#kt_datatable_search_status_4, #kt_datatable_search_type_4').selectpicker();
+
+            // fix datatable layout after modal shown
+            datatable.hide();
+            var alreadyReloaded = false;
+            modal.on('shown.bs.modal', function() {
+                if (!alreadyReloaded) {
+                    var modalContent = $(this).find('.modal-content');
+                    datatable.spinnerCallback(true, modalContent);
+
+                    datatable.reload();
+
+                    datatable.on('datatable-on-layout-updated', function() {
+                        datatable.show();
+                        datatable.spinnerCallback(false, modalContent);
+                        datatable.redraw();
+                    });
+
+                    alreadyReloaded = true;
+                }
+            });
+        };
+
+        return {
+            // public functions
+            init: function() {
+                
+                initDatatableModal3();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTDatatableModal.init();
+    });
+
+</script>
 @endsection

@@ -25,7 +25,6 @@ class CreateEmployeesTable extends Migration
             $table->UnsignedBigInteger('position_id');
             $table->UnsignedBigInteger('employee_status_id');
             $table->UnsignedBigInteger('development_status_id');
-            $table->UnsignedBigInteger('position_id');
             $table->date('start_date');
             $table->text('description')->nullable();
             $table->UnsignedBigInteger('insertedBy')->nullable();
