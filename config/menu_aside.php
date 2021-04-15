@@ -86,6 +86,29 @@ return [
         ],
         // Custom
         [
+            'section' => 'HR',
+        ],
+
+        [
+            'title' => 'HR',
+            'icon' => 'media/svg/icons/Shopping/Barcode-read.svg',
+            'bullet' => 'dot',
+            'root' => true,
+            'submenu' => [
+                [
+                    [
+                        'title' => 'Data KTP',
+                        'page' => 'identity/list'
+                    ],
+                    [
+                        'title' => 'Data Karyawan',
+                        'page' => 'employee/list'
+                    ],
+                ],
+            ],
+        ],
+        // Custom
+        [
             'section' => 'Transaksi',
         ],
         [
@@ -96,33 +119,33 @@ return [
             'submenu' => [
                 [
                     [
-                        'title' => 'Transaksi Permintaan Pembelian',
+                        'title' => 'Permintaan Pembelian',
                         'page' => 'spp'
                     ],
                 
                     
                     [
-                        'title' => 'Transaksi Order Pembelian',
+                        'title' => 'Order Pembelian',
                         'page' => 'custom/pages/wizard/wizard-2'
                     ],
                     [
-                        'title' => 'Transaksi Uraian Pembelian',
+                        'title' => 'Uraian Pembelian',
                         'page' => 'custom/pages/wizard/wizard-3'
                     ],
                     [
-                        'title' => 'Transaksi Approval Pembelian',
+                        'title' => 'Approval Pembelian',
                         'page' => 'custom/pages/wizard/wizard-4'
                     ],
                     [
-                        'title' => 'Transaksi Release Order Pembelian',
+                        'title' => 'Release Order Pembelian',
                         'page' => 'custom/pages/wizard/wizard-4'
                     ],
                     [
-                        'title' => 'Transaksi Penutupan Order Pembelian',
+                        'title' => 'Penutupan Order Pembelian',
                         'page' => 'custom/pages/wizard/wizard-4'
                     ],
                     [
-                        'title' => 'Transaksi Penutupan Permintaan Pembelian',
+                        'title' => 'Penutupan Permintaan Pembelian',
                         'page' => 'custom/pages/wizard/wizard-4'
                     ]
                     

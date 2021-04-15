@@ -21,6 +21,8 @@ Route::get('/', 'PagesController@index');
 Route::get('identity/list', [EmployeeController::class, 'IdentityCardList'])->name('employee.IdentityCardList');
 Route::get('identity/list/json', [EmployeeController::class, 'getIdentityCard'])->name('employee.getIdentityCard');
 
+Route::get('employee/list', [EmployeeController::class, 'IdentityCardList'])->name('employee.IdentityCardList');
+
 // Demo routes
 Route::get('/datatables', 'PagesController@datatables');
 Route::get('/spp', 'PagesController@spp');

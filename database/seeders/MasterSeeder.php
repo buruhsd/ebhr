@@ -21,38 +21,38 @@ class MasterSeeder extends Seeder
      */
     public function run()
     {
-        $wp = WorkPattern::create([
-        	'code' => '6-1-N-N',
-        	'name' => '6 Hari Kerja, 1 Hari Libur, Non Shift, Non Group  ',
-        	'presensi' => '2',
-        	'updatedBy' => 1,
-        	'insertedBy' => 1,
-        ]);
+        // $wp = WorkPattern::create([
+        // 	'code' => '6-1-N-N',
+        // 	'name' => '6 Hari Kerja, 1 Hari Libur, Non Shift, Non Group  ',
+        // 	'presensi' => '2',
+        // 	'updatedBy' => 1,
+        // 	'insertedBy' => 1,
+        // ]);
 
-        $wg = WorkGroup::create([
-        	'code' => 'A',
-        	'name' => 'Group A',
-        	'updatedBy' => 1,
-        	'insertedBy' => 1,
-        ]);
+        // $wg = WorkGroup::create([
+        // 	'code' => 'A',
+        // 	'name' => 'Group A',
+        // 	'updatedBy' => 1,
+        // 	'insertedBy' => 1,
+        // ]);
 
-        $wt = WorkType::create([
-        	'code' => 'SWASTA',
-        	'type_name' => 'Karyawan Swasta',
-        	'updatedBy' => 1,
-        	'insertedBy' => 1,
-        ]);
+        // $wt = WorkType::create([
+        // 	'code' => 'SWASTA',
+        // 	'type_name' => 'Karyawan Swasta',
+        // 	'updatedBy' => 1,
+        // 	'insertedBy' => 1,
+        // ]);
 
-        $pst = Position::create([
-        	'code_position' => 'J22',
-        	'name' => 'Pengemudi On Road',
-        	'code_shorting' => '09',
-        	'is_struktural' => 'ya',
-        	'updatedBy' => 1,
-        	'insertedBy' => 1,
-        ]);
+        // $pst = Position::create([
+        // 	'code_position' => 'J22',
+        // 	'name' => 'Pengemudi On Road',
+        // 	'code_shorting' => '09',
+        // 	'is_struktural' => 'ya',
+        // 	'updatedBy' => 1,
+        // 	'insertedBy' => 1,
+        // ]);
 
-        for ($i=0; $i < 1000000; $i++) { 
+        for ($i=0; $i < 100; $i++) { 
         	$faker = \Faker\Factory::create('id_ID');
         	// $fakernik = \Faker\Provider\id_ID\Person;
         	$idcard = IdentityCard::create([
