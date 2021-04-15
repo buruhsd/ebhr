@@ -137,7 +137,7 @@
     var table = $('.kt_datatable1').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('employee.getIdentityCard') }}",
+        ajax: "https://ebs.wirasana.id/identity/list/json}",
         columns: [
             {data: 'id', name: 'id'},
             {data: 'nik', name: 'nik'},
@@ -149,7 +149,7 @@
         ],
         scrollY:        "50vh",
         scrollCollapse: true,
-        
+
     });
     
   });
