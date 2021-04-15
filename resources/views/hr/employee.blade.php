@@ -147,7 +147,7 @@
             {data: 'nationality', name: 'nationality'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        scrollY:        "50vh",
+        scrollY:        "100vh",
         scrollCollapse: true,
 
     });
