@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     }
 
     public function getpaginate(Request $request){
-        $data = IdentityCard::paginate(10);
+        $data = IdentityCard::paginate(2);
 
         return response()->json(['success' => true, 'data' => $data]);
     }
