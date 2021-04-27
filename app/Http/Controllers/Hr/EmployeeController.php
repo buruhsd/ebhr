@@ -35,6 +35,10 @@ class EmployeeController extends Controller
         }
     }
 
+    public function getpaginate(Request $request){
+        $data = IdentityCard::paginate(10);
+    }
+
     public function EmployeeList(){
         $page_title = 'Hr System';
         $page_description = 'DATA KARYAWAN';
