@@ -15,6 +15,9 @@ class CreatePurchaseLettersTable extends Migration
     {
         Schema::create('purchase_letters', function (Blueprint $table) {
             $table->id();
+            $table->date('tgl_pp');
+            $table->string('no_pp');
+            $table->text('note');
             $table->timestamps();
         });
     }
