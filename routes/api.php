@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 // use App\Http\Controllers\HrController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 
 /*
@@ -28,5 +29,8 @@ Route::get('getpaginate', [EmployeeController::class, 'getpaginate'])->name('api
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
-Route::get('/user', [AuthController::class, 'user'])->name('api.user');
+Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
+
+//User Management
+Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
 

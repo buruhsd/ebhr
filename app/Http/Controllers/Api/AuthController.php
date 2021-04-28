@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Admin\UserResource;
 use App\Http\Requests\ValidateUserRegistration;
 use App\Http\Requests\ValidateUserLogin;
 use App\Models\User;
@@ -36,11 +36,12 @@ class AuthController extends Controller
             ], 401);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Logged in.',
-            'token' => $token
-        ]);
+        return $this->createNewToken($token, true);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Logged in.',
+        //     'data' => $this->createNewToken($token),
+        // ]);
     }
 
     public function user()
@@ -54,12 +55,12 @@ class AuthController extends Controller
         return response()->json(['success' => true,'data' => 'User successfully signed out']);
     }
 
-    protected function createNewToken($token){
+    protected function createNewToken($token, $success = false){
         return response()->json([
+            'success' => $success,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
         ]);
     }
 
