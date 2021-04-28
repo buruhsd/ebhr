@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\HrController;
@@ -23,3 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('employee', 'HrController@getHRdata');
 Route::get('identity/list/json', [EmployeeController::class, 'getIdentityCard'])->name('api.employee.getIdentityCard');
 Route::get('getpaginate', [EmployeeController::class, 'getpaginate'])->name('api.employee.getpaginate');
+
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::get('/user', [AuthController::class, 'user'])->name('api.user');
