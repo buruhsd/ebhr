@@ -15,6 +15,16 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+
+        // $this->middleware(['permission:user list']);
+
+        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['list','show']]);
+
+        //  $this->middleware('permission:product-create', ['only' => ['create','store']]);
+
+        //  $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
+
+        //  $this->middleware('permission:product-delete', ['only' => ['destroy']]);
     }
 
     public function list(Request $request){
