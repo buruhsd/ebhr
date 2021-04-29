@@ -17,6 +17,7 @@
         "laravel/scout": "^9.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "mehdi-fathi/eloquent-filter": "^2.5",
         "meilisearch/meilisearch-php": "^0.17.2",
         "predis/predis": "^1.1",
         "spatie/laravel-permission": "^4.0",
@@ -27,6 +28,7 @@
         "barryvdh/laravel-ide-helper": "^2.10",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "laravel/telescope": "^4.4",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"

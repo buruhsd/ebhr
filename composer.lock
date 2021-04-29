@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "788af9fba2d5383a9532b06cc3dd6932",
+    "content-hash": "3a3c33d5878cf0013f356b657ca99e48",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1654,6 +1654,81 @@
                 }
             ],
             "time": "2021-01-18T20:58:21+00:00"
+        },
+        {
+            "name": "mehdi-fathi/eloquent-filter",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mehdi-fathi/eloquent-filter.git",
+                "reference": "a95289f80237e3deb51549ab3580cdfbf4c88c48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mehdi-fathi/eloquent-filter/zipball/a95289f80237e3deb51549ab3580cdfbf4c88c48",
+                "reference": "a95289f80237e3deb51549ab3580cdfbf4c88c48",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "5.8.*|~6.0|~7.0|~8.0",
+                "illuminate/database": "5.8.*|~6.20.14|~7.0|~8.0",
+                "illuminate/pagination": "5.8.*|~6.0|~7.0|~8.0",
+                "illuminate/support": "5.8.*|~6.0|~7.0|~8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.9|1.9.x-dev",
+                "illuminate/macroable": "^8.0",
+                "laravel/legacy-factories": "1.0.2|1.0.3|1.0.4|1.0.5|1.1.0",
+                "mockery/mockery": "1.3.*|1.3.*|1.3.*|1.4.x-dev|1.4.x-dev|1.4.2",
+                "orchestra/database": "v3.7.0|v3.8.0|v4.0.0|v5.0.0|v6.x-dev",
+                "orchestra/testbench": "3.7.*|3.8.*|4.*|5.*|^6.0|^6.6.0",
+                "phpunit/phpunit": "6.*|7.0.*|7.5|8.3|8.5|9.3"
+            },
+            "type": "lib",
+            "autoload": {
+                "psr-4": {
+                    "eloquentFilter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mehdi Fathi",
+                    "email": "mehdifathi.developer@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Eloquent Filter is a package for filter data of models by the query string. Easy to use and fully dynamic.",
+            "homepage": "https://github.com/mehdi-fathi/eloquent-filter",
+            "keywords": [
+                "dynamic-filters",
+                "eloquent",
+                "eloquent filter",
+                "filter",
+                "laravel",
+                "laravel filter",
+                "laravel filter multiple parameters",
+                "laravel query filter",
+                "laravel tools",
+                "query",
+                "query-filter",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/mehdi-fathi/eloquent-filter/issues",
+                "source": "https://github.com/mehdi-fathi/eloquent-filter/tree/2.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://raw.githubusercontent.com/mehdi-fathi/eloquent-filter/master/donate.png",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-04-23T08:16:31+00:00"
         },
         {
             "name": "meilisearch/meilisearch-php",
@@ -7712,6 +7787,70 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
             },
             "time": "2020-05-27T16:41:55+00:00"
+        },
+        {
+            "name": "laravel/telescope",
+            "version": "v4.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/telescope.git",
+                "reference": "506aa21c7ead98d6666cf8341f25d4d2f333f385"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/506aa21c7ead98d6666cf8341f25d4d2f333f385",
+                "reference": "506aa21c7ead98d6666cf8341f25d4d2f333f385",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "laravel/framework": "^8.29",
+                "php": "^7.3|^8.0",
+                "symfony/var-dumper": "^5.0"
+            },
+            "require-dev": {
+                "ext-gd": "*",
+                "orchestra/testbench": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Telescope\\TelescopeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Telescope\\": "src/",
+                    "Laravel\\Telescope\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Mohamed Said",
+                    "email": "mohamed@laravel.com"
+                }
+            ],
+            "description": "An elegant debug assistant for the Laravel framework.",
+            "keywords": [
+                "debugging",
+                "laravel",
+                "monitoring"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/telescope/issues",
+                "source": "https://github.com/laravel/telescope/tree/v4.4.9"
+            },
+            "time": "2021-04-13T15:47:06+00:00"
         },
         {
             "name": "mockery/mockery",
