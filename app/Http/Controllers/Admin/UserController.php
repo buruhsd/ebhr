@@ -16,15 +16,12 @@ class UserController extends Controller
     {
         $this->middleware('auth:api');
 
-        // $this->middleware(['permission:user list']);
+        $this->middleware('permission:user-list', ['only' => ['list']]);
+        $this->middleware('permission:user-create', ['only' => ['store']]);
+        $this->middleware('permission:user-edit', ['only' => ['update']]);
+        $this->middleware('permission:user-delete', ['only' => ['delete']]);
+        $this->middleware('permission:user-show', ['only' => ['show']]);
 
-        $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['list','show']]);
-
-        //  $this->middleware('permission:product-create', ['only' => ['create','store']]);
-
-        //  $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-
-        //  $this->middleware('permission:product-delete', ['only' => ['destroy']]);
     }
 
     public function list(Request $request){
