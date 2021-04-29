@@ -15,7 +15,7 @@ class CreatePurchaseLetterItemsTable extends Migration
     {
         Schema::create('purchase_letter_items', function (Blueprint $table) {
             $table->id();
-            $table->UnsignedBigInteger('product_id')->nullable()
+            $table->UnsignedBigInteger('product_id')->nullable();
             $table->UnsignedBigInteger('insertedBy')->nullable();
             $table->UnsignedBigInteger('updatedBy')->nullable();
 
