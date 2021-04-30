@@ -1,12 +1,15 @@
 <template>
     <div id="main">
+        <div v-if="$route.meta.guest || !$route.meta.auth" class="d-flex flex-column flex-root">
+            <router-view></router-view>
+        </div>
         <div v-if="$route.meta.auth">
-            <menuMobile></menuMobile>
+            <menuMobile v-on:passData="fromChild"></menuMobile>
             <div class="d-flex flex-column flex-root">
                 <div class="d-flex flex-row flex-column-fluid page">
-                    <menuSidebar></menuSidebar>
+                    <menuSidebar :aside="aside"></menuSidebar>
                     <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                        <menuHeader></menuHeader>
+                        <menuHeader v-on:passData="fromChild"></menuHeader>
                         <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="min-height: 100vh;">
                             <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
                                 <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -27,11 +30,8 @@
                     </div>
                 </div>
             </div>
-            <menuQuick></menuQuick>
+            <menuQuick :offcanvas="offcanvas" v-on:passData="fromChild"></menuQuick>
             <menuScorlltop></menuScorlltop>
-        </div>
-        <div v-if="!$route.meta.auth" class="d-flex flex-column flex-root">
-            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -46,12 +46,22 @@
     export default {
         data() {
             return {
-                isLogin: false
+                aside: false,
+                offcanvas: false,
             }
         },
         methods:{
             capitalizeFirstLetter(str) {
                return str[0].toUpperCase() + str.slice(1);
+            },
+            fromChild(data) {
+                if (data.methodCall) return this[data.methodCall]();
+            },
+            openCanvas(){
+                this.offcanvas = !this.offcanvas
+            },
+            openAside(){
+                this.aside = !this.aside
             }
         },
         components: {

@@ -21,30 +21,31 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-        ]); 
-        return new UserResource($user); 
+        ]);
+        return new UserResource($user);
     }
 
     public function login(ValidateUserLogin $request){
-      
+
         $credentials = request(['email', 'password']);
         if (!$token = auth()->attempt($credentials)) {
-            return  response()->json([ 
+            return  response()->json([
+                'type' =>'failed',
                 'errors' => [
-                    'msg' => ['Incorrect username or password.']
-                ]  
-            ], 401);
+                    'message' => ['Incorrect email or password.']
+                ]
+            ]);
         }
-    
+
         return response()->json([
             'type' =>'success',
-            'message' => 'Logged in.', 
+            'message' => 'Logged in.',
             'token' => $token
         ]);
     }
 
     public function user()
-    { 
+    {
        return new UserResource(auth()->user());
     }
 

@@ -4,9 +4,8 @@
 		<meta charset="utf-8" />
 		<title>{{config('app.name')}}</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-		<meta name="description" content="Login page example" />
+		<meta name="description" content="EBS" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <script src="{{asset('js/app.js')}}" defer></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
         <link rel="shortcut icon" href="{{asset('/media/logos/favicon.ico')}}" />
         <link href="{{asset('/css/pages/login/login-4.css')}}" rel="stylesheet" type="text/css" />
@@ -32,5 +31,7 @@
 		<script src="{{asset('/plugins/global/plugins.bundle.js')}}"></script>
         <script src="{{asset('/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
         <script src="{{asset('/js/scripts.bundle.js')}}"></script>
+        <script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}"></script>
+        <script src="{{asset('js/app.js')}}" defer></script>
 	</body>
 </html>

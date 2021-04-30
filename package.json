@@ -106,6 +106,7 @@
         "uppy": "^1.25.0",
         "vue": "^2.6.12",
         "vue-router": "^3.5.1",
+        "vuejs-datatable": "*",
         "vuex": "^3.6.2",
         "waypoints": "^4.0.1",
         "wnumb": "^1.2.0"

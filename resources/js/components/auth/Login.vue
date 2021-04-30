@@ -18,7 +18,7 @@
                             <div class="d-flex justify-content-between mt-n5">
                                 <label class="font-size-h6 font-weight-bolder text-dark pt-5">Your Password</label>
                             </div>
-                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" v-model="password" required autocomplete="current-password" />
+                            <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" v-model="password" autocomplete="current-password" />
                         </div>
                         <div class="pb-lg-0 pb-5">
                             <button type="submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Sign In</button>
@@ -41,8 +41,8 @@
     export default {
         data() {
             return {
-                email: null,
-                password: null,
+                email: 'aljawad.jpr@gmail.com',
+                password: 'buruh123',
                 has_error: false
             }
         },
@@ -54,7 +54,7 @@
                         password: this.password
                     })
                     .then(() => {
-                        this.$router.push({ name: 'About' })
+                        this.$router.push({ name: 'dashboard' })
                     })
                     .catch(err => {
                         console.log(err)
@@ -65,7 +65,7 @@
             document.title = this.$route.meta.title;
         },
         mounted() {
-            console.log('Component mounted.')
+            console.log('Login mounted.')
         }
     }
 </script>

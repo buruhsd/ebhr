@@ -75,26 +75,60 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-separate table-head-custom table-checkable kt_datatable1" id="kt_datatable1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>NIK</th>
-                        <th>Name</th>
-                        <th>gender</th>
-                        <th>date of birth</th>
-                        <th>nationality</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-separate table-head-custom table-checkable kt_datatable1" id="kt_datatable1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NIK</th>
+                            <th>Name</th>
+                            <th>gender</th>
+                            <th>date of birth</th>
+                            <th>nationality</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <!-- <bootstrap-4-datatable :columns="columns" :data="rows" :filter="filter" :per-page="perPage"></bootstrap-4-datatable>
+                <bootstrap-4-datatable-pager v-model="page" type="abbreviated"></bootstrap-4-datatable-pager> -->
+            </div>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        data() {
+            return {
+                columns: [
+                    {label: 'id', field: 'id'},
+                    {label: 'nik', field: 'nik'},
+                    {label: 'name', field: 'name'},
+                    {label: 'gender', field: 'gender'},
+                    {label: 'date_of_birth', field: 'date_of_birth'},
+                    {label: 'nationality', field: 'nationality'},
+                    {label: 'action', field: 'action', orderable: false, searchable: false},
+                ],
+                rows: [],
+                page: 1,
+                filter:  '',
+                perPage: 12,
+            }
+        },
+        methods: {
+            showBlogs () {
+                axios.get('https://private-anon-f55a39b346-ebsystem.apiary-mock.com/purchasing')
+                .then(function (res) {
+                    this.rows = JSON.parse(JSON.stringify(res.data));
+                }.bind(this));
+            }
+        },
+        mounted() {
+            console.log("xxx mounted")
+            // this.showBlogs();
+        },
         created () {
             document.title = this.$route.meta.title;
         }

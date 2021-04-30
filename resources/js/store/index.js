@@ -5,6 +5,7 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 axios.defaults.baseURL = 'http://ebhr.test/api'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 export default new Vuex.Store({
     state: {
@@ -20,18 +21,19 @@ export default new Vuex.Store({
 
         clearUserData () {
             localStorage.removeItem('user')
-            location.reload()
+            // location.reload()
         }
     },
 
     actions: {
         login ({ commit }, credentials) {
-        return axios
-            .post('/login', credentials)
-            .then(({ data }) => {
-                console.log(data)
-                commit('setUserData', data)
-            })
+            return axios
+                .post('/login', credentials)
+                .then(({ data }) => {
+                    if(data.type == 'success'){
+                        commit('setUserData', data)
+                    }
+                })
         },
 
         logout ({ commit }) {

@@ -3,14 +3,16 @@ require('./bootstrap');
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import App from './components/Index.vue'
+import 'vuejs-datatable/dist/themes/bootstrap-4.esm';
+import { VuejsDatatableFactory } from 'vuejs-datatable';
+Vue.use( VuejsDatatableFactory );
 
 // Set Vue globally
 window.Vue = require('vue').default;
 Vue.config.productionTip = false
 
-Vue.component('index', require('./components/Index.vue').default);
-const app = new Vue({
-    el: '#app',
+new Vue({
     router,
     store,
     created () {
@@ -29,4 +31,5 @@ const app = new Vue({
           }
         )
     },
-});
+    render: h => h(App)
+}).$mount('#app');

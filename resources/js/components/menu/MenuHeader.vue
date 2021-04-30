@@ -6,7 +6,7 @@
             </div>
             <div class="topbar">
                 <div class="topbar-item">
-                    <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                    <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle" @click="openCanvasQuick">
                         <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
                         <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">Master</span>
                         <span class="symbol symbol-35 symbol-light-success">
@@ -21,6 +21,13 @@
 
 <script>
     export default {
-
+        created() {
+            // console.log("header created")
+        },
+        methods:{
+            openCanvasQuick(){
+                this.$emit("passData", {methodCall: 'openCanvas' });
+            }
+        }
     }
 </script>

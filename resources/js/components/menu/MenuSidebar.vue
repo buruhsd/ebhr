@@ -1,5 +1,5 @@
 <template>
-    <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
+    <div :class=" aside ? 'aside aside-left aside-fixed d-flex flex-column flex-row-auto aside-on' : 'aside aside-left aside-fixed d-flex flex-column flex-row-auto'" id="kt_aside">
         <div class="brand flex-column-auto" id="kt_brand">
             <router-link :to="{ name: 'dashboard' }" class="brand-logo">
                 <!-- <img width="30px" class="mr-3" alt="Logo" v-bind:src="'/media/logos/logo-4.png'" /> -->
@@ -27,8 +27,8 @@
                             <span class="menu-text">Dashboard</span>
                         </router-link>
                     </li>
-                    <li :class="$route.meta.tag === 'human' ? 'menu-item menu-item-submenu menu-item-open menu-item-here' : 'menu-item menu-item-submenu'" aria-haspopup="true" data-menu-toggle="hover">
-                        <a href="javascript:;" class="menu-link menu-toggle">
+                    <li :class="$route.meta.tag === 'human' || openMenuHuman ? 'menu-item menu-item-submenu menu-item-open menu-item-here' : 'menu-item menu-item-submenu'" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="#" target="_self" class="menu-link menu-toggle" @click="openMenu('human')">
                             <span class="svg-icon menu-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -50,8 +50,8 @@
                             </ul>
                         </div>
                     </li>
-                    <li :class="$route.meta.tag === 'purchase' ? 'menu-item menu-item-submenu menu-item-open menu-item-here' : 'menu-item menu-item-submenu'" aria-haspopup="true" data-menu-toggle="hover">
-                        <a href="javascript:;" class="menu-link menu-toggle">
+                    <li :class="$route.meta.tag === 'purchase' || openMenuPurchase ? 'menu-item menu-item-submenu menu-item-open menu-item-here' : 'menu-item menu-item-submenu'" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="#" target="_self" class="menu-link menu-toggle" @click="openMenu('purchase')">
                             <span class="svg-icon menu-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -94,10 +94,29 @@
 
 <script>
     export default {
+        props: ['aside'],
         data() {
             return {
-                openMenu: true
+                openMenuHuman: false,
+                openMenuPurchase: false,
             }
+        },
+        mounted() {
+            console.log("sidebar mounted")
+        },
+        methods:{
+            openMenu(type) {
+                if(type == 'human'){
+                    this.openMenuHuman = !this.openMenuHuman
+                }else if(type == 'purchase'){
+                    this.openMenuPurchase = !this.openMenuPurchase
+                }
+                console.log('human '+this.openMenuHuman);
+                console.log('prc '+this.openMenuPurchase);
+            }
+        },
+        created() {
+            console.log("sidebar created")
         },
     }
 </script>

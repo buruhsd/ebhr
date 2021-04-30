@@ -75,20 +75,22 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-separate table-head-custom table-checkable kt_datatable1" id="kt_datatable1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>NIK</th>
-                        <th>Name</th>
-                        <th>gender</th>
-                        <th>date of birth</th>
-                        <th>nationality</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-separate table-head-custom table-checkable kt_datatable1" id="kt_datatable1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NIK</th>
+                            <th>Name</th>
+                            <th>gender</th>
+                            <th>date of birth</th>
+                            <th>nationality</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
