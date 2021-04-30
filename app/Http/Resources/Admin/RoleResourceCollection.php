@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Admin;
 
-use App\Http\Resources\Admin\UserResource;
+use App\Http\Resources\Admin\RoleResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UserResourceCollection extends ResourceCollection
+class RoleResourceCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -16,7 +16,7 @@ class UserResourceCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => UserResource::collection($this->collection)
+            'data' => RoleResource::collection($this->collection)
         ];
     }
 }

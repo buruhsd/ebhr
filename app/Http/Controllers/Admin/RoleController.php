@@ -2,178 +2,97 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
-use DB;
+use App\Http\Resources\Admin\RoleResource;
+use App\Http\Resources\Admin\RoleResourceCollection;
 
 class RoleController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        $this->middleware('auth:api');
+
+         $this->middleware('permission:role-list', ['only' => ['index']]);
          $this->middleware('permission:role-create', ['only' => ['store']]);
          $this->middleware('permission:role-edit', ['only' => ['update']]);
          $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
 
-
-
     /**
-
      * Display a listing of the resource.
-
      *
-
      * @return \Illuminate\Http\Response
-
      */
 
     public function index(Request $request)
-
     {
-
         $roles = Role::orderBy('id','DESC')->paginate(5);
-
-        return $roles;
+        return new RoleResourceCollection($roles);
     }
 
-
-
-
     /**
-
      * Store a newly created resource in storage.
-
      *
-
      * @param  \Illuminate\Http\Request  $request
-
      * @return \Illuminate\Http\Response
-
      */
 
     public function store(Request $request)
-
     {
-
         $this->validate($request, [
-
             'name' => 'required|unique:roles,name',
-
             'permission' => 'required',
-
         ]);
 
-
-
         $role = Role::create(['name' => $request->input('name')]);
-
-        $role->syncPermissions($request->input('permission'));
-
-
-
-        return $role;
+        $role->syncPermissions($request->input('permission.*.name'));
+        return new RoleResource($role);
 
     }
 
     /**
-
      * Display the specified resource.
-
      *
-
      * @param  int  $id
-
      * @return \Illuminate\Http\Response
-
      */
 
-    public function show($id)
-
+    public function show(Role $role)
     {
-
-        $role = Role::find($id);
-
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-
-            ->where("role_has_permissions.role_id",$id)
-
-            ->get();
-
-
-
-        return $role;
+        return new RoleResource($role);
 
     }
-
-
-
 
     /**
 
      * Update the specified resource in storage.
-
      *
-
      * @param  \Illuminate\Http\Request  $request
-
      * @param  int  $id
-
      * @return \Illuminate\Http\Response
-
      */
 
-    public function update(Request $request, $id)
-
+    public function update(Request $request, Role $role)
     {
-
-        $this->validate($request, [
-
-            'name' => 'required',
-
-            'permission' => 'required',
-
-        ]);
-
-
-
-        $role = Role::find($id);
-
-        $role->name = $request->input('name');
-
-        $role->save();
-
-
-
-        $role->syncPermissions($request->input('permission'));
-
-
-
-        return $role;
-
+        $data = $role->update($request->all());
+        $role->syncPermissions($request->input('permission.*.name'));
+        return new RoleResource($role);
     }
 
     /**
-
      * Remove the specified resource from storage.
-
      *
-
      * @param  int  $id
-
      * @return \Illuminate\Http\Response
-
      */
 
-    public function destroy($id)
-
+    public function destroy(Role $role)
     {
-
-        DB::table("roles")->where('id',$id)->delete();
-
-        return;
-
+        $role->delete();
+        return response()->json(['data' => 'data deleted']);
     }
 }

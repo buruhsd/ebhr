@@ -4,10 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 // use App\Http\Controllers\HrController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
-
+use App\Http\Controllers\Admin\RoleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,8 +36,12 @@ Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list'
 Route::get('/admin/user/ine', [UserController::class, 'index'])->name('api.user.list');
 Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('api.user.show');
 Route::post('/admin/user', [UserController::class, 'store'])->name('api.user.store');
-Route::put('/admin/user/{user}', [UserController::class, 'update'])->name('api.user.update');
+Route::patch('/admin/user/{user}', [UserController::class, 'update'])->name('api.user.update');
 Route::delete('/admin/user/{user}', [UserController::class, 'delete'])->name('api.user.delete');
 
 //authorization management
-Route::apiResource('/admin/roles', RoleController::class);
+Route::get('/admin/roles', [RoleController::class, 'index']);
+Route::post('/admin/roles', [RoleController::class, 'store']);
+Route::get('/admin/roles/{role}', [RoleController::class, 'show']);
+Route::patch('/admin/roles/{role}', [RoleController::class, 'update']);
+Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
