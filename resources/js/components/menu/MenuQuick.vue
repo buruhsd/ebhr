@@ -1,8 +1,8 @@
 <template>
-    <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
+    <div id="kt_quick_user" :class="offcanvas ? 'offcanvas offcanvas-right p-10 offcanvas-on' : 'offcanvas offcanvas-right p-10'">
         <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
             <h3 class="font-weight-bold m-0">User Profile</h3>
-            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
+            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close" @click="closeCanvasQuick">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
         </div>
@@ -29,7 +29,7 @@
                                         </svg>
                                     </span>
                                 </span>
-                                <span class="navi-text text-muted text-hover-white">email@gmail.com</span>
+                                <span class="navi-text text-muted text-hover-primary">email@gmail.com</span>
                             </span>
                         </a>
                         <button class="btn btn-sm btn-light-danger font-weight-bolder py-2 px-5" @click="logout()">Sign Out</button>
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="separator separator-dashed mt-8 mb-5"></div>
-            <div class="navi navi-spacer-x-0 p-0">
+            <!-- <div class="navi navi-spacer-x-0 p-0">
                 <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -69,16 +69,25 @@
     import { mapGetters } from 'vuex'
 
     export default {
+        props: ['offcanvas'],
         computed: {
             ...mapGetters([
-            'isLogged'
+                'isLogged'
             ])
         },
 
         methods: {
             logout () {
-            this.$store.dispatch('logout')
+                this.$store.dispatch('logout')
+                this.$router.push({ name: 'login' })
+                this.closeCanvasQuick()
+            },
+            closeCanvasQuick(){
+                this.$emit("passData", {methodCall: 'openCanvas' });
             }
-        }
+        },
+        created() {
+            console.log("quick created "+ this.offcanvas)
+        },
     }
 </script>

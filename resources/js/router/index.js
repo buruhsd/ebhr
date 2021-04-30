@@ -12,9 +12,54 @@ import PurchaseCloseRequest from '../components/pages/purchasing/PurchaseCloseRe
 import Employee from '../components/pages/hr/Employee.vue'
 import NotFound from '../components/pages/errors/404.vue'
 
+// import Layout from '../components/Index.vue'
+// import menuSidebar from '../components/menu/MenuSidebar.vue'
+// import menuMobile from '../components/menu/MenuMobile.vue'
+// import menuHeader from '../components/menu/MenuHeader.vue'
+// import menuQuick from '../components/menu/MenuQuick.vue'
+// import menuFooter from '../components/menu/MenuFooter.vue'
+// import menuScorlltop from '../components/menu/MenuScrolltop.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
+    // {
+    //     path: '/Layout',
+    //     name: 'Layout',
+    //     component: Layout,
+    //     children:[
+    //         {
+    //             path: 'menuMobile',
+    //             name: 'menuMobile',
+    //             component: menuMobile
+    //         },
+    //         {
+    //             path: 'menuHeader',
+    //             name: 'menuHeader',
+    //             component: menuHeader
+    //         },
+    //         {
+    //             path: 'menuQuick',
+    //             name: 'menuQuick',
+    //             component: menuQuick
+    //         },
+    //         {
+    //             path: 'menuSidebar',
+    //             name: 'menuSidebar',
+    //             component: menuSidebar
+    //         },
+    //         {
+    //             path: 'menuFooter',
+    //             name: 'menuFooter',
+    //             component: menuFooter
+    //         },
+    //         {
+    //             path: 'menuScorlltop',
+    //             name: 'menuScorlltop',
+    //             component: menuScorlltop
+    //         },
+    //     ]
+    // },
     {
         path: "*",
         name: "NotFound",
@@ -35,7 +80,7 @@ const routes = [
         name: "login",
         component: Login,
         meta: {
-            auth: false,
+            guest: true,
             title: 'EBS | Login'
         }
     },
@@ -159,17 +204,16 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.auth) && !loggedIn) {
         next('/login')
         return
+    }else if (to.matched.some(record => record.meta.guest) && loggedIn) {
+        next('/dashboard')
+        return
+    }else if(!to.matched.length){
+        next('/notFound');
+        return
+    }else{
+        next()
     }
-    next()
 })
-
-router.beforeEach((to, from, next) => {
-    if (!to.matched.length) {
-      next('/notFound');
-    } else {
-      next();
-    }
-});
 
 export default router
 

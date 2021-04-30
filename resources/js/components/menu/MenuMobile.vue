@@ -5,7 +5,7 @@
             <span class="font-size-h3 text-white"><b>EBSystem</b></span>
         </router-link>
         <div class="d-flex align-items-center">
-            <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+            <button class="btn p-0 burger-icon burger-icon-left" @click="asideMenu" id="kt_aside_mobile_toggle">
                 <span></span>
             </button>
             <button class="btn btn-hover-text-success p-0 ml-2" id="kt_header_mobile_topbar_toggle">
@@ -25,6 +25,13 @@
 
 <script>
     export default {
-
+        created() {
+            // console.log("mobile created")
+        },
+        methods:{
+            asideMenu(){
+                this.$emit("passData", {methodCall: 'openAside' });
+            }
+        }
     }
 </script>

@@ -30,18 +30,18 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!$token = auth()->attempt($credentials)) {
             return  response()->json([
+                'type' =>'failed',
                 'errors' => [
-                    'msg' => ['Incorrect username or password.']
+                    'message' => ['Incorrect email or password.']
                 ]
-            ], 401);
+            ]);
         }
 
-        return $this->createNewToken($token, true);
-        // return response()->json([
-        //     'success' => true,
-        //     'message' => 'Logged in.',
-        //     'data' => $this->createNewToken($token),
-        // ]);
+        return response()->json([
+            'type' =>'success',
+            'message' => 'Logged in.',
+            'token' => $token
+        ]);
     }
 
     public function user()

@@ -12,6 +12,8 @@
 
 <script>
     export default {
-
+        created() {
+            // console.log("footer created")
+        },
     }
 </script>
