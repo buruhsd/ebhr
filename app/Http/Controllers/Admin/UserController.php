@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\UserResource;
 use App\Http\Requests\Admin\UserValidationRequest;
 use App\Http\Resources\Admin\UserResourceCollection;
+use DataTables;
 
 
 class UserController extends Controller
@@ -25,9 +26,15 @@ class UserController extends Controller
     }
 
     public function list(Request $request){
-
         $search = $request->search;
-        $data = User::search($search)->paginate(10);
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
+        // var_dump($orderby); die();
+        $data = User::where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('email', 'LIKE',"%{$search}%")
+                    ->orderBy($orderBy, $sortBy)
+                    ->paginate(10);
         return new UserResourceCollection($data);
     }
 
