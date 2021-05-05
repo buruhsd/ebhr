@@ -2,7 +2,7 @@
     <div class="card card-custom gutter-b">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Daftar {{$route.meta.page}} </h3>
+                <h3 class="card-label">{{$route.meta.page}} </h3>
             </div>
             <div class="card-toolbar">
                 <div class="dropdown dropdown-inline mr-2">
@@ -62,7 +62,7 @@
                         </ul>
                     </div>
                 </div>
-                <a href="#" class="btn btn-primary font-weight-bolder">
+                <router-link :to="{name:'addUser'}" class="btn btn-primary font-weight-bolder">
                 <span class="svg-icon svg-icon-md">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -71,7 +71,7 @@
                             <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
                         </g>
                     </svg>
-                </span>Tambah Karyawan</a>
+                </span>Add User</router-link>
             </div>
         </div>
         <div class="card-body">
@@ -82,23 +82,14 @@
                             <th>ID</th>
                             <th>NIK</th>
                             <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date of birth</th>
-                            <th>Email</th>
+                            <th>gender</th>
+                            <th>date of birth</th>
+                            <th>nationality</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in rows" :key="item.id">
-                            <td>{{item.id}}</td>
-                            <td>{{item.first_name}}</td>
-                            <td>{{item.last_name}}</td>
-                            <td>{{item.gender}}</td>
-                            <td>{{item.date_of_birth}}</td>
-                            <td>{{item.email}}</td>
-                            <td>-</td>
-                        </tr>
-                        <tr v-if="rows.length == 0">
+                        <tr>
                             <td colspan="7" class="text-center">No data available in table</td>
                         </tr>
                     </tbody>
@@ -107,89 +98,10 @@
         </div>
     </div>
 </template>
-
 <script>
-    export default {
-        data() {
-            return {
-                columns: [
-                    {label: 'ID', field: 'id'},
-                    {label: 'NIK', field: 'first_name'},
-                    {label: 'Name', field: 'last_name'},
-                    {label: 'gender', field: 'gender'},
-                    {label: 'date_of_birth', field: 'date_of_birth'},
-                    {label: 'nationality', field: 'email'},
-                    {label: 'action', field: 'action', orderable: false, searchable: false},
-                ],
-                rows: [
-                    {
-                        id: 1,
-                        first_name: "Antonio",
-                        last_name: "Okoro",
-                        gender: "L",
-                        email: "cheezytony1@gmail.com",
-                        date_of_birth: "1998-05-15"
-                    },
-                    {
-                        id: 2,
-                        first_name: "Naruto",
-                        last_name: "Uzumaki",
-                        gender: "L",
-                        email: "narutouzumaki@gmail.com",
-                        date_of_birth: "1987-10-10"
-                    },
-                    {
-                        id: 3,
-                        first_name: "Sasuke",
-                        last_name: "Uchiha",
-                        gender: "L",
-                        email: "sasukeuchiha@gmail.com",
-                        date_of_birth: "1987-07-23"
-                    },
-                    {
-                        id: 4,
-                        first_name: "Rock",
-                        last_name: "Lee",
-                        gender: "L",
-                        email: "rocklee@gmail.com",
-                        date_of_birth: "1985-11-27"
-                    },
-                    {
-                        id: 5,
-                        first_name: "Neji",
-                        last_name: "Hyuga",
-                        gender: "L",
-                        email: "nejihyuga@gmail.com",
-                        date_of_birth: "1985-09-22"
-                    },
-                    {
-                        id: 6,
-                        first_name: "Shikamaru",
-                        last_name: "Nara",
-                        gender: "L",
-                        email: "shikamarunara@gmail.com",
-                        date_of_birth: "1987-09-22"
-                    }
-                ],
-                page: 1,
-                filter:  '',
-                perPage: 12,
-            }
-        },
-        methods: {
-            showBlogs () {
-                axios.get('https://ebs.wirasana.id/identity/list/json')
-                .then(function (res) {
-                    this.rows = JSON.parse(JSON.stringify(res.data));
-                }.bind(this));
-            }
-        },
-        mounted() {
-            console.log("xxx mounted")
-            // this.showBlogs();
-        },
-        created () {
-            document.title = this.$route.meta.title;
-        }
+export default {
+    created () {
+        document.title = this.$route.meta.title;
     }
+}
 </script>

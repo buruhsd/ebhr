@@ -4,13 +4,16 @@ import Vue from 'vue'
 import router from './router'
 import store from './store'
 import App from './components/Index.vue'
-import 'vuejs-datatable/dist/themes/bootstrap-4.esm';
-import { VuejsDatatableFactory } from 'vuejs-datatable';
-Vue.use( VuejsDatatableFactory );
+import Spinner from 'vue-simple-spinner'
+import VueSwal from 'vue-swal'
 
 // Set Vue globally
 window.Vue = require('vue').default;
 Vue.config.productionTip = false
+Vue.use(VueSwal)
+Vue.use(Spinner)
+Vue.component('vue-simple-spinner',require('vue-simple-spinner'))
+Vue.component('vue-pagination', require('laravel-vue-pagination'))
 
 new Vue({
     router,

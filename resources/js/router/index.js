@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/auth/Login.vue'
+import NotFound from '../components/pages/errors/404.vue'
 import Dashboard from '../components/pages/Dashboard.vue'
+
+// purchasing
 import PurchaseRequest from '../components/pages/purchasing/PurchaseRequest.vue'
 import PurchaseApproval from '../components/pages/purchasing/PurchaseApproval.vue'
 import PurchaseOrder from '../components/pages/purchasing/PurchaseOrder.vue'
@@ -9,57 +12,21 @@ import PurchaseRelease from '../components/pages/purchasing/PurchaseRelease.vue'
 import PurchaseDescription from '../components/pages/purchasing/PurchaseDescription.vue'
 import PurchaseCloseOrder from '../components/pages/purchasing/PurchaseCloseOrder.vue'
 import PurchaseCloseRequest from '../components/pages/purchasing/PurchaseCloseRequest.vue'
-import Employee from '../components/pages/hr/Employee.vue'
-import NotFound from '../components/pages/errors/404.vue'
+// end purchasing
 
-// import Layout from '../components/Index.vue'
-// import menuSidebar from '../components/menu/MenuSidebar.vue'
-// import menuMobile from '../components/menu/MenuMobile.vue'
-// import menuHeader from '../components/menu/MenuHeader.vue'
-// import menuQuick from '../components/menu/MenuQuick.vue'
-// import menuFooter from '../components/menu/MenuFooter.vue'
-// import menuScorlltop from '../components/menu/MenuScrolltop.vue'
+// hr
+import Employee from '../components/pages/hr/Employee.vue'
+// end hr
+
+// user
+import Users from '../components/pages/users/IndexUser.vue'
+import AddUser from '../components/pages/users/AddUser.vue'
+import EditUser from '../components/pages/users/EditUser.vue'
+// end user
 
 Vue.use(VueRouter)
 
 const routes = [
-    // {
-    //     path: '/Layout',
-    //     name: 'Layout',
-    //     component: Layout,
-    //     children:[
-    //         {
-    //             path: 'menuMobile',
-    //             name: 'menuMobile',
-    //             component: menuMobile
-    //         },
-    //         {
-    //             path: 'menuHeader',
-    //             name: 'menuHeader',
-    //             component: menuHeader
-    //         },
-    //         {
-    //             path: 'menuQuick',
-    //             name: 'menuQuick',
-    //             component: menuQuick
-    //         },
-    //         {
-    //             path: 'menuSidebar',
-    //             name: 'menuSidebar',
-    //             component: menuSidebar
-    //         },
-    //         {
-    //             path: 'menuFooter',
-    //             name: 'menuFooter',
-    //             component: menuFooter
-    //         },
-    //         {
-    //             path: 'menuScorlltop',
-    //             name: 'menuScorlltop',
-    //             component: menuScorlltop
-    //         },
-    //     ]
-    // },
     {
         path: "*",
         name: "NotFound",
@@ -95,6 +62,7 @@ const routes = [
             description: '',
         }
     },
+    // purchase
     {
         path: '/purchase/request',
         name: 'purchaseRequest',
@@ -179,6 +147,7 @@ const routes = [
             tag: 'purchase',
         }
     },
+    // human
     {
         path: '/human/employee',
         name: 'employee',
@@ -189,6 +158,46 @@ const routes = [
             page: 'Data Karyawan',
             description: '',
             tag: 'human',
+        }
+    },
+    // users
+    {
+        path: '/users',
+        name: 'users',
+        component: Users,
+        meta: {
+            auth: true,
+            title: 'EBS | Data User',
+            page: 'Data User',
+            description: '',
+            tag: 'user',
+            submenu: true
+        }
+    },
+    {
+        path: '/user/add',
+        name: 'addUser',
+        component: AddUser,
+        meta: {
+            auth: true,
+            title: 'EBS | Add User',
+            page: 'Add User',
+            description: '',
+            tag: 'user',
+            submenu: true
+        }
+    },
+    {
+        path: '/user/edit',
+        name: 'editUser',
+        component: EditUser,
+        meta: {
+            auth: true,
+            title: 'EBS | Edit User',
+            page: 'Edit User',
+            description: '',
+            tag: 'user',
+            submenu: true
         }
     }
 ];
