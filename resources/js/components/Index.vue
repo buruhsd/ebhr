@@ -7,7 +7,7 @@
             <menuMobile v-on:passData="fromChild"></menuMobile>
             <div class="d-flex flex-column flex-root">
                 <div class="d-flex flex-row flex-column-fluid page">
-                    <menuSidebar :aside="aside"></menuSidebar>
+                    <menuSidebar :aside="aside" v-on:passData="fromChild"></menuSidebar>
                     <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
                         <menuHeader v-on:passData="fromChild"></menuHeader>
                         <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="min-height: 100vh;">
@@ -74,3 +74,14 @@
         }
     }
 </script>
+<style>
+    #sign-out{
+        display:none;
+    }
+
+    @media (max-width: 991.98px){
+        #sign-out{
+            display:block;
+        }
+    }
+</style>

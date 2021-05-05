@@ -88,7 +88,11 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        <tr>
+                            <td colspan="7" class="text-center">No data available in table</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
