@@ -8,6 +8,8 @@ use App\Http\Resources\Admin\UserResource;
 use App\Http\Requests\ValidateUserRegistration;
 use App\Http\Requests\ValidateUserLogin;
 use App\Models\User;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -42,6 +44,7 @@ class AuthController extends Controller
             'message' => 'Logged in.',
             'token' => $token
         ]);
+        return response()->json(compact('token'));
     }
 
     public function user()
