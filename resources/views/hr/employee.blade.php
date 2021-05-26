@@ -103,12 +103,12 @@
 					<th>gender</th>
 					<th>date of birth</th>
 					<th>nationality</th>
-					
+
 					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				
+
 			</tbody>
 		</table>
 		<!--end: Datatable-->
@@ -123,7 +123,7 @@
 <!--end::Page Vendors-->
 <!--begin::Page Scripts(used by this page)-->
 <!-- <script src="{{asset('js/pages/crud/datatables/basic/scrollable.js')}}"></script> -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -133,7 +133,7 @@
 <script src="{{ asset('js/pages/widgets.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
   $(function () {
-    
+
     var table = $('.kt_datatable1').DataTable({
         processing: true,
         serverSide: true,
@@ -151,7 +151,7 @@
         scrollCollapse: true,
 
     });
-    
+
   });
 </script>
 @endsection
