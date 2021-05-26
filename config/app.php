@@ -178,6 +178,7 @@ return [
 
         //Spatie
         Spatie\Permission\PermissionServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
@@ -235,6 +236,8 @@ return [
         'Metronic' => App\Classes\Theme\Metronic::class,
         'Menu' => App\Classes\Theme\Menu::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
     ],
 
