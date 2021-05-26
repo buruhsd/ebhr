@@ -19,15 +19,15 @@ class EmployeeController extends Controller
 
 	}
     public function getIdentityCard(Request $request){
-    	
+
     	if ($request->ajax()) {
             $data = IdentityCard::select('*');
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-     
+
                            $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-    
+
                             return $btn;
                     })
                     ->rawColumns(['action'])
@@ -49,19 +49,25 @@ class EmployeeController extends Controller
 
     }
     public function getEmployee(Request $request){
-        
+
         if ($request->ajax()) {
             $data = IdentityCard::select('*');
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-     
+
                            $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-    
+
                             return $btn;
                     })
                     ->rawColumns(['action'])
                     ->make(true);
         }
+    }
+
+    public function apiEmployee(Request $request)
+    {
+        $data = IdentityCard::orderBy('name','asc')->paginate(100);
+        return $data;
     }
 }
