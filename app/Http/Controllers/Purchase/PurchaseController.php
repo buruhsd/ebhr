@@ -24,7 +24,7 @@ class PurchaseController extends Controller
         return new UserResourceCollection($data);
     }
 
-    public function store(){
+    public function createPurchaseLetter(){
     	$data = PurchaseLetter::create($request->all());
         return new PurchaseResource($data);
     }
@@ -50,5 +50,15 @@ class PurchaseController extends Controller
    		return new PurchaseResource($data);
     }
 
-    
+    public function createOrder(){
+
+    }
+
+    public function closeOrder(){
+
+    }
+
+    public function closePurchaseLetter(){
+
+    }
 }
