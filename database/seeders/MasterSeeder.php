@@ -52,31 +52,31 @@ class MasterSeeder extends Seeder
         // 	'insertedBy' => 1,
         // ]);
 
-        for ($i=0; $i < 100000; $i++) { 
-        	$faker = \Faker\Factory::create('id_ID');
-        	// $fakernik = \Faker\Provider\id_ID\Person;
-        	$idcard = IdentityCard::create([
-        		'nik' => $faker->nik(),
-        		'name' => $faker->name(),
-        		'gender' => 'laki-laki',
-        		'date_of_birth' => $faker->dateTime(),
-        		'blood_type' => 'A',
-        		'religion_id' => 1,
-        		'work_type_id' => 1,
-        		'nationality' => 'WNI',
-        		'marital_status_id' => 1,
-        		'address' => $faker->address(),
-        		'rt' => '1',
-        		'rw' => '1',
-        		'postal_code_id' => 1,
-        		'village_id' => 1101012001,
-        		'district_id' => 110101,
-        		'regency_id' => 1101,
-        		'province_id' => 11,
-        		'published_date_ktp' => $faker->dateTime(),
-        		'updatedBy' => 1,
-        		'insertedBy' => 1,
-        	]);
+        // for ($i=0; $i < 100000; $i++) { 
+        // 	$faker = \Faker\Factory::create('id_ID');
+        // 	// $fakernik = \Faker\Provider\id_ID\Person;
+        // 	$idcard = IdentityCard::create([
+        // 		'nik' => $faker->nik(),
+        // 		'name' => $faker->name(),
+        // 		'gender' => 'laki-laki',
+        // 		'date_of_birth' => $faker->dateTime(),
+        // 		'blood_type' => 'A',
+        // 		'religion_id' => 1,
+        // 		'work_type_id' => 1,
+        // 		'nationality' => 'WNI',
+        // 		'marital_status_id' => 1,
+        // 		'address' => $faker->address(),
+        // 		'rt' => '1',
+        // 		'rw' => '1',
+        // 		'postal_code_id' => 1,
+        // 		'village_id' => 1101012001,
+        // 		'district_id' => 110101,
+        // 		'regency_id' => 1101,
+        // 		'province_id' => 11,
+        // 		'published_date_ktp' => $faker->dateTime(),
+        // 		'updatedBy' => 1,
+        // 		'insertedBy' => 1,
+        // 	]);
         }
         
 

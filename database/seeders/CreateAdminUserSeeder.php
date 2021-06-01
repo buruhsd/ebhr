@@ -16,11 +16,11 @@ class CreateAdminUserSeeder extends Seeder
      */
     public function run()
     {
-        // $user = User::create([
-        //     'name' => 'I am Superadmin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => bcrypt('12345678')
-        // ]);
+        $user = User::create([
+            'name' => 'I am Superadmin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('12345678')
+        ]);
         $user = User::orderBy('id', 'desc')->first();
 
         $role = Role::first();
