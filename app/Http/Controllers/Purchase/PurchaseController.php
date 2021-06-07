@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Purchase;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Models\Purchase\PurchaseLetter;
+use Models\Order\Order;
 use App\Http\Resources\Purchase\PurchaseResource;
 use App\Http\Resources\Purchase\PurchaseResourceCollection;
 
@@ -15,7 +16,6 @@ class PurchaseController extends Controller
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
 
-    	$data = ::o
     	$data = PurchaseLetter::where('id','LIKE',"%{$search}%")
                     ->orWhere('name', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -50,15 +50,20 @@ class PurchaseController extends Controller
    		return new PurchaseResource($data);
     }
 
-    public function createOrder(){
-
+    public function createOrder(Request $request, $id){
+        $data = Order::create($request->all());
+   		return new OrderResource($data);
     }
 
-    public function closeOrder(){
-
+    public function closeOrder(Request $request, Order $order){
+        $status = $request->status;
+        $data = $order->update(['finished_status' => $status]);
+   		return new OrderResource($data);
     }
 
-    public function closePurchaseLetter(){
-
+    public function closePurchaseLetter(Request $request, PurchaseLetter $purchaseLetter){
+        $status = $request->status;
+    	$data = $PurchaseLetter->update(['status_approval' => $status]);
+   		return new PurchaseResource($data);
     }
 }

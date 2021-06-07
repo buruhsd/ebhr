@@ -46,3 +46,4 @@ Route::post('/admin/roles', [RoleController::class, 'store']);
 Route::get('/admin/roles/{role}', [RoleController::class, 'show']);
 Route::patch('/admin/roles/{role}', [RoleController::class, 'update']);
 Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
+
