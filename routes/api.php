@@ -34,7 +34,6 @@ Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
 
 // //User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
-Route::get('/admin/user/ine', [UserController::class, 'index'])->name('api.user.list');
 Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('api.user.show');
 Route::post('/admin/user', [UserController::class, 'store'])->name('api.user.store');
 Route::patch('/admin/user/{user}', [UserController::class, 'update'])->name('api.user.update');
