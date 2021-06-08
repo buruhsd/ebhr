@@ -30,9 +30,36 @@ class EmployeeController extends Controller
         return new IdentityCardResource($data);
     }
 
+    public function showIdentityCard(IdentityCard $identityCard){
+        return new IdentityCardResource($identityCard);
+    }
+
     public function IdentityCardUpdate(Request $request, IdentityCard $identityCard){
         $data = $identityCard->update($request->all());
 
         return new IdentityCardResource($data);
     }
+
+    public function createEmployee(Request $request){
+        $data = Employee::create($request->all());
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function EmployeeList(){
+        $search = $request->search;
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
+        // var_dump($orderby); die();
+        $data = Employee::where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orderBy($orderBy, $sortBy)
+                    ->paginate(10);
+        return new IdentityCardResourceCollection($data);
+    }
+
+    public function showEmployee(Employee $employee){
+        return new IdentityCardResource($identityCard);
+    }
+
 }

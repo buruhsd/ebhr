@@ -22,10 +22,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('employee', 'HrController@getHRdata');
-Route::get('identity/list/json', [EmployeeController::class, 'getIdentityCard'])->name('api.employee.getIdentityCard');
-Route::get('getpaginate', [EmployeeController::class, 'getpaginate'])->name('api.employee.getpaginate');
-Route::get('employees', [EmployeeController::class, 'apiEmployee'])->name('api.employee.data');
+// Route::post('employee', 'HrController@getHRdata');
+// Route::get('identity/list/json', [EmployeeController::class, 'getIdentityCard'])->name('api.employee.getIdentityCard');
+// Route::get('getpaginate', [EmployeeController::class, 'getpaginate'])->name('api.employee.getpaginate');
+// Route::get('employees', [EmployeeController::class, 'apiEmployee'])->name('api.employee.data');
 
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
@@ -46,4 +46,13 @@ Route::post('/admin/roles', [RoleController::class, 'store']);
 Route::get('/admin/roles/{role}', [RoleController::class, 'show']);
 Route::patch('/admin/roles/{role}', [RoleController::class, 'update']);
 Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
+
+//HR Identity
+Route::get('identity/list', [EmployeeController::class, 'IdentityCardList'])->name('api.employee.IdentityCardList');
+Route::get('identity/show/{identityCard}', [EmployeeController::class, 'showIdentityCard'])->name('api.employee.showIdentityCard');
+Route::post('identity/add', [EmployeeController::class, 'IdentityCardStore'])->name('api.employee.IdentityCardStore');
+Route::patch('identity/update/{identityCard}', [EmployeeController::class, 'IdentityCardUpdate'])->name('api.employee.IdentityCardUpdate');
+
+//Employee
+
 
