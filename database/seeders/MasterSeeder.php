@@ -52,7 +52,7 @@ class MasterSeeder extends Seeder
         // 	'insertedBy' => 1,
         // ]);
 
-        // for ($i=0; $i < 100000; $i++) { 
+        // for ($i=0; $i < 100000; $i++) {
         // 	$faker = \Faker\Factory::create('id_ID');
         // 	// $fakernik = \Faker\Provider\id_ID\Person;
         // 	$idcard = IdentityCard::create([
@@ -77,8 +77,8 @@ class MasterSeeder extends Seeder
         // 		'updatedBy' => 1,
         // 		'insertedBy' => 1,
         // 	]);
-        }
-        
+        // }
+
 
     }
 }
