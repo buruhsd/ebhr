@@ -23,8 +23,8 @@ class ValidateUserLogin extends FormRequest
      */
     public function rules()
     {
-        return [  
-            "email" => "required",
+        return [
+            "email" => "required|email|unique:users",
             "password" => "required"
         ];
     }
