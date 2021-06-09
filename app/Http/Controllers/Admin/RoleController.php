@@ -96,4 +96,9 @@ class RoleController extends Controller
         $role->delete();
         return response()->json(['data' => 'data deleted']);
     }
+
+    public function permissionList(){
+        $permission = Permission::orderBy('id','DESC')->paginate(5);
+        return new RoleResourceCollection($permission);
+    }
 }

@@ -27,17 +27,13 @@ class UserController extends Controller
 
     public function list(Request $request){
         $search = $request->search;
-        $sortBy = $request->sortby;
-        $orderBy = $request->orderby;
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
         // var_dump($orderby); die();
-        $data = User::when($search, function ($query) use ($search){
-                        $query->where('id','LIKE',"%{$search}%")
-                        ->orWhere('name', 'LIKE',"%{$search}%")
-                        ->orWhere('email', 'LIKE',"%{$search}%");
-                    })
-                    ->when([$orderBy,$sortBy], function ($query) use ($orderBy, $sortBy){
-                        $query->orderBy($orderBy, $sortBy);
-                    })
+        $data = User::where('id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('email', 'LIKE',"%{$search}%")
+                    ->orderBy($orderBy, $sortBy)
                     ->paginate(10);
         return new UserResourceCollection($data);
     }

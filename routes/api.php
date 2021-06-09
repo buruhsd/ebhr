@@ -45,6 +45,7 @@ Route::post('/admin/roles', [RoleController::class, 'store']);
 Route::get('/admin/roles/{role}', [RoleController::class, 'show']);
 Route::patch('/admin/roles/{role}', [RoleController::class, 'update']);
 Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
+Route::get('/admin/permissions/list', [RoleController::class, 'permissionList']);
 
 //HR Identity
 Route::get('identity/list', [EmployeeController::class, 'IdentityCardList'])->name('api.employee.IdentityCardList');
