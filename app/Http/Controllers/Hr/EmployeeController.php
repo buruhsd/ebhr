@@ -16,7 +16,12 @@ class EmployeeController extends Controller
         $search = $request->search;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
-        // var_dump($orderby); die();
+        if(is_null($orderBy)){
+            $orderBy = 'name';
+        }
+        if(is_null($sortBy)){
+            $sortBy = 'asc';
+        }
         $data = IdentityCard::where('id','LIKE',"%{$search}%")
                     ->orWhere('name', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -50,7 +55,12 @@ class EmployeeController extends Controller
         $search = $request->search;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
-        // var_dump($orderby); die();
+        if(is_null($orderBy)){
+            $orderBy = 'name_alias';
+        }
+        if(is_null($sortBy)){
+            $sortBy = 'asc';
+        }
         $data = Employee::where('id','LIKE',"%{$search}%")
                     ->orWhere('name_alias', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
