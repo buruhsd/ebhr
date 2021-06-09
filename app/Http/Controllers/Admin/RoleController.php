@@ -54,7 +54,7 @@ class RoleController extends Controller
         ]);
 
         $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission.*.name'));
+        $role->syncPermissions($request->input('permission.*'));
         return new RoleResource($role);
 
     }
@@ -83,8 +83,13 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'permission' => 'required',
+        ]);
+
         $data = $role->update($request->all());
-        $role->syncPermissions($request->input('permission.*.name'));
+        $role->syncPermissions($request->input('permission.*'));
         return new RoleResource($role);
     }
 
