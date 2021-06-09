@@ -53,5 +53,8 @@ Route::post('identity/add', [EmployeeController::class, 'IdentityCardStore'])->n
 Route::patch('identity/update/{identityCard}', [EmployeeController::class, 'IdentityCardUpdate'])->name('api.employee.IdentityCardUpdate');
 
 //Employee
+Route::get('employee/list', [EmployeeController::class, 'EmployeeList'])->name('api.employee.EmployeeList');
+Route::post('employee/add', [EmployeeController::class, 'createEmployee'])->name('api.employee.createEmployee');
+Route::get('employee/show/{employee}', [EmployeeController::class, 'showEmployee'])->name('api.employee.showEmployee');
 
 
