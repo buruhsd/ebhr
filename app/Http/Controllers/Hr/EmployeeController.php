@@ -30,6 +30,28 @@ class EmployeeController extends Controller
     }
 
     public function IdentityCardStore(Request $request){
+        $this->validate($request, [
+            'nik' => 'required|numeric|digits:16',
+            'name' => 'required',
+            'date_of_birth' => 'required',
+            'blood_type' => 'required',
+            'religion_id' => 'required',
+            'work_type_id' => 'required',
+            'nationality' => 'required',
+            'marital_status_id' => 'required',
+            'address' => 'required',
+            'rt' => 'required',
+            'rw' => 'required',
+            'postal_code_id' => 'required',
+            'village_id' => 'required',
+            'district_id' => 'required',
+            'regency_id' => 'required',
+            'province_id' => 'required',
+            'published_date_ktp' => 'required',
+            'description' => 'nullable',
+            'insertedBy' => 'required',
+            'updatedBy' => 'required',
+        ]);
         $data = IdentityCard::create($request->all());
 
         return new IdentityCardResource($data);
@@ -40,6 +62,28 @@ class EmployeeController extends Controller
     }
 
     public function IdentityCardUpdate(Request $request, IdentityCard $identityCard){
+        $this->validate($request, [
+            'nik' => 'required|numeric|digits:16',
+            'name' => 'required',
+            'date_of_birth' => 'required',
+            'blood_type' => 'required',
+            'religion_id' => 'required',
+            'work_type_id' => 'required',
+            'nationality' => 'required',
+            'marital_status_id' => 'required',
+            'address' => 'required',
+            'rt' => 'required',
+            'rw' => 'required',
+            'postal_code_id' => 'required',
+            'village_id' => 'required',
+            'district_id' => 'required',
+            'regency_id' => 'required',
+            'province_id' => 'required',
+            'published_date_ktp' => 'required',
+            'description' => 'nullable',
+            'insertedBy' => 'required',
+            'updatedBy' => 'required',
+        ]);
         $data = $identityCard->update($request->all());
 
         return new IdentityCardResource($data);
