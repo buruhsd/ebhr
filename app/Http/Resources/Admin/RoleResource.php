@@ -14,12 +14,17 @@ class RoleResource extends JsonResource
      */
     public function toArray($request)
     {
+        $collection = $this->permissions()->get();
+        $filtered = $collection->filter(function ($value, $key) {
+            $value->label = $value->name;
+            return $value;
+        });
         return [
             'id' => $this->id,
             'name' => $this->name,
             'label' => $this->name,
             'guard_name' => $this->guard_name,
-            'permissions' => $this->permissions()->get()
+            'permissions' => $filtered
         ];
     }
 }
