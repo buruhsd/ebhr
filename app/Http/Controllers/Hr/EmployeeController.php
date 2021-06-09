@@ -22,7 +22,7 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = IdentityCard::where('id','LIKE',"%{$search}%")
+        $data = IdentityCard::with('religion:id,religion_name','work_type:id,code,type_name','marital_status:id,code,status_name','postal_code:id,postal_code','village:id,district_id,name','district:id,regency_id,name','regency:id,province_id,name','province:id,name')->where('id','LIKE',"%{$search}%")
                     ->orWhere('name', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);

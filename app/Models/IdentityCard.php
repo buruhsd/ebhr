@@ -32,4 +32,44 @@ class IdentityCard extends Model
         'insertedBy',
         'updatedBy',
     ];
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class, 'religion_id');
+    }
+
+    public function work_type()
+    {
+        return $this->belongsTo(WorkType::class, 'work_type_id');
+    }
+
+    public function marital_status()
+    {
+        return $this->belongsTo(MaritalStatus::class, 'marital_status_id');
+    }
+
+    public function postal_code()
+    {
+        return $this->belongsTo(PostalCode::class, 'postal_code_id');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'village_id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regency_id');
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
 }
