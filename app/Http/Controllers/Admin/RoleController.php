@@ -31,7 +31,11 @@ class RoleController extends Controller
 
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
+        $search = $request->search;
+        $roles = Role::where('name', 'LIKE',"%{$search}%")
+                    ->orWhere('guard_name', 'LIKE',"%{$search}%")
+                    ->orderBy('name', 'asc')
+                    ->paginate(10);
         return new RoleResourceCollection($roles);
     }
 

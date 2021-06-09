@@ -20,7 +20,7 @@ class EmployeeController extends Controller
         $data = IdentityCard::where('id','LIKE',"%{$search}%")
                     ->orWhere('name', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
-                    ->paginate(10);
+                    ->paginate(20);
         return new IdentityCardResourceCollection($data);
     }
 
@@ -46,7 +46,7 @@ class EmployeeController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function EmployeeList(){
+    public function EmployeeList(Request $request){
         $search = $request->search;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
@@ -54,7 +54,7 @@ class EmployeeController extends Controller
         $data = Employee::where('id','LIKE',"%{$search}%")
                     ->orWhere('name', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
-                    ->paginate(10);
+                    ->paginate(20);
         return new IdentityCardResourceCollection($data);
     }
 
