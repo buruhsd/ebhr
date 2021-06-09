@@ -39,6 +39,7 @@ class UserController extends Controller
     }
 
     public function store(UserValidationRequest $request){
+        $request->password = bcrypt($request->password);
         $data = User::create($request->all());
         return new UserResource($data);
     }
