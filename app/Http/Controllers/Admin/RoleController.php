@@ -98,7 +98,7 @@ class RoleController extends Controller
     }
 
     public function permissionList(){
-        $permission = Permission::orderBy('id','DESC')->paginate(5);
+        $permission = Permission::orderBy('id','DESC');
         return new RoleResourceCollection($permission);
     }
 }
