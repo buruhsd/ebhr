@@ -46,7 +46,18 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user){
-        $data = $user->update($request->all());
+        $this->validate($request, [
+            "name" => "required",
+            "email" => "required|email",
+            "password" => "nullable|min:8"
+        ]);
+        if($request->password){
+            $password = bcrypt($request->password);
+            $request->merge(['password' => $password]);
+            $data = $user->update($request->all());
+        }else{
+            $data = $user->update($request->only('name','email'));
+        }
 
         return new UserResource($user);
     }
