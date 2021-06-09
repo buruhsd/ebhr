@@ -102,7 +102,7 @@ class RoleController extends Controller
     }
 
     public function permissionList(){
-        $permission = Permission::orderBy('name','DESC')->get();
+        $permission = Permission::orderBy('name','ASC')->get();
         return new RoleResourceCollection($permission);
     }
 }

@@ -52,7 +52,7 @@ class EmployeeController extends Controller
         $orderBy = $request->input('orderby');
         // var_dump($orderby); die();
         $data = Employee::where('id','LIKE',"%{$search}%")
-                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('name_alias', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
         return new IdentityCardResourceCollection($data);
