@@ -62,4 +62,10 @@ class EmployeeController extends Controller
         return new IdentityCardResource($identityCard);
     }
 
+    public function EmployeeUpdate(Request $request, Employee $employee){
+        $data = $employee::update($request->all());
+
+        return response()->json(['data' => $data]);
+    }
+
 }
