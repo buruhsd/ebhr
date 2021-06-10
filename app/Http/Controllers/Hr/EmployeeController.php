@@ -86,9 +86,9 @@ class EmployeeController extends Controller
             'insertedBy' => 'required',
             'updatedBy' => 'required',
         ]);
-        $data = $identityCard->update($request->all());
+        $identityCard->update($request->all());
 
-        return new IdentityCardResource($data);
+        return new IdentityCardResource($identityCard);
     }
 
     public function createEmployee(Request $request){
