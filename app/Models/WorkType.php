@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class WorkType extends Model
 {
     use HasFactory;
+    protected $appends = ['label'];
+
+    public function getLabelAttribute()
+    {
+        return $this->type_name;
+    }
 }
