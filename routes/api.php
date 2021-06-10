@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controller\MasterController;
+use App\Http\Controllers\MasterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
