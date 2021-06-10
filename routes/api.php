@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controller\MasterController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,6 +32,17 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
+
+//Master
+Route::get('/provinces/list', [MasterController::class, 'provinceList'])->name('api.provinceList');
+Route::get('/regencies/list/{id}', [MasterController::class, 'regencyList'])->name('api.regencyList');
+Route::get('/districts/list/{id}', [MasterController::class, 'districtList'])->name('api.districtList');
+Route::get('/villages/list/{id}', [MasterController::class, 'villageList'])->name('api.villageList');
+
+Route::get('/postalcode/list', [MasterController::class, 'postalCodeList'])->name('api.postalCodeList');
+Route::get('/worktype/list', [MasterController::class, 'workType'])->name('api.workType');
+Route::get('/maritalstatus/list', [MasterController::class, 'maritalStatusList'])->name('api.maritalStatusList');
+Route::get('/religions/list', [MasterController::class, 'religionList'])->name('api.religionList');
 
 // //User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
