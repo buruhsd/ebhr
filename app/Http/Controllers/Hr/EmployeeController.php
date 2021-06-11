@@ -86,12 +86,28 @@ class EmployeeController extends Controller
             'insertedBy' => 'required',
             'updatedBy' => 'required',
         ]);
-        $identityCard->update($request->all());
+        $identityCard->update($request->except('insertedBy'));
 
         return new IdentityCardResource($identityCard);
     }
 
     public function createEmployee(Request $request){
+        $this->validate($request, [
+            'tgl_surat' => 'required',
+            'no_surat' => 'required',
+            'no_induk' => 'required',
+            'name_alias' => 'required',
+            'identity_id' => 'required',
+            'work_pattern_id' => 'required',
+            'work_group_id' => 'required',
+            'position_id' => 'required',
+            'employee_status_id' => 'required',
+            'development_status_id' => 'required',
+            'start_date' => 'required',
+            'description' => 'nullable',
+            'insertedBy' => 'required',
+            'updatedBy' => 'required',
+        ]);
         $data = Employee::create($request->all());
 
         return response()->json(['data' => $data]);
@@ -115,13 +131,29 @@ class EmployeeController extends Controller
     }
 
     public function showEmployee(Employee $employee){
-        return new IdentityCardResource($identityCard);
+        return new IdentityCardResource($employee);
     }
 
     public function EmployeeUpdate(Request $request, Employee $employee){
-        $data = $employee::update($request->all());
+        $this->validate($request, [
+            'tgl_surat' => 'required',
+            'no_surat' => 'required',
+            'no_induk' => 'required',
+            'name_alias' => 'required',
+            'identity_id' => 'required',
+            'work_pattern_id' => 'required',
+            'work_group_id' => 'required',
+            'position_id' => 'required',
+            'employee_status_id' => 'required',
+            'development_status_id' => 'required',
+            'start_date' => 'required',
+            'description' => 'nullable',
+            'insertedBy' => 'required',
+            'updatedBy' => 'required',
+        ]);
+        $employee->update($request->except('insertedBy'));
 
-        return response()->json(['data' => $data]);
+        return response()->json(['data' => $employee]);
     }
 
 }

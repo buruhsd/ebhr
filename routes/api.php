@@ -69,5 +69,6 @@ Route::patch('identity/update/{identityCard}', [EmployeeController::class, 'Iden
 Route::get('employee/list', [EmployeeController::class, 'EmployeeList'])->name('api.employee.EmployeeList');
 Route::post('employee/add', [EmployeeController::class, 'createEmployee'])->name('api.employee.createEmployee');
 Route::get('employee/show/{employee}', [EmployeeController::class, 'showEmployee'])->name('api.employee.showEmployee');
+Route::patch('employee/update/{employee}', [EmployeeController::class, 'EmployeeUpdate'])->name('api.employee.EmployeeUpdate');
 
 
