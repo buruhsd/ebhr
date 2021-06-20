@@ -42,20 +42,39 @@ class MasterController extends Controller
     }
 
     public function districtList($id){
-        $data = District::where('regency_id', $id)->get();
+
+        $kode = $request->kode;
+        if($kode == null){
+            $data = District::where('regency_id', $id)->get();
+        }else{
+            $data = District::where('id', $kode)->get();
+        }
 
         return response()->json(['data' => $data]);
     }
 
     public function regencyList($id){
-        $data = Regency::where('province_id', $id)->get();
+
+        $kode = $request->kode;
+        if($kode == null){
+            $data = Regency::where('province_id', $id)->get();
+        }else{
+            $data = Regency::where('id', $kode)->get();
+        }
 
         return response()->json(['data' => $data]);
     }
 
     public function provinceList(){
-        $data = Province::get();
+        $kode = $request->kode;
+        if($kode == null){
+            $data = Province::get();
+        }else{
+            $data = Province::where('id', $kode)->get();
+        }
+
 
         return response()->json(['data' => $data]);
     }
+
 }
