@@ -41,25 +41,31 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function districtList($id){
+    public function districtList(){
 
         $kode = $request->kode;
-        if($kode == null){
+        $id  = $request->id;
+        if($id != null){
             $data = District::where('regency_id', $id)->get();
-        }else{
+        }elseif($kode != null){
             $data = District::where('id', $kode)->get();
+        }else{
+            $data = District::get();
         }
 
         return response()->json(['data' => $data]);
     }
 
-    public function regencyList($id){
+    public function regencyList(){
 
         $kode = $request->kode;
-        if($kode == null){
+        $id  = $request->id;
+        if($id != null){
             $data = Regency::where('province_id', $id)->get();
-        }else{
+        }elseif($kode != null){
             $data = Regency::where('id', $kode)->get();
+        }else{
+            $data = Regency::get();
         }
 
         return response()->json(['data' => $data]);

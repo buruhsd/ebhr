@@ -35,9 +35,9 @@ Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
 
 //Master
 Route::get('/provinces/list', [MasterController::class, 'provinceList'])->name('api.provinceList');
-Route::get('/regencies/list/{id}', [MasterController::class, 'regencyList'])->name('api.regencyList');
-Route::get('/districts/list/{id}', [MasterController::class, 'districtList'])->name('api.districtList');
-Route::get('/villages/list/{id}', [MasterController::class, 'villageList'])->name('api.villageList');
+Route::get('/regencies/list/', [MasterController::class, 'regencyList'])->name('api.regencyList');
+Route::get('/districts/list/', [MasterController::class, 'districtList'])->name('api.districtList');
+Route::get('/villages/list/', [MasterController::class, 'villageList'])->name('api.villageList');
 
 Route::get('/postalcode/list', [MasterController::class, 'postalCodeList'])->name('api.postalCodeList');
 Route::get('/worktype/list', [MasterController::class, 'workType'])->name('api.workType');
