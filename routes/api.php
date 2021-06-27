@@ -71,4 +71,14 @@ Route::post('employee/add', [EmployeeController::class, 'createEmployee'])->name
 Route::get('employee/show/{employee}', [EmployeeController::class, 'showEmployee'])->name('api.employee.showEmployee');
 Route::patch('employee/update/{employee}', [EmployeeController::class, 'EmployeeUpdate'])->name('api.employee.EmployeeUpdate');
 
-
+//Purchase
+Route::get('purchase/list', [PurchaseController::classs, 'index'])->name('api.purchase.index');
+Route::post('purchase/create', [PurchaseController::classs, 'createPurchaseLetter'])->name('api.purchase.createPurchaseLetter');
+Route::patch('purchase/update/{purchase}', [PurchaseController::class, 'update'])->name('api.purchase.update');
+Route::get('purchase/{purchase}', [PurchaseController::classs, 'show'])->name('api.purchase.show');
+Route::get('purchase/{purchase}', [PurchaseController::class, 'delete'])->name('api.purchase.delete');
+Route::get('purchase/{purchase}/approval', [PurchaseController::class, 'approval'])->name('api.purchase.approval');
+//Order
+Route::post('purchase/{purchase}/create-order', [PurchaseController::class, 'createOrder'])->name('api.purchase.createOrder');
+Route::post('purchase/{order}/close-order', [PurchaseController::class, 'closeOrder'])->name('api.purchase.closeOrder');
+Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
