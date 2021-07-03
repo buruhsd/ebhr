@@ -51,6 +51,13 @@ Route::get('/workpattern', [MasterController::class, 'workPattern'])->name('api.
 Route::get('/employeeStatus', [MasterController::class, 'employeeStatus'])->name('api.employeeStatus');
 Route::get('/developmentStatus', [MasterController::class, 'developmentStatus'])->name('api.developmentStatus');
 
+// Master Purchase
+Route::get('/branch', [MasterController::class, 'branch'])->name('api.branch');
+Route::get('/transactionType', [MasterController::class, 'transactionType'])->name('api.transactionType');
+Route::get('/purchaseCategory', [MasterController::class, 'purchaseCategory'])->name('api.purchaseCategory');
+Route::get('/purchaseUrgentity', [MasterController::class, 'purchaseUrgentity'])->name('api.purchaseUrgentity');
+Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])->name('api.purchaseNecessary');
+
 // //User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
 Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('api.user.show');
@@ -81,10 +88,10 @@ Route::patch('employee/update/{employee}', [EmployeeController::class, 'Employee
 
 //Purchase
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
+Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');
 Route::post('purchase/create', [PurchaseController::class, 'createPurchaseLetter'])->name('api.purchase.createPurchaseLetter');
 Route::patch('purchase/update/{purchase}', [PurchaseController::class, 'update'])->name('api.purchase.update');
-Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');
-Route::get('purchase/{purchase}', [PurchaseController::class, 'delete'])->name('api.purchase.delete');
+Route::delete('purchase/{purchase}', [PurchaseController::class, 'delete'])->name('api.purchase.delete');
 Route::get('purchase/{purchase}/approval', [PurchaseController::class, 'approval'])->name('api.purchase.approval');
 //Order
 Route::post('purchase/{purchase}/create-order', [PurchaseController::class, 'createOrder'])->name('api.purchase.createOrder');

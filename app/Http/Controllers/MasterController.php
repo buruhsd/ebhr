@@ -7,6 +7,7 @@ use App\Models\Village;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Position;
+use App\Models\Branch;
 use App\Models\Religion;
 use App\Models\WorkType;
 use App\Models\WorkGroup;
@@ -16,6 +17,10 @@ use App\Models\DevelopmentStatus;
 use App\Models\PostalCode;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
+use App\Models\Purchase\TransactionType;
+use App\Models\Purchase\PurchaseCategory;
+use App\Models\Purchase\PurchaseUrgentity;
+use App\Models\Purchase\PurchaseNecessary;
 
 class MasterController extends Controller
 {
@@ -143,6 +148,32 @@ class MasterController extends Controller
             'district' => $district,
             'gender' => $gender
         ]);
+    }
+
+    // Purchase
+    public function branch(){
+        $data = Branch::select('id','name')->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function transactionType(){
+        $data = TransactionType::select('id','name')->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function purchaseCategory(){
+        $data = PurchaseCategory::select('id','name')->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function purchaseUrgentity(){
+        $data = PurchaseUrgentity::select('id','name')->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function purchaseNecessary(){
+        $data = PurchaseNecessary::select('id','name')->get();
+        return response()->json(['data' => $data]);
     }
 
 }

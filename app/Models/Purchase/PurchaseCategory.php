@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseCategory extends Model
 {
     use HasFactory;
+    protected $appends = ['label'];
+
+    public function getLabelAttribute()
+    {
+        return $this->name;
+    }
 }
