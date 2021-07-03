@@ -6,14 +6,45 @@ use App\Models\Regency;
 use App\Models\Village;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Position;
 use App\Models\Religion;
 use App\Models\WorkType;
+use App\Models\WorkGroup;
+use App\Models\WorkPattern;
+use App\Models\EmployeeStatus;
+use App\Models\DevelopmentStatus;
 use App\Models\PostalCode;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
 
 class MasterController extends Controller
 {
+
+    public function position(){
+        $data = Position::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function workGroup(){
+        $data = WorkGroup::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function workPattern(){
+        $data = WorkPattern::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function employeeStatus(){
+        $data = EmployeeStatus::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function developmentStatus(){
+        $data = DevelopmentStatus::get();
+        return response()->json(['data' => $data]);
+    }
+
     public function religionList(){
         $data = Religion::get();
         return response()->json(['data' => $data]);
@@ -41,7 +72,7 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function districtList(){
+    public function districtList(Request $request){
 
         $kode = $request->kode;
         $id  = $request->id;
@@ -56,7 +87,7 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function regencyList(){
+    public function regencyList(Request $request){
 
         $kode = $request->kode;
         $id  = $request->id;
@@ -71,7 +102,7 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function provinceList(){
+    public function provinceList(Request $request){
         $kode = $request->kode;
         if($kode == null){
             $data = Province::get();
@@ -81,6 +112,37 @@ class MasterController extends Controller
 
 
         return response()->json(['data' => $data]);
+    }
+
+    public function detailNik(Request $request){
+        $nik = $request->code;
+        if(is_null($nik)){
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+        $province_id = substr($nik,0,2);
+        $province = Province::select('id','name')->where('id', $province_id)->first();
+        $regency_id = substr($nik,0,4);
+        $regency = Regency::select('id','name')->where('id', $regency_id)->first();
+        $district_id = substr($nik,0,6);
+        $district = District::select('id','name')->where('id', $district_id)->first();
+        $date = substr($nik,6,2);
+        $gender = null;
+        if(strlen($nik) >= 8){
+            $gender = 'laki-laki';
+            if($date >= 40){
+                $gender = 'perempuan';
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'nik' => $nik,
+            'province' => $province,
+            'regency' => $regency,
+            'district' => $district,
+            'gender' => $gender
+        ]);
     }
 
 }

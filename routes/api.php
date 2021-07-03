@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\Purchase\PurchaseController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,15 +35,21 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
 
 //Master
+Route::get('/detail/nik', [MasterController::class, 'detailNik'])->name('api.detailNik');
 Route::get('/provinces/list', [MasterController::class, 'provinceList'])->name('api.provinceList');
 Route::get('/regencies/list/', [MasterController::class, 'regencyList'])->name('api.regencyList');
 Route::get('/districts/list/', [MasterController::class, 'districtList'])->name('api.districtList');
-Route::get('/villages/list/', [MasterController::class, 'villageList'])->name('api.villageList');
+Route::get('/villages/list/{id}', [MasterController::class, 'villageList'])->name('api.villageList');
 
 Route::get('/postalcode/list', [MasterController::class, 'postalCodeList'])->name('api.postalCodeList');
 Route::get('/worktype/list', [MasterController::class, 'workType'])->name('api.workType');
 Route::get('/maritalstatus/list', [MasterController::class, 'maritalStatusList'])->name('api.maritalStatusList');
 Route::get('/religions/list', [MasterController::class, 'religionList'])->name('api.religionList');
+Route::get('/position', [MasterController::class, 'position'])->name('api.position');
+Route::get('/workgroup', [MasterController::class, 'workGroup'])->name('api.workGroup');
+Route::get('/workpattern', [MasterController::class, 'workPattern'])->name('api.workPattern');
+Route::get('/employeeStatus', [MasterController::class, 'employeeStatus'])->name('api.employeeStatus');
+Route::get('/developmentStatus', [MasterController::class, 'developmentStatus'])->name('api.developmentStatus');
 
 // //User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
@@ -60,6 +67,7 @@ Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
 Route::get('/admin/permissions/list', [RoleController::class, 'permissionList']);
 
 //HR Identity
+Route::get('identity/search', [EmployeeController::class, 'searchIdentityCard'])->name('api.employee.searchIdentityCard');
 Route::get('identity/list', [EmployeeController::class, 'IdentityCardList'])->name('api.employee.IdentityCardList');
 Route::get('identity/show/{identityCard}', [EmployeeController::class, 'showIdentityCard'])->name('api.employee.showIdentityCard');
 Route::post('identity/add', [EmployeeController::class, 'IdentityCardStore'])->name('api.employee.IdentityCardStore');
@@ -72,10 +80,10 @@ Route::get('employee/show/{employee}', [EmployeeController::class, 'showEmployee
 Route::patch('employee/update/{employee}', [EmployeeController::class, 'EmployeeUpdate'])->name('api.employee.EmployeeUpdate');
 
 //Purchase
-Route::get('purchase/list', [PurchaseController::classs, 'index'])->name('api.purchase.index');
-Route::post('purchase/create', [PurchaseController::classs, 'createPurchaseLetter'])->name('api.purchase.createPurchaseLetter');
+Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
+Route::post('purchase/create', [PurchaseController::class, 'createPurchaseLetter'])->name('api.purchase.createPurchaseLetter');
 Route::patch('purchase/update/{purchase}', [PurchaseController::class, 'update'])->name('api.purchase.update');
-Route::get('purchase/{purchase}', [PurchaseController::classs, 'show'])->name('api.purchase.show');
+Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');
 Route::get('purchase/{purchase}', [PurchaseController::class, 'delete'])->name('api.purchase.delete');
 Route::get('purchase/{purchase}/approval', [PurchaseController::class, 'approval'])->name('api.purchase.approval');
 //Order

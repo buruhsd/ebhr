@@ -11,6 +11,17 @@ use App\Http\Resources\Hr\IdentityCardResourceCollection;
 
 class EmployeeController extends Controller
 {
+    public function searchIdentityCard(Request $request)
+    {
+        $search = $request->q;
+        $data = IdentityCard::select('id','nik','name')
+                    ->where('nik','LIKE',"{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->limit(20)
+                    ->get();
+        return response()->json(['data' => $data]);
+    }
+
     public function IdentityCardList(Request $request)
     {
         $search = $request->search;
@@ -123,7 +134,8 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Employee::where('id','LIKE',"%{$search}%")
+        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name')
+                    ->where('id','LIKE',"%{$search}%")
                     ->orWhere('name_alias', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);

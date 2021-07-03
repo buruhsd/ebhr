@@ -33,6 +33,13 @@ class IdentityCard extends Model
         'updatedBy',
     ];
 
+    protected $appends = ['label'];
+
+    public function getLabelAttribute()
+    {
+        return $this->nik.' - '.$this->name;
+    }
+
     public function religion()
     {
         return $this->belongsTo(Religion::class, 'religion_id');
