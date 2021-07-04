@@ -14,7 +14,7 @@ class Products extends Model
 
     public function getLabelAttribute()
     {
-        return $this->name;
+        return $this->product_code." - ".$this->name;
     }
 
 }

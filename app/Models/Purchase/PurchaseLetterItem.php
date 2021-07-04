@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseLetterItem extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'product_id',
+        'qty',
+        'unit',
+        'insertedBy',
+        'updatedBy',
+    ];
 }
