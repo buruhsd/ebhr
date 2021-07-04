@@ -21,5 +21,15 @@ class ProductController extends Controller
             ->orderBy($orderBy, $sortBy)->paginate(20);
     }
 
+    public function store(){
+        $this->validate($request, [
+            'name' => 'required',
+            'product_code' => 'required'
+        ]);
+        $data = Product::create($request->all());
+
+        return $data;
+    }
+
 
 }
