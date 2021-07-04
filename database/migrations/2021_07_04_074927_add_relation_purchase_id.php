@@ -18,7 +18,7 @@ class AddRelationPurchaseId extends Migration
             $table->string('unit')->nullable();
             $table->integer('qty')->nullable();
 
-            $table->foreign('purchase_letter_id')->references('id')->on('purchase_letter_id')->onDelete('cascade');
+            $table->foreign('purchase_letter_id')->references('id')->on('purchase_letters')->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,8 @@ class AddRelationPurchaseId extends Migration
     {
         Schema::table('purchase_letter_items', function (Blueprint $table) {
             $table->dropColumn('purchase_letter_id');
+            $table->dropColumn('unit');
+            $table->dropColumn('qty');
         });
     }
 }
