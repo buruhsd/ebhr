@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\Purchase\PurchaseController;
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +55,7 @@ Route::get('/developmentStatus', [MasterController::class, 'developmentStatus'])
 
 // Master Purchase
 Route::get('/branch', [MasterController::class, 'branch'])->name('api.branch');
+Route::get('/product/list', [ProductController::class, 'index'])->name('api.product');
 Route::get('/transactionType', [MasterController::class, 'transactionType'])->name('api.transactionType');
 Route::get('/purchaseCategory', [MasterController::class, 'purchaseCategory'])->name('api.purchaseCategory');
 Route::get('/purchaseUrgentity', [MasterController::class, 'purchaseUrgentity'])->name('api.purchaseUrgentity');
