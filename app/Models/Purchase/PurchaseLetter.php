@@ -5,6 +5,7 @@ namespace App\Models\Purchase;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchase\PurchaseLetterItem;
 
 class PurchaseLetter extends Model
 {
@@ -30,6 +31,11 @@ class PurchaseLetter extends Model
     public function transaction_type()
     {
         return $this->belongsTo(TransactionType::class, 'transaction_type_id');
+    }
+
+    public function purchase_items()
+    {
+        return $this->hasMany(PurchaseLetterItem::class);
     }
 
     public function purchase_category()

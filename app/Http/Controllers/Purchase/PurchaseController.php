@@ -41,8 +41,14 @@ class PurchaseController extends Controller
             'purchase_urgensity_id' => 'required',
             'insertedBy' => 'required',
             'updatedBy' => 'required',
+            'item' => 'required'
         ]);
     	$data = PurchaseLetter::create($request->all());
+
+        foreach($request->item as $item){
+            $data->purchase_items()->create($item);
+        }
+
         return response()->json(['data' => $data]);
     }
 

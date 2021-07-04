@@ -15,6 +15,8 @@ class AddRelationPurchaseId extends Migration
     {
         Schema::table('purchase_letter_items', function (Blueprint $table) {
             $table->UnsignedBigInteger('purchase_letter_id')->nullable();
+            $table->string('unit')->nullable();
+            $table->integer('qty')->nullable();
 
             $table->foreign('purchase_letter_id')->references('id')->on('purchase_letter_id')->onDelete('cascade');
         });
