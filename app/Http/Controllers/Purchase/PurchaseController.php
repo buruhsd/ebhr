@@ -23,7 +23,7 @@ class PurchaseController extends Controller
         }
     	$data = PurchaseLetter::with('branch:id,name','transaction_type:id,name','purchase_category:id,name','purchase_necessary:id,name','purchase_urgentity:id,name')
                     ->where('id','LIKE',"%{$search}%")
-                    ->orWhere('no_pp', 'LIKE',"%{$search}%")
+                    ->orWhere('no_pp', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
         return response()->json(['data' => $data]);
