@@ -21,7 +21,8 @@ class PurchaseController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-    	$data = PurchaseLetter::where('id','LIKE',"%{$search}%")
+    	$data = PurchaseLetter::with('branch:id,name','transaction_type:id,name','purchase_category:id,name','purchase_necessary:id,name','purchase_urgentity:id,name')
+                    ->where('id','LIKE',"%{$search}%")
                     ->orWhere('no_pp', 'LIKE',"%{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
@@ -42,7 +43,7 @@ class PurchaseController extends Controller
             'updatedBy' => 'required',
         ]);
     	$data = PurchaseLetter::create($request->all());
-        return new PurchaseResource($data);
+        return response()->json(['data' => $data]);
     }
 
     public function update(Request $request, PurchaseLetter $purchase){
@@ -60,7 +61,7 @@ class PurchaseController extends Controller
         ]);
 
     	$purchase->update($request->except('insertedBy'));
-        return new PurchaseResource($purchase);
+        return response()->json(['data' => $purchase]);
     }
 
     public function show(PurchaseLetter $purchase){

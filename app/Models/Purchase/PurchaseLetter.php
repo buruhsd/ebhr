@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,4 +21,29 @@ class PurchaseLetter extends Model
         'insertedBy',
         'updatedBy',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function transaction_type()
+    {
+        return $this->belongsTo(TransactionType::class, 'transaction_type_id');
+    }
+
+    public function purchase_category()
+    {
+        return $this->belongsTo(PurchaseCategory::class, 'purchase_category_id');
+    }
+
+    public function purchase_necessary()
+    {
+        return $this->belongsTo(PurchaseNecessary::class, 'purchase_necessary_id');
+    }
+
+    public function purchase_urgentity()
+    {
+        return $this->belongsTo(PurchaseUrgentity::class, 'purchase_urgensity_id');
+    }
 }

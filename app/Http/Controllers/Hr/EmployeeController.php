@@ -33,8 +33,9 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = IdentityCard::with('religion:id,religion_name','work_type:id,code,type_name','marital_status:id,code,status_name','postal_code:id,postal_code','village:id,district_id,name','district:id,regency_id,name','regency:id,province_id,name','province:id,name')->where('id','LIKE',"%{$search}%")
-                    ->orWhere('name', 'LIKE',"%{$search}%")
+        $data = IdentityCard::with('religion:id,religion_name','work_type:id,code,type_name','marital_status:id,code,status_name','postal_code:id,postal_code','village:id,district_id,name','district:id,regency_id,name','regency:id,province_id,name','province:id,name')
+                    ->where('nik','LIKE',"{$search}%")
+                    ->orWhere('name', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
         return new IdentityCardResourceCollection($data);
@@ -135,8 +136,8 @@ class EmployeeController extends Controller
             $sortBy = 'asc';
         }
         $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name')
-                    ->where('id','LIKE',"%{$search}%")
-                    ->orWhere('name_alias', 'LIKE',"%{$search}%")
+                    ->where('no_induk','LIKE',"{$search}%")
+                    ->orWhere('name_alias', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
         return new IdentityCardResourceCollection($data);
