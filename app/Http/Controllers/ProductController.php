@@ -10,7 +10,7 @@ class ProductController extends Controller
     public function index(Request $request){
         $search = $request->search;
 
-        return Product::Where('name', 'LIKE',"{$search}%")
+        return Products::Where('name', 'LIKE',"{$search}%")
                         ->orWhere('product_code', 'LIKE',"{$search}%")->limit(10)->get();
     }
 
@@ -19,7 +19,7 @@ class ProductController extends Controller
             'name' => 'required',
             'product_code' => 'required'
         ]);
-        $data = Product::create($request->all());
+        $data = Products::create($request->all());
 
         return $data;
     }
