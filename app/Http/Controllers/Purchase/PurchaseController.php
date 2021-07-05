@@ -21,7 +21,13 @@ class PurchaseController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-    	$data = PurchaseLetter::with('branch:id,name','transaction_type:id,name','purchase_category:id,name','purchase_necessary:id,name','purchase_urgentity:id,name')
+    	$data = PurchaseLetter::with('branch:id,name',
+                    'transaction_type:id,name',
+                    'purchase_category:id,name',
+                    'purchase_necessary:id,name',
+                    'purchase_urgentity:id,name',
+                    'purchase_items:id,product_id,purchase_letter_id,qty,unit',
+                    'purchase_items.products:id,name,product_code')
                     ->where('id','LIKE',"%{$search}%")
                     ->orWhere('no_pp', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -41,7 +47,10 @@ class PurchaseController extends Controller
             'purchase_urgensity_id' => 'required',
             'insertedBy' => 'required',
             'updatedBy' => 'required',
-            'item' => 'required'
+            'item' => 'required',
+            'item.*.product_id' => 'required',
+            'item.*.qty' => 'required',
+            'item.*.unit' => 'required',
         ]);
     	$data = PurchaseLetter::create($request->all());
 
