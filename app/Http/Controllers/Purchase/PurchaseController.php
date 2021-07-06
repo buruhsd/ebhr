@@ -73,9 +73,21 @@ class PurchaseController extends Controller
             'purchase_urgensity_id' => 'required',
             'insertedBy' => 'required',
             'updatedBy' => 'required',
+            'item' => 'required',
+            'item.*.product_id' => 'required',
+            'item.*.qty' => 'required',
+            'item.*.unit' => 'required',
         ]);
 
     	$purchase->update($request->except('insertedBy'));
+        foreach($request->item as $item){
+            $dataUpdate = $purchase->purchase_items()->where('product_id',$item['product_id'])->first();
+            if($dataUpdate){
+                $dataUpdate->update($item);
+            }else{
+                $purchase->purchase_items()->create($item);
+            }
+        }
         return response()->json(['data' => $purchase]);
     }
 
@@ -84,6 +96,7 @@ class PurchaseController extends Controller
     }
 
     public function delete(PurchaseLetter $purchase){
+        $purchase->purchase_items()->delete();
         $purchase->delete();
         return response()->json(['data' => 'data deleted']);
     }
