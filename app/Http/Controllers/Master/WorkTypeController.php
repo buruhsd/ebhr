@@ -13,6 +13,29 @@ class WorkTypeController extends Controller
     {
         $this->middleware('auth:api');
     }
+
+    /**
+     * Display the all resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $search = $request->search;
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
+        if(is_null($orderBy)){
+            $orderBy = 'type_name';
+        }
+        if(is_null($sortBy)){
+            $sortBy = 'asc';
+        }
+        $data = WorkType::where('type_name','LIKE',"{$search}%")
+            ->orderBy($orderBy, $sortBy)
+            ->paginate(10);
+        return response()->json($data);
+    }
     /**
      * Store a newly created resource in storage.
      *

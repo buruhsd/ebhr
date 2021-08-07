@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Master\Product;
+use App\Models\Master\Products as Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,6 +12,29 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+    }
+
+    /**
+     * Display the all resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $search = $request->search;
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
+        if(is_null($orderBy)){
+            $orderBy = 'name';
+        }
+        if(is_null($sortBy)){
+            $sortBy = 'asc';
+        }
+        $data = Product::where('name','LIKE',"{$search}%")
+            ->orderBy($orderBy, $sortBy)
+            ->paginate(10);
+        return response()->json($data);
     }
     /**
      * Store a newly created resource in storage.

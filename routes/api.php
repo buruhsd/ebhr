@@ -64,63 +64,63 @@ Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])
 
 Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('branch', 'BranchController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('development_status', 'DevelopmentStatusController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('employee_status', 'EmployeeStatusController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('marital_status', 'MaritalStatusController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('position', 'PositionController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('product', 'ProductController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('religion', 'ReligionController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('purchase_category', 'PurchaseCategoryController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('purchase_necessary', 'PurchaseNecessaryController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('purchase_urgentity', 'PurchaseUrgentityController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('transaction_type', 'TransactionTypeController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('unit', 'UnitController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('work_group', 'WorkGroupController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('work_pattern', 'WorkPatternController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('work_type', 'WorkTypeController', ['only' => [
-        'show', 'store', 'update', 'destroy'
+        'index','show', 'store', 'update', 'destroy'
     ]]);
 });
 

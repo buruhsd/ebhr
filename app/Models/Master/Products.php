@@ -41,10 +41,10 @@ class Products extends Model
         $string = 'BRG-00000';
         $latest = self::orderBy('id','desc')->first();
         if($latest){
-            $string = $latest->code;
+            $string = $latest->product_code;
         }
         $id = substr($string, -5, 5);
-        $newID = $id + 1;
+        $newID = intval($id) + 1;
         $newID = str_pad($newID, 5, '0', STR_PAD_LEFT);
         return 'BRG-'.$newID;
     }

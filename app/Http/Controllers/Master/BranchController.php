@@ -15,6 +15,29 @@ class BranchController extends Controller
     }
 
     /**
+     * Display the all resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $search = $request->search;
+        $sortBy = $request->input('sortby');
+        $orderBy = $request->input('orderby');
+        if(is_null($orderBy)){
+            $orderBy = 'name';
+        }
+        if(is_null($sortBy)){
+            $sortBy = 'asc';
+        }
+        $data = Branch::where('name','LIKE',"{$search}%")
+                ->orderBy($orderBy, $sortBy)
+                ->paginate(10);
+        return response()->json($data);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
