@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class WorkType extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'code',
+        'type_name',
+        'insertedBy',
+        'updatedBy',
+    ];
     protected $appends = ['label'];
 
     public function getLabelAttribute()

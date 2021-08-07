@@ -62,7 +62,69 @@ Route::get('/purchaseCategory', [MasterController::class, 'purchaseCategory'])->
 Route::get('/purchaseUrgentity', [MasterController::class, 'purchaseUrgentity'])->name('api.purchaseUrgentity');
 Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])->name('api.purchaseNecessary');
 
-// //User Management
+Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
+    Route::resource('branch', 'BranchController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('development_status', 'DevelopmentStatusController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('employee_status', 'EmployeeStatusController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('marital_status', 'MaritalStatusController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('position', 'PositionController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('product', 'ProductController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('religion', 'ReligionController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('purchase_category', 'PurchaseCategoryController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('purchase_necessary', 'PurchaseNecessaryController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('purchase_urgentity', 'PurchaseUrgentityController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('transaction_type', 'TransactionTypeController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('unit', 'UnitController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('work_group', 'WorkGroupController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('work_pattern', 'WorkPatternController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('work_type', 'WorkTypeController', ['only' => [
+        'show', 'store', 'update', 'destroy'
+    ]]);
+});
+
+// User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
 Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('api.user.show');
 Route::post('/admin/user', [UserController::class, 'store'])->name('api.user.store');

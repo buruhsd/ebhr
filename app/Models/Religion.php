@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Religion extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'code',
+        'religion_name',
+        'insertedBy',
+        'updatedBy',
+    ];
     protected $appends = ['label'];
 
     public function getLabelAttribute()

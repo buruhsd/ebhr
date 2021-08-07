@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class MaritalStatus extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'code',
+        'status_name',
+        'insertedBy',
+        'updatedBy',
+    ];
     protected $appends = ['label'];
 
     public function getLabelAttribute()

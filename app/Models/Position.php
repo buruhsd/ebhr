@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'code_position',
+        'name',
+        'code_shorting',
+        'is_struktural',
+        'insertedBy',
+        'updatedBy',
+    ];
     protected $appends = ['label'];
 
     public function getLabelAttribute()

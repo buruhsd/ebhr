@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class DevelopmentStatus extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+        'insertedBy',
+        'updatedBy',
+    ];
     protected $appends = ['label'];
 
     public function getLabelAttribute()
