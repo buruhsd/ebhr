@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hr;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\IdentityCard;
@@ -61,10 +62,9 @@ class EmployeeController extends Controller
             'regency_id' => 'required',
             'province_id' => 'required',
             'published_date_ktp' => 'required',
-            'description' => 'nullable',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
+            'description' => 'nullable'
         ]);
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = IdentityCard::create($request->all());
 
         return new IdentityCardResource($data);
@@ -94,17 +94,17 @@ class EmployeeController extends Controller
             'regency_id' => 'required',
             'province_id' => 'required',
             'published_date_ktp' => 'required',
-            'description' => 'nullable',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
+            'description' => 'nullable'
         ]);
-        $identityCard->update($request->except('insertedBy'));
+        $request->merge(['updatedBy'=>Auth::id()]);
+        $identityCard->update($request->all());
 
         return new IdentityCardResource($identityCard);
     }
 
     public function createEmployee(Request $request){
         $this->validate($request, [
+            'branch_id' => 'required',
             'tgl_surat' => 'required',
             'no_surat' => 'required',
             'no_induk' => 'required',
@@ -112,14 +112,14 @@ class EmployeeController extends Controller
             'identity_id' => 'required',
             'work_pattern_id' => 'required',
             'work_group_id' => 'required',
+            'work_type_id' => 'required',
             'position_id' => 'required',
             'employee_status_id' => 'required',
             'development_status_id' => 'required',
             'start_date' => 'required',
             'description' => 'nullable',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
         ]);
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Employee::create($request->all());
 
         return response()->json(['data' => $data]);
@@ -135,7 +135,7 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name')
+        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name','branch:id,name','work_type:id,name')
                     ->where('no_induk','LIKE',"{$search}%")
                     ->orWhere('name_alias', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -156,15 +156,15 @@ class EmployeeController extends Controller
             'identity_id' => 'required',
             'work_pattern_id' => 'required',
             'work_group_id' => 'required',
+            'work_type_id' => 'required',
             'position_id' => 'required',
             'employee_status_id' => 'required',
             'development_status_id' => 'required',
             'start_date' => 'required',
-            'description' => 'nullable',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
+            'description' => 'nullable'
         ]);
-        $employee->update($request->except('insertedBy'));
+        $request->merge(['updatedBy'=>Auth::id()]);
+        $employee->update($request->all());
 
         return response()->json(['data' => $employee]);
     }

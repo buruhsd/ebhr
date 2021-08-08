@@ -44,10 +44,10 @@ Route::get('/districts/list/', [MasterController::class, 'districtList'])->name(
 Route::get('/villages/list/{id}', [MasterController::class, 'villageList'])->name('api.villageList');
 
 Route::get('/postalcode/list', [MasterController::class, 'postalCodeList'])->name('api.postalCodeList');
-Route::get('/worktype/list', [MasterController::class, 'workType'])->name('api.workType');
 Route::get('/maritalstatus/list', [MasterController::class, 'maritalStatusList'])->name('api.maritalStatusList');
 Route::get('/religions/list', [MasterController::class, 'religionList'])->name('api.religionList');
 Route::get('/position', [MasterController::class, 'position'])->name('api.position');
+Route::get('/worktype', [MasterController::class, 'workType'])->name('api.workType');
 Route::get('/workgroup', [MasterController::class, 'workGroup'])->name('api.workGroup');
 Route::get('/workpattern', [MasterController::class, 'workPattern'])->name('api.workPattern');
 Route::get('/employeeStatus', [MasterController::class, 'employeeStatus'])->name('api.employeeStatus');
@@ -80,6 +80,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
 
     Route::resource('position', 'PositionController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('supplier', 'SupplierController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
 

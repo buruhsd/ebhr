@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Branch;
+use App\Models\Supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BranchController extends Controller
+class SupplierController extends Controller
 {
     public function __construct()
     {
@@ -31,7 +31,7 @@ class BranchController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Branch::where('name','LIKE',"{$search}%")
+        $data = Supplier::where('name','LIKE',"{$search}%")
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(10);
         return response()->json($data);
@@ -50,7 +50,7 @@ class BranchController extends Controller
             "name" => "required"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = Branch::create($request->all());
+        $data = Supplier::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -62,7 +62,7 @@ class BranchController extends Controller
      */
     public function show($id)
     {
-        $data = Branch::find($id);
+        $data = Supplier::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -80,7 +80,7 @@ class BranchController extends Controller
             "name" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Branch::find($id);
+        $data = Supplier::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -93,7 +93,7 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        $data = Branch::find($id)->delete();
+        $data = Supplier::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
 }
