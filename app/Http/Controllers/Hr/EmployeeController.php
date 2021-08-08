@@ -106,8 +106,6 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'branch_id' => 'required',
             'tgl_surat' => 'required',
-            'no_surat' => 'required',
-            'no_induk' => 'required',
             'name_alias' => 'required',
             'identity_id' => 'required',
             'work_pattern_id' => 'required',
@@ -135,7 +133,7 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name','branch:id,name','work_type:id,name')
+        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name','branch:id,name','work_type:id,type_name')
                     ->where('no_induk','LIKE',"{$search}%")
                     ->orWhere('name_alias', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -150,8 +148,6 @@ class EmployeeController extends Controller
     public function EmployeeUpdate(Request $request, Employee $employee){
         $this->validate($request, [
             'tgl_surat' => 'required',
-            'no_surat' => 'required',
-            'no_induk' => 'required',
             'name_alias' => 'required',
             'identity_id' => 'required',
             'work_pattern_id' => 'required',
