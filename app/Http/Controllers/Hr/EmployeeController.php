@@ -165,4 +165,19 @@ class EmployeeController extends Controller
         return response()->json(['data' => $employee]);
     }
 
+    public function getNoInduk(Request $request)
+    {
+        $branchId = $request->branch;
+        $typeId = $request->type;
+        $no = Employee::numberInduk($branchId,$typeId);
+        return response()->json(['data' => $no]);
+    }
+
+    public function getNoSurat(Request $request)
+    {
+        $branchId = $request->id;
+        $no = Employee::numberSurat($branchId);
+        return response()->json(['data' => $no]);
+    }
+
 }

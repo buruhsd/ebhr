@@ -155,6 +155,8 @@ Route::get('employee/list', [EmployeeController::class, 'EmployeeList'])->name('
 Route::post('employee/add', [EmployeeController::class, 'createEmployee'])->name('api.employee.createEmployee');
 Route::get('employee/show/{employee}', [EmployeeController::class, 'showEmployee'])->name('api.employee.showEmployee');
 Route::patch('employee/update/{employee}', [EmployeeController::class, 'EmployeeUpdate'])->name('api.employee.EmployeeUpdate');
+Route::get('employee/nomor/induk', [EmployeeController::class, 'getNoInduk'])->name('api.employee.getNoInduk');
+Route::get('employee/nomor/surat', [EmployeeController::class, 'getNoSurat'])->name('api.employee.getNoSurat');
 
 //Purchase
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
