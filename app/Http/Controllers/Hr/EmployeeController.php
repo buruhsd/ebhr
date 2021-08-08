@@ -160,7 +160,7 @@ class EmployeeController extends Controller
             'description' => 'nullable'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $employee->update($request->all());
+        $employee->update($request->except(['no_induk','no_surat']));
 
         return response()->json(['data' => $employee]);
     }
