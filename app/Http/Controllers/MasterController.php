@@ -17,6 +17,7 @@ use App\Models\EmployeeStatus;
 use App\Models\DevelopmentStatus;
 use App\Models\Organization;
 use App\Models\PostalCode;
+use App\Models\WorkStatus;
 use App\Models\PointOfHire;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
@@ -55,6 +56,11 @@ class MasterController extends Controller
 
     public function religionList(){
         $data = Religion::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function workStatus(Request $request){
+        $data = WorkStatus::select('id','code','name')->get();
         return response()->json(['data' => $data]);
     }
 

@@ -47,7 +47,7 @@ class IdentityCard extends Model
 
     public function work_type()
     {
-        return $this->belongsTo(WorkType::class, 'work_type_id');
+        return $this->belongsTo(WorkStatus::class, 'work_type_id');
     }
 
     public function marital_status()

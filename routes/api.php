@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Master\WorkStatusController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProductController;
 
@@ -64,6 +65,7 @@ Route::get('/transactionType', [MasterController::class, 'transactionType'])->na
 Route::get('/purchaseCategory', [MasterController::class, 'purchaseCategory'])->name('api.purchaseCategory');
 Route::get('/purchaseUrgentity', [MasterController::class, 'purchaseUrgentity'])->name('api.purchaseUrgentity');
 Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])->name('api.purchaseNecessary');
+Route::get('/work_status/list', [MasterController::class, 'workStatus'])->name('api.workStatus');
 
 Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('branch', 'BranchController', ['only' => [
@@ -136,6 +138,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
 
     Route::resource('work_type', 'WorkTypeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('work_status', 'WorkStatusController', ['only' => [
+        'index','list','show', 'store', 'update', 'destroy'
     ]]);
 
     Route::resource('point_hire', 'PointHireController', ['only' => [
