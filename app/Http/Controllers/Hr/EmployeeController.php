@@ -108,6 +108,9 @@ class EmployeeController extends Controller
             'tgl_surat' => 'required',
             'name_alias' => 'required',
             'identity_id' => 'required',
+            'rank_id' => 'required',
+            'organization_id' => 'required',
+            'point_hire_id' => 'required',
             'work_pattern_id' => 'required',
             'work_group_id' => 'required',
             'work_type_id' => 'required',
@@ -133,7 +136,9 @@ class EmployeeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name','position:id,name','employee_status:id,name','development_status:id,name','branch:id,name','work_type:id,type_name')
+        $data = Employee::with('identity:id,nik,name','work_pattern:id,name','work_group:id,name',
+            'position:id,name','employee_status:id,name','development_status:id,name','branch:id,name',
+            'work_type:id,type_name','rank:id,name','hire:id,name','organization:id,name')
                     ->where('no_induk','LIKE',"{$search}%")
                     ->orWhere('name_alias', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -150,6 +155,9 @@ class EmployeeController extends Controller
             'tgl_surat' => 'required',
             'name_alias' => 'required',
             'identity_id' => 'required',
+            'rank_id' => 'required',
+            'organization_id' => 'required',
+            'point_hire_id' => 'required',
             'work_pattern_id' => 'required',
             'work_group_id' => 'required',
             'work_type_id' => 'required',

@@ -18,6 +18,9 @@ class Employee extends Model
         'no_induk',
         'name_alias',
         'identity_id',
+        'rank_id',
+        'organization_id',
+        'point_hire_id',
         'work_pattern_id',
         'work_group_id',
         'work_type_id',
@@ -81,6 +84,21 @@ class Employee extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function rank()
+    {
+        return $this->belongsTo(Rank::class, 'rank_id');
+    }
+
+    public function hire()
+    {
+        return $this->belongsTo(PointOfHire::class, 'point_hire_id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
     public function work_pattern()

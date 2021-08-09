@@ -52,6 +52,9 @@ Route::get('/workgroup', [MasterController::class, 'workGroup'])->name('api.work
 Route::get('/workpattern', [MasterController::class, 'workPattern'])->name('api.workPattern');
 Route::get('/employeeStatus', [MasterController::class, 'employeeStatus'])->name('api.employeeStatus');
 Route::get('/developmentStatus', [MasterController::class, 'developmentStatus'])->name('api.developmentStatus');
+Route::get('/pointHire', [MasterController::class, 'pointHire'])->name('api.pointHire');
+Route::get('/ranks', [MasterController::class, 'rank'])->name('api.rank');
+Route::get('/organizations', [MasterController::class, 'organization'])->name('api.organization');
 
 // Master Purchase
 Route::get('/branch', [MasterController::class, 'branch'])->name('api.branch');
@@ -64,6 +67,14 @@ Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])
 
 Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('branch', 'BranchController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('rank', 'RankController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('organization', 'OrganizationController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
@@ -124,6 +135,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
 
     Route::resource('work_type', 'WorkTypeController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('point_hire', 'PointHireController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });

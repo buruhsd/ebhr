@@ -45,7 +45,9 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "name" => "required"
+            "code" => "required",
+            "name" => "required",
+            "description" => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Unit::create($request->all());
@@ -74,7 +76,9 @@ class UnitController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "name" => "required"
+            "code" => "required",
+            "name" => "required",
+            "description" => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Unit::find($id);

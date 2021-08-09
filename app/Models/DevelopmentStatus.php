@@ -11,6 +11,7 @@ class DevelopmentStatus extends Model
     protected $fillable = [
         'code',
         'name',
+        'abbreviation',
         'description',
         'insertedBy',
         'updatedBy',

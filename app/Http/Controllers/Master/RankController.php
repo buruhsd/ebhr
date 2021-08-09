@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\DevelopmentStatus;
+use App\Models\Rank;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DevelopmentStatusController extends Controller
+class RankController extends Controller
 {
     public function __construct()
     {
@@ -31,7 +31,7 @@ class DevelopmentStatusController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = DevelopmentStatus::where('name','LIKE',"{$search}%")
+        $data = Rank::where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -45,13 +45,12 @@ class DevelopmentStatusController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
             "name" => "required",
-            "abbreviation"=>"required",
+            "class" => "required",
             "description" => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = DevelopmentStatus::create($request->all());
+        $data = Rank::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -63,7 +62,7 @@ class DevelopmentStatusController extends Controller
      */
     public function show($id)
     {
-        $data = DevelopmentStatus::find($id);
+        $data = Rank::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -77,13 +76,12 @@ class DevelopmentStatusController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
             "name" => "required",
-            "abbreviation"=>"required",
+            "class" => "required",
             "description" => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = DevelopmentStatus::find($id);
+        $data = Rank::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -96,7 +94,7 @@ class DevelopmentStatusController extends Controller
      */
     public function destroy($id)
     {
-        $data = DevelopmentStatus::find($id)->delete();
+        $data = Rank::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
 }

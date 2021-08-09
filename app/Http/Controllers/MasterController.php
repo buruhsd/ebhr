@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rank;
 use App\Models\Regency;
 use App\Models\Village;
 use App\Models\District;
@@ -14,7 +15,9 @@ use App\Models\WorkGroup;
 use App\Models\WorkPattern;
 use App\Models\EmployeeStatus;
 use App\Models\DevelopmentStatus;
+use App\Models\Organization;
 use App\Models\PostalCode;
+use App\Models\PointOfHire;
 use Illuminate\Http\Request;
 use App\Models\MaritalStatus;
 use App\Models\Purchase\TransactionType;
@@ -52,6 +55,21 @@ class MasterController extends Controller
 
     public function religionList(){
         $data = Religion::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function pointHire(){
+        $data = PointOfHire::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function rank(){
+        $data = Rank::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function organization(){
+        $data = Organization::get();
         return response()->json(['data' => $data]);
     }
 
