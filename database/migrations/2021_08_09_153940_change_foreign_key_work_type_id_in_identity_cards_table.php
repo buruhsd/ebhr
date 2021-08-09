@@ -14,6 +14,7 @@ class ChangeForeignKeyWorkTypeIdInIdentityCardsTable extends Migration
     public function up()
     {
         Schema::table('identity_cards', function (Blueprint $table) {
+            $table->dropForeign('identity_cards_work_type_id_foreign');
             $table->foreign('work_type_id')->references('id')->on('work_statuses')->onDelete('cascade');
         });
     }
