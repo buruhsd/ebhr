@@ -23,4 +23,14 @@ class Products extends Model
         return $this->product_code." - ".$this->name;
     }
 
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
+
 }

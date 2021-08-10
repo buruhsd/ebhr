@@ -39,7 +39,7 @@ class Employee extends Model
 
         static::creating(function ($model) {
             try {
-                $model->no_induk = self::numberInduk($model->branch_id,$model->work_type_id);
+                $model->no_induk = self::numberInduk($model->branch_id,$model->work_type_id,$model->identity_id);
                 $model->no_surat = self::numberSurat($model->development_status_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
@@ -47,8 +47,12 @@ class Employee extends Model
         });
     }
 
-    public static function numberInduk($branchId,$typeId)
+    public static function numberInduk($branchId,$typeId,$identity_id)
     {
+        $identity = self::where('identity_id',$identity_id)->first();
+        if($identity){
+            return $identity->no_induk;
+        }
         $branch = Branch::find($branchId)->code;
         $type = WorkType::find($typeId)->code;
         $string = $branch.$type.'0000';
@@ -64,7 +68,7 @@ class Employee extends Model
 
     public static function numberSurat($id)
     {
-        $code = DevelopmentStatus::find($id)->code;
+        $code = DevelopmentStatus::find($id)->abbreviation;
         $string = $code.date('y').'/'.date('m').'/0000';
         $latest = self::orderBy('id','desc')->first();
         if($latest){
@@ -93,7 +97,7 @@ class Employee extends Model
 
     public function hire()
     {
-        return $this->belongsTo(PointOfHire::class, 'point_hire_id');
+        return $this->belongsTo(Branch::class, 'point_hire_id');
     }
 
     public function organization()

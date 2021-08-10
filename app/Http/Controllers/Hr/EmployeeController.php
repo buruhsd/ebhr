@@ -152,23 +152,24 @@ class EmployeeController extends Controller
 
     public function EmployeeUpdate(Request $request, Employee $employee){
         $this->validate($request, [
-            'tgl_surat' => 'required',
             'name_alias' => 'required',
-            'identity_id' => 'required',
             'rank_id' => 'required',
             'organization_id' => 'required',
             'point_hire_id' => 'required',
             'work_pattern_id' => 'required',
             'work_group_id' => 'required',
-            'work_type_id' => 'required',
             'position_id' => 'required',
             'employee_status_id' => 'required',
-            'development_status_id' => 'required',
             'start_date' => 'required',
             'description' => 'nullable'
         ]);
-        $request->merge(['updatedBy'=>Auth::id()]);
-        $employee->update($request->except(['no_induk','no_surat']));
+        $employee_id = $employee->id;
+        $identity_id = $employee->identity_id;
+        $lastData = Employee::where('identity_id',$identity_id)->orderBy('id','desc')->first();
+        if($lastData->id == $employee_id){
+            $request->merge(['updatedBy'=>Auth::id()]);
+            $employee->update($request->except(['no_induk','no_surat','tgl_surat','development_status_id','work_type_id','identity_id','branch_id']));
+        }
 
         return response()->json(['data' => $employee]);
     }
@@ -177,7 +178,8 @@ class EmployeeController extends Controller
     {
         $branchId = $request->branch;
         $typeId = $request->type;
-        $no = Employee::numberInduk($branchId,$typeId);
+        $identityId = $request->identity;
+        $no = Employee::numberInduk($branchId,$typeId,$identityId);
         return response()->json(['data' => $no]);
     }
 
