@@ -10,7 +10,7 @@ class ProductController extends Controller
     public function index(Request $request){
         $search = $request->search;
 
-        return Products::select('id','name','product_code')->where('name', 'LIKE',"{$search}%")
+        return Products::select('id','name','product_code','unit_id')->with('unit:id,name')->where('name', 'LIKE',"{$search}%")
                         ->orWhere('product_code', 'LIKE',"{$search}%")->limit(10)->get();
     }
 

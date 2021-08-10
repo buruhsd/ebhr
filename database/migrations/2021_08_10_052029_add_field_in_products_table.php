@@ -19,6 +19,7 @@ class AddFieldInProductsTable extends Migration
             $table->string('register_number')->after('id');
             $table->string('second_name')->after('name');
             $table->string('spesification')->after('name');
+            $table->string('product_number')->after('spesification');
             $table->string('type')->after('spesification');
             $table->string('brand')->after('type');
             $table->string('vendor')->after('brand');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Purchase;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Purchase\PurchaseLetter;
@@ -22,6 +23,7 @@ class PurchaseController extends Controller
             $sortBy = 'asc';
         }
     	$data = PurchaseLetter::with('branch:id,name',
+                    'warehouse:id,name',
                     'transaction_type:id,name',
                     'purchase_category:id,name',
                     'purchase_necessary:id,name',
@@ -38,23 +40,24 @@ class PurchaseController extends Controller
     public function createPurchaseLetter(Request $request){
         $this->validate($request, [
             'tgl_pp' => 'required',
-            'no_pp' => 'required',
             'note' => 'required',
             'branch_id' => 'required',
+            'warehouse_id' => 'required',
             'transaction_type_id' => 'required',
             'purchase_category_id' => 'required',
             'purchase_necessary_id' => 'required',
             'purchase_urgensity_id' => 'required',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
             'item' => 'required',
             'item.*.product_id' => 'required',
             'item.*.qty' => 'required',
             'item.*.unit' => 'required',
         ]);
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
     	$data = PurchaseLetter::create($request->all());
 
         foreach($request->item as $item){
+            $item['insertedBy'] = Auth::id();
+            $item['updatedBy'] = Auth::id();
             $data->purchase_items()->create($item);
         }
 
@@ -64,27 +67,27 @@ class PurchaseController extends Controller
     public function update(Request $request, PurchaseLetter $purchase){
         $this->validate($request, [
             'tgl_pp' => 'required',
-            'no_pp' => 'required',
             'note' => 'required',
-            'branch_id' => 'required',
             'transaction_type_id' => 'required',
             'purchase_category_id' => 'required',
             'purchase_necessary_id' => 'required',
             'purchase_urgensity_id' => 'required',
-            'insertedBy' => 'required',
-            'updatedBy' => 'required',
             'item' => 'required',
             'item.*.product_id' => 'required',
             'item.*.qty' => 'required',
             'item.*.unit' => 'required',
         ]);
 
-    	$purchase->update($request->except('insertedBy'));
+        $request->merge(['updatedBy'=>Auth::id()]);
+    	$purchase->update($request->except(['branch_id','warehouse_id','no_pp']));
         foreach($request->item as $item){
             $dataUpdate = $purchase->purchase_items()->where('product_id',$item['product_id'])->first();
             if($dataUpdate){
+                $item['updatedBy'] = Auth::id();
                 $dataUpdate->update($item);
             }else{
+                $item['insertedBy'] = Auth::id();
+                $item['updatedBy'] = Auth::id();
                 $purchase->purchase_items()->create($item);
             }
         }
@@ -122,5 +125,11 @@ class PurchaseController extends Controller
         $status = $request->status;
     	$purchase->update(['status_approval' => $status]);
    		return new PurchaseResource($purchase);
+    }
+
+    public function getNumberPP(Request $request, $id)
+    {
+        $number = PurchaseLetter::numberPP($id);
+        return response()->json(['data' => $number]);
     }
 }

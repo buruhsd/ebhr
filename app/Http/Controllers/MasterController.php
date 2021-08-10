@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Master\Unit;
+use App\Models\Master\ProductCategory;
+use App\Models\Master\Products;
+use App\Models\Master\Warehouse;
 use App\Models\Rank;
 use App\Models\Regency;
 use App\Models\Village;
@@ -28,6 +32,28 @@ use App\Models\Purchase\PurchaseNecessary;
 
 class MasterController extends Controller
 {
+    public function products(){
+        $data = Products::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function getNumberProducts()
+    {
+        $number = Products::register_number();
+        return response()->json(['data' => $number]);
+    }
+    public function unit(){
+        $data = Unit::get();
+        return response()->json(['data' => $data]);
+    }
+    public function warehouse($id){
+        $data = Warehouse::select('id','code','name')->where('branch_id',$id)->get();
+        return response()->json(['data' => $data]);
+    }
+    public function product_category(){
+        $data = ProductCategory::get();
+        return response()->json(['data' => $data]);
+    }
 
     public function position(){
         $data = Position::get();

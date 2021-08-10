@@ -56,11 +56,15 @@ Route::get('/developmentStatus', [MasterController::class, 'developmentStatus'])
 Route::get('/pointHire', [MasterController::class, 'pointHire'])->name('api.pointHire');
 Route::get('/ranks', [MasterController::class, 'rank'])->name('api.rank');
 Route::get('/organizations', [MasterController::class, 'organization'])->name('api.organization');
+Route::get('/units', [MasterController::class, 'unit'])->name('api.units');
+Route::get('/warehouse/{id}', [MasterController::class, 'warehouse'])->name('api.warehouse');
+Route::get('/products', [MasterController::class, 'products'])->name('api.products');
+Route::get('/getNumberProducts', [MasterController::class, 'getNumberProducts'])->name('api.getNumberProducts');
+Route::get('/products/category', [MasterController::class, 'product_category'])->name('api.product_category');
 
 // Master Purchase
 Route::get('/branch', [MasterController::class, 'branch'])->name('api.branch');
-Route::get('/product/list', [ProductController::class, 'index'])->name('api.product');
-Route::get('/product/add', [ProductController::class, 'store'])->name('api.product.add');
+Route::get('/product/list', [ProductController::class, 'index'])->name('api.productList');
 Route::get('/transactionType', [MasterController::class, 'transactionType'])->name('api.transactionType');
 Route::get('/purchaseCategory', [MasterController::class, 'purchaseCategory'])->name('api.purchaseCategory');
 Route::get('/purchaseUrgentity', [MasterController::class, 'purchaseUrgentity'])->name('api.purchaseUrgentity');
@@ -97,10 +101,6 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
 
     Route::resource('supplier', 'SupplierController', ['only' => [
-        'index','show', 'store', 'update', 'destroy'
-    ]]);
-
-    Route::resource('product', 'ProductController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
@@ -147,6 +147,18 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('point_hire', 'PointHireController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+
+    Route::resource('ware_house', 'WarehouseController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('product_category', 'ProducCategoryController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('product', 'ProductController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
 });
 
 // User Management
@@ -180,6 +192,7 @@ Route::get('employee/nomor/induk', [EmployeeController::class, 'getNoInduk'])->n
 Route::get('employee/nomor/surat', [EmployeeController::class, 'getNoSurat'])->name('api.employee.getNoSurat');
 
 //Purchase
+Route::get('purchase/number/{id}', [PurchaseController::class, 'getNumberPP'])->name('api.purchase.number');
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
 Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');
 Route::post('purchase/create', [PurchaseController::class, 'createPurchaseLetter'])->name('api.purchase.createPurchaseLetter');

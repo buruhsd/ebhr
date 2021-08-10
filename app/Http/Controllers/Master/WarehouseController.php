@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Master\Products as Product;
+use App\Models\Master\Warehouse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class WarehouseController extends Controller
 {
     public function __construct()
     {
@@ -31,7 +31,7 @@ class ProductController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Product::with(['unit','category'])->where('name','LIKE',"{$search}%")
+        $data = Warehouse::with('branch')->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -45,21 +45,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_code' => "required",
-            'name' => "required",
-            'second_name' => "required",
-            'spesification' => "required",
-            'product_number' => "required",
-            'type' => "required",
-            'brand' => "required",
-            'vendor' => "required",
-            'barcode' => "required",
-            'unit_id' => "required",
-            'category_id' => "required",
+            "code" => "required",
+            "name" => "required",
+            "description" => "required",
+            "branch_id" => "required"
         ]);
-
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(), 'status' =>1]);
-        $data = Product::create($request->all());
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
+        $data = Warehouse::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -71,7 +63,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $data = Product::find($id);
+        $data = Warehouse::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -85,20 +77,13 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_code' => "required",
-            'name' => "required",
-            'second_name' => "required",
-            'spesification' => "required",
-            'product_number' => "required",
-            'type' => "required",
-            'brand' => "required",
-            'vendor' => "required",
-            'barcode' => "required",
-            'unit_id' => "required",
-            'category_id' => "required",
+            "code" => "required",
+            "name" => "required",
+            "description" => "required",
+            "branch_id" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Product::find($id);
+        $data = Warehouse::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -111,7 +96,13 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $data = Product::find($id)->delete();
-        return response()->json(['data' => 'data deleted']);
+        try {
+            $data = Warehouse::find($id)->delete();
+            return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
+            }
+         }
     }
 }

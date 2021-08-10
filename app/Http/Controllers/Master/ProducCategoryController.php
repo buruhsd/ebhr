@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Master\Products as Product;
+use App\Models\Master\ProductCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class ProducCategoryController extends Controller
 {
     public function __construct()
     {
@@ -31,7 +31,7 @@ class ProductController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Product::with(['unit','category'])->where('name','LIKE',"{$search}%")
+        $data = ProductCategory::with('parent')->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -45,21 +45,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_code' => "required",
-            'name' => "required",
-            'second_name' => "required",
-            'spesification' => "required",
-            'product_number' => "required",
-            'type' => "required",
-            'brand' => "required",
-            'vendor' => "required",
-            'barcode' => "required",
-            'unit_id' => "required",
-            'category_id' => "required",
+            "code" => "required",
+            "name" => "required",
+            "parent_id" => "nullable",
         ]);
-
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(), 'status' =>1]);
-        $data = Product::create($request->all());
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
+        $data = ProductCategory::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -71,7 +62,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $data = Product::find($id);
+        $data = ProductCategory::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -85,20 +76,12 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_code' => "required",
-            'name' => "required",
-            'second_name' => "required",
-            'spesification' => "required",
-            'product_number' => "required",
-            'type' => "required",
-            'brand' => "required",
-            'vendor' => "required",
-            'barcode' => "required",
-            'unit_id' => "required",
-            'category_id' => "required",
+            "code" => "required",
+            "name" => "required",
+            "parent_id" => "nullable",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Product::find($id);
+        $data = ProductCategory::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -111,7 +94,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $data = Product::find($id)->delete();
+        $data = ProductCategory::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
 }

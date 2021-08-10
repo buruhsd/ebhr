@@ -15,6 +15,13 @@ class Unit extends Model
         'insertedBy',
         'updatedBy',
     ];
+    
+    protected $appends = ['label'];
+
+    public function getLabelAttribute()
+    {
+        return $this->name;
+    }
 
     public function insertedBy()
     {
