@@ -45,7 +45,7 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:warehouses",
             "name" => "required",
             "description" => "required",
             "branch_id" => "required"
@@ -77,14 +77,13 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
             "name" => "required",
             "description" => "required",
             "branch_id" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Warehouse::find($id);
-        $data->update($request->all());
+        $data->update($request->except(['code']));
         return response()->json(['data'=>$data]);
     }
 
