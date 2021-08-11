@@ -51,7 +51,7 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
     public function product_category(){
-        $data = ProductCategory::get();
+        $data = ProductCategory::whereNotNull('parent_id')->get();
         return response()->json(['data' => $data]);
     }
 
