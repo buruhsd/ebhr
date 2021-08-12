@@ -6,12 +6,23 @@ use Auth;
 use App\Models\Master\Warehouse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Factory as ValidatonFactory;
 
 class WarehouseController extends Controller
 {
-    public function __construct()
+    public function __construct(ValidatonFactory $factory)
     {
         $this->middleware('auth:api');
+        $factory->extend(
+            'unik_name',
+            function ($attribute, $value, $parameters) {
+                $check = Warehouse::where(['name'=>$value,'branch_id'=>$parameters[0]])->first();
+                if (is_null($check)){
+                    return true;
+                }
+            },
+            'Nama gudang sudah ada di cabang'
+        );
     }
 
     /**
@@ -45,10 +56,10 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            "branch_id" => "required",
             "code" => "required|unique:warehouses",
-            "name" => "required",
+            "name" => "required|unik_name:".$request->branch_id,
             "description" => "required",
-            "branch_id" => "required"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Warehouse::create($request->all());
@@ -77,9 +88,9 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "name" => "required",
+            "branch_id" => "required",
+            "name" => "required|unik_name:".$request->branch_id,
             "description" => "required",
-            "branch_id" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Warehouse::find($id);

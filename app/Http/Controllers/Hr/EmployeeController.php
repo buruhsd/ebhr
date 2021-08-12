@@ -46,6 +46,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'nik' => 'required|numeric|digits:16',
             'name' => 'required',
+            'place_of_birth' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
             'blood_type' => 'required',
@@ -78,6 +79,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'nik' => 'required|numeric|digits:16',
             'name' => 'required',
+            'place_of_birth' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
             'blood_type' => 'required',

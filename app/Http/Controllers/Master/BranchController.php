@@ -47,7 +47,8 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             "code" => "required",
-            "name" => "required"
+            "name" => "required",
+            "alias_name" => "required"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Branch::create($request->all());
@@ -77,7 +78,8 @@ class BranchController extends Controller
     {
         $this->validate($request, [
             "code" => "required",
-            "name" => "required"
+            "name" => "required",
+            "alias_name" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Branch::find($id);

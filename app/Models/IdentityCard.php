@@ -13,6 +13,7 @@ class IdentityCard extends Model
         'nik',
         'name',
         'gender',
+        'place_of_birth',
         'date_of_birth',
         'blood_type',
         'religion_id',
