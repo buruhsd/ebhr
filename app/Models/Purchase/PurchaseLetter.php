@@ -39,16 +39,17 @@ class PurchaseLetter extends Model
 
     public static function numberPP($id)
     {
-        // PPB2021/08/014
-        $branch = Branch::find($id)->code;
-        $string = 'PPB'.date('Y').'/'.date('m').'/'.$branch;
+        // PPB21/08/014
+        $branch = Branch::find($id)->alias_name;
+        $string = 'PPB'.date('y').'/'.date('m').'/'.$branch;
         $format = $string.'0';
         $latest = self::orderBy('id','desc')->first();
         if($latest){
             $format = $latest->no_pp;
         }
-        $id = substr($format, 13,strlen($format)-13);
+        $id = substr($format, 11,strlen($format)-11);
         $newID = intval($id) + 1;
+        $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
         return $string.$newID;
     }
 
