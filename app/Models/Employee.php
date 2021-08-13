@@ -56,7 +56,7 @@ class Employee extends Model
         $branch = Branch::find($branchId)->code;
         $type = WorkType::find($typeId)->code;
         $string = $branch.$type.'0000';
-        $latest = self::orderBy('id','desc')->first();
+        $latest = self::where(['branch_id'=>$branchId,'work_type_id'=>$typeId])->orderBy('id','desc')->first();
         if($latest){
             $string = $latest->no_induk;
         }

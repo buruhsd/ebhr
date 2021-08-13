@@ -48,7 +48,7 @@ class BranchController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required",
-            "alias_name" => "required|unique:branches,alias_name|alpha|string|size:2"
+            "alias_name" => "required|unique:branches,alias_name|alpha|string|max:2"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(),'alias_name'=>strtoupper($request->alias_name)]);
         $data = Branch::create($request->all());
@@ -79,7 +79,7 @@ class BranchController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required",
-            "alias_name" => "required|unique:branches,alias_name|alpha|string|size:2"
+            "alias_name" => "required|unique:branches,alias_name|alpha|string|max:2"
         ]);
         $request->merge(['updatedBy'=>Auth::id(),'alias_name'=>strtoupper($request->alias_name)]);
         $data = Branch::find($id);

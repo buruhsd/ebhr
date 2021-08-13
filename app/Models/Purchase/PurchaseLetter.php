@@ -43,11 +43,13 @@ class PurchaseLetter extends Model
         $branch = Branch::find($id)->alias_name;
         $string = 'PPB'.date('y').'/'.date('m').'/'.$branch;
         $format = $string.'0';
-        $latest = self::orderBy('id','desc')->first();
+        $latest = self::where('branch_id',$id)
+            ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
             $format = $latest->no_pp;
         }
-        $id = substr($format, 11,strlen($format)-11);
+        // $id = substr($format, 11,strlen($format)-11);
+        $id = substr($format, -4);
         $newID = intval($id) + 1;
         $newID = str_pad($newID, 4, '0', STR_PAD_LEFT);
         return $string.$newID;
