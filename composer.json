@@ -17,6 +17,7 @@
         "laravel/scout": "^9.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "maatwebsite/excel": "^3.1",
         "mehdi-fathi/eloquent-filter": "^2.5",
         "meilisearch/meilisearch-php": "^0.17.2",
         "predis/predis": "^1.1",

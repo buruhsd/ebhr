@@ -3,26 +3,15 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Master\Warehouse;
+use App\Models\SupplierCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Factory as ValidatonFactory;
 
-class WarehouseController extends Controller
+class SupplierCategoryController extends Controller
 {
-    public function __construct(ValidatonFactory $factory)
+    public function __construct()
     {
         $this->middleware('auth:api');
-        $factory->extend(
-            'unik_name',
-            function ($attribute, $value, $parameters) {
-                $check = Warehouse::where(['name'=>$value,'branch_id'=>$parameters[0]])->first();
-                if (is_null($check)){
-                    return true;
-                }
-            },
-            'Nama gudang sudah ada di cabang'
-        );
     }
 
     /**
@@ -42,7 +31,7 @@ class WarehouseController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Warehouse::with('branch')->where('name','LIKE',"{$search}%")
+        $data = SupplierCategory::with('parent')->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -56,13 +45,13 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "branch_id" => "required",
-            "code" => "required|unique:warehouses",
-            "name" => "required|unik_name:".$request->branch_id,
-            "description" => "required",
+            // "code" => "required|unique:supplier_categories,code",
+            "code" => "required",
+            "name" => "required",
+            "parent_id" => "nullable",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = Warehouse::create($request->all());
+        $data = SupplierCategory::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -74,7 +63,7 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        $data = Warehouse::find($id);
+        $data = SupplierCategory::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -88,13 +77,14 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "branch_id" => "required",
-            "name" => "required|unik_name:".$request->branch_id,
-            "description" => "required",
+            // "code" => "required|unique:supplier_categories,code",
+            "code" => "required",
+            "name" => "required",
+            "parent_id" => "nullable",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Warehouse::find($id);
-        $data->update($request->except(['code']));
+        $data = SupplierCategory::find($id);
+        $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -107,12 +97,30 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Warehouse::find($id)->delete();
+            $data = SupplierCategory::find($id)->delete();
             return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
                 return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
             }
         }
+    }
+
+    public function getData(Request $request)
+    {
+        $data = SupplierCategory::get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function getParent(Request $request)
+    {
+        $data = SupplierCategory::whereNull('parent_id')->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function getChilds(Request $request)
+    {
+        $data = SupplierCategory::whereNotNull('parent_id')->get();
+        return response()->json(['data' => $data]);
     }
 }

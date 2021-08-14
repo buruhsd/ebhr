@@ -42,7 +42,7 @@ class PurchaseLetter extends Model
         // PPB21/08/014
         $branch = Branch::find($id)->alias_name;
         $string = 'PPB'.date('y').'/'.date('m').'/'.$branch;
-        $format = $string.'0';
+        $format = $string.'0000';
         $latest = self::where('branch_id',$id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){

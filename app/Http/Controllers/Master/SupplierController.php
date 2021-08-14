@@ -31,8 +31,12 @@ class SupplierController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Supplier::where('name','LIKE',"{$search}%")
-                ->orderBy($orderBy, $sortBy)
+        $data = Supplier::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
+                'currency:id,name','category:id,name')
+                ->whereHas('partner',function ($query) use ($search,$sortBy,$orderBy){
+                    $query->where('partners.name','LIKE',"%{$search}%")
+                    ->orderBy('partners.'.$orderBy, $sortBy);
+                })
                 ->paginate(10);
         return response()->json($data);
     }
@@ -46,8 +50,11 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
-            "name" => "required"
+            // 'partner_id' => 'required|unique:suppliers,partner_id',
+            'partner_id' => 'required',
+            'supplier_category_id' => 'required',
+            'currency_id' => 'required',
+            'term_of_payment' => 'required'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Supplier::create($request->all());
@@ -76,8 +83,10 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
-            "name" => "required"
+            'partner_id' => 'required',
+            'supplier_category_id' => 'required',
+            'currency_id' => 'required',
+            'term_of_payment' => 'required'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Supplier::find($id);
@@ -93,7 +102,13 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        $data = Supplier::find($id)->delete();
-        return response()->json(['data' => 'data deleted']);
+        try {
+            $data = Supplier::find($id)->delete();
+            return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
+            }
+        }
     }
 }

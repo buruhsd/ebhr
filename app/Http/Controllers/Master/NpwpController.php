@@ -3,26 +3,15 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Master\Warehouse;
+use App\Models\Npwp;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Factory as ValidatonFactory;
 
-class WarehouseController extends Controller
+class NpwpController extends Controller
 {
-    public function __construct(ValidatonFactory $factory)
+    public function __construct()
     {
         $this->middleware('auth:api');
-        $factory->extend(
-            'unik_name',
-            function ($attribute, $value, $parameters) {
-                $check = Warehouse::where(['name'=>$value,'branch_id'=>$parameters[0]])->first();
-                if (is_null($check)){
-                    return true;
-                }
-            },
-            'Nama gudang sudah ada di cabang'
-        );
     }
 
     /**
@@ -42,7 +31,9 @@ class WarehouseController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Warehouse::with('branch')->where('name','LIKE',"{$search}%")
+        $data = Npwp::with('postal_code:id,postal_code','village:id,district_id,name','district:id,regency_id,name','regency:id,province_id,name','province:id,name')
+            ->where('number_npwp','LIKE',"{$search}%")
+            ->orWhere('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -56,13 +47,23 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "branch_id" => "required",
-            "code" => "required|unique:warehouses",
-            "name" => "required|unik_name:".$request->branch_id,
-            "description" => "required",
+            'number_npwp' => "required|numeric|unique:npwps,number_npwp|digits:15",
+            'name' => "required",
+            'phone_number' => "required|numeric",
+            'address' => "required",
+            'block' => "nullable",
+            'no' => "required|numeric",
+            'rt' => "required|numeric",
+            'rw' => "required|numeric",
+            'letter_date' => "required|date",
+            'postal_code_id' => "required",
+            'village_id' => "required",
+            'district_id' => "required",
+            'regency_id' => "required",
+            'province_id' => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = Warehouse::create($request->all());
+        $data = Npwp::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -74,7 +75,7 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        $data = Warehouse::find($id);
+        $data = Npwp::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -88,13 +89,24 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "branch_id" => "required",
-            "name" => "required|unik_name:".$request->branch_id,
-            "description" => "required",
+            'number_npwp' => "required|numeric|digits:15",
+            'name' => "required",
+            'phone_number' => "required|numeric",
+            'address' => "required",
+            'block' => "nullable",
+            'no' => "required|numeric",
+            'rt' => "required|numeric",
+            'rw' => "required|numeric",
+            'letter_date' => "required|date",
+            'postal_code_id' => "required",
+            'village_id' => "required",
+            'district_id' => "required",
+            'regency_id' => "required",
+            'province_id' => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Warehouse::find($id);
-        $data->update($request->except(['code']));
+        $data = Npwp::find($id);
+        $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -107,12 +119,20 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Warehouse::find($id)->delete();
+            $data = Npwp::find($id)->delete();
             return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
                 return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
             }
         }
+    }
+
+    public function getData(Request $request)
+    {
+        $search = $request->search;
+        return Npwp::select('id','name','number_npwp')
+                ->where('name', 'LIKE',"{$search}%")
+                ->orWhere('number_npwp', 'LIKE',"{$search}%")->limit(10)->get();
     }
 }
