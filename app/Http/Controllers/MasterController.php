@@ -116,8 +116,14 @@ class MasterController extends Controller
     }
 
     public function postalCodeList(Request $request){
-        $search = $request->q;
-        $data = PostalCode::select('id','postal_code')->where('village_name',$search)
+        $q = $request->q;
+        $d = $request->d;
+        $data = PostalCode::select('id','postal_code')
+            ->where('district_name',$d)
+            ->when($q, function ($query) use ($q){
+                $query->where('village_name',$q);
+            })
+            ->groupBy('postal_code')
             ->get();
         return response()->json(['data' => $data]);
     }
@@ -125,6 +131,13 @@ class MasterController extends Controller
     public function villageList($id){
         $data = Village::where('district_id', $id)->get();
 
+        return response()->json(['data' => $data]);
+    }
+
+    public function searchRegency(Request $request){
+        $search = $request->q;
+        $data = Regency::select('id','name')
+            ->where('name','like','%'.$search.'%')->limit(20)->get();
         return response()->json(['data' => $data]);
     }
 

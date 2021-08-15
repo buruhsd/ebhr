@@ -43,6 +43,7 @@ Route::get('/provinces/list', [MasterController::class, 'provinceList'])->name('
 Route::get('/regencies/list/', [MasterController::class, 'regencyList'])->name('api.regencyList');
 Route::get('/districts/list/', [MasterController::class, 'districtList'])->name('api.districtList');
 Route::get('/villages/list/{id}', [MasterController::class, 'villageList'])->name('api.villageList');
+Route::get('/searchRegency', [MasterController::class, 'searchRegency'])->name('api.searchRegency');
 
 Route::get('/postalcode/list', [MasterController::class, 'postalCodeList'])->name('api.postalCodeList');
 Route::get('/maritalstatus/list', [MasterController::class, 'maritalStatusList'])->name('api.maritalStatusList');
