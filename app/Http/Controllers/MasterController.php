@@ -115,9 +115,10 @@ class MasterController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function postalCodeList(){
-        $data = PostalCode::get();
-
+    public function postalCodeList(Request $request){
+        $search = $request->q;
+        $data = PostalCode::select('id','postal_code')->where('village_name',$search)
+            ->get();
         return response()->json(['data' => $data]);
     }
 
