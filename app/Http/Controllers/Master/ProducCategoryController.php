@@ -97,4 +97,9 @@ class ProducCategoryController extends Controller
         $data = ProductCategory::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
+
+    public function getData(){
+        $data = ProductCategory::orderBy('name')->get();
+        return response()->json(['data' => $data]);
+    }
 }

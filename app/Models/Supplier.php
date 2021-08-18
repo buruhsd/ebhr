@@ -17,11 +17,6 @@ class Supplier extends Model
         'updatedBy',
     ];
 
-    public function getTermOfPaymentAttribute()
-    {
-        return str_pad($this->attributes['term_of_payment'], 3, '0', STR_PAD_LEFT);
-    }
-
     public function partner()
     {
         return $this->belongsTo(Partner::class, 'partner_id');

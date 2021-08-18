@@ -184,6 +184,7 @@ Route::get('/supplier_category/childs', [App\Http\Controllers\Master\SupplierCat
 Route::get('/npwp/data', [App\Http\Controllers\Master\NpwpController::class, 'getData'])->name('api.npwp.data');
 Route::get('/partner/data', [App\Http\Controllers\Master\PartnerController::class, 'getData'])->name('api.partner.data');
 Route::get('/currency/data', [App\Http\Controllers\Master\CurrencyController::class, 'getData'])->name('api.partner.data');
+Route::get('/product_categories', [App\Http\Controllers\Master\ProducCategoryController::class, 'getData'])->name('api.product_category.data');
 
 // User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
