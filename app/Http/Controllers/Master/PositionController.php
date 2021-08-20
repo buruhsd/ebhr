@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Master;
 
 use Auth;
 use App\Models\Position;
+use App\Exports\PositionExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -99,4 +101,9 @@ class PositionController extends Controller
         $data = Position::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
+
+    public function export_excel()
+	{
+		return Excel::download(new PositionExport, 'position_'.time().'.xlsx');
+	}
 }

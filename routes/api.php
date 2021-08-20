@@ -186,6 +186,10 @@ Route::get('/partner/data', [App\Http\Controllers\Master\PartnerController::clas
 Route::get('/currency/data', [App\Http\Controllers\Master\CurrencyController::class, 'getData'])->name('api.partner.data');
 Route::get('/product_categories', [App\Http\Controllers\Master\ProducCategoryController::class, 'getData'])->name('api.product_category.data');
 
+// Excel
+Route::get('/organizations/excel', [App\Http\Controllers\Master\OrganizationController::class, 'export_excel'])->name('api.organization.export_excel');
+Route::get('/positions/excel', [App\Http\Controllers\Master\PositionController::class, 'export_excel'])->name('api.position.export_excel');
+
 // User Management
 Route::get('/admin/user', [UserController::class, 'list'])->name('api.user.list');
 Route::get('/admin/user/{user}', [UserController::class, 'show'])->name('api.user.show');

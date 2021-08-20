@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Master;
 
 use Auth;
 use App\Models\Organization;
+use App\Exports\OrganizationExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -99,4 +101,9 @@ class OrganizationController extends Controller
         $data = Organization::find($id)->delete();
         return response()->json(['data' => 'data deleted']);
     }
+
+    public function export_excel()
+	{
+		return Excel::download(new OrganizationExport, 'organization_'.time().'.xlsx');
+	}
 }
