@@ -104,7 +104,7 @@ class CurrencyController extends Controller
 
     public function getData(Request $request)
     {
-        $data = Currency::get();
+        $data = Currency::select('id','name','code')->orderBy('name')->get();
         return response()->json(['data' => $data]);
     }
 }

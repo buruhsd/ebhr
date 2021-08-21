@@ -56,13 +56,14 @@ class ProductController extends Controller
             'vendor' => "required",
             'barcode' => "required",
             'unit_id' => "required",
+            'status' => "required",
             'category_id' => "required",
             'unit' => 'required',
             'unit.*.unit_id' => 'required',
             'unit.*.value' => 'required',
         ]);
 
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(), 'status' =>1]);
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Product::create($request->all());
         foreach($request->unit as $key => $item){
             $type = 'Intern';
@@ -111,6 +112,7 @@ class ProductController extends Controller
             'vendor' => "required",
             'barcode' => "required",
             'unit_id' => "required",
+            'status' => "required",
             'category_id' => "required",
             'unit' => 'required',
             'unit.*.unit_id' => 'required',

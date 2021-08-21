@@ -161,6 +161,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('product_status', 'ProductStatusController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('supplier_category', 'SupplierCategoryController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -173,6 +177,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('kurs_type', 'KursTypeController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('npwp', 'NpwpController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -181,14 +189,16 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });
-Route::get('/partner/code', [App\Http\Controllers\Master\PartnerController::class, 'getCode'])->name('api.partner.code');
 Route::get('/supplier_categories', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getData'])->name('api.supplier_category.data');
 Route::get('/supplier_category/parent', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getParent'])->name('api.supplier_category.parent');
 Route::get('/supplier_category/childs', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getChilds'])->name('api.supplier_category.childs');
 Route::get('/npwp/data', [App\Http\Controllers\Master\NpwpController::class, 'getData'])->name('api.npwp.data');
+Route::get('/partner/code', [App\Http\Controllers\Master\PartnerController::class, 'getCode'])->name('api.partner.code');
 Route::get('/partner/data', [App\Http\Controllers\Master\PartnerController::class, 'getData'])->name('api.partner.data');
-Route::get('/currency/data', [App\Http\Controllers\Master\CurrencyController::class, 'getData'])->name('api.partner.data');
+Route::get('/currency/data', [App\Http\Controllers\Master\CurrencyController::class, 'getData'])->name('api.currency.data');
 Route::get('/product_categories', [App\Http\Controllers\Master\ProducCategoryController::class, 'getData'])->name('api.product_category.data');
+Route::get('/kurs_type/data', [App\Http\Controllers\Master\KursTypeController::class, 'getData'])->name('api.kurs_type.data');
+Route::get('/product_status/data', [App\Http\Controllers\Master\ProductStatusController::class, 'getData'])->name('api.product_status.data');
 
 // Excel
 Route::get('/organizations/excel', [App\Http\Controllers\Master\OrganizationController::class, 'export_excel'])->name('api.organization.export_excel');

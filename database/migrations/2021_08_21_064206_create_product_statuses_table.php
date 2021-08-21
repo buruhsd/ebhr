@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKursTypesTable extends Migration
+class CreateProductStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateKursTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('kurs_types', function (Blueprint $table) {
+        Schema::create('product_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('code',30);
             $table->string('name',50);
+            $table->string('order',30);
+            $table->boolean('is_stock')->default(false);
             $table->UnsignedBigInteger('insertedBy');
             $table->UnsignedBigInteger('updatedBy');
             $table->timestamps();
@@ -33,6 +35,6 @@ class CreateKursTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kurs_types');
+        Schema::dropIfExists('product_statuses');
     }
 }

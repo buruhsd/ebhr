@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Master;
 
 use Auth;
 use App\Models\Kurs;
-use App\Models\Currency;
+use App\Models\KursType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class KursController extends Controller
+class KursTypeController extends Controller
 {
     public function __construct()
     {
@@ -27,17 +27,12 @@ class KursController extends Controller
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
-            $orderBy = 'value';
+            $orderBy = 'name';
         }
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Kurs::with('currency:id,name,code','type:id,name')
-            ->when($search, function ($query) use ($search){
-                $query->whereHas('type', function ($q) use ($search){
-                    $q->where('kurs_types.name',$search);
-                });
-            })
+        $data = KursType::where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -51,13 +46,11 @@ class KursController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'currency_id'=>'required|numeric',
-            'kurs_type_id'=>'required|numeric',
-            'value'=>'required|numeric',
-            'date'=>'required|date',
+            'code'=>'required|string',
+            'name'=>'required|string'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = Kurs::create($request->all());
+        $data = KursType::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -69,7 +62,7 @@ class KursController extends Controller
      */
     public function show($id)
     {
-        $data = Kurs::find($id);
+        $data = KursType::find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -83,13 +76,11 @@ class KursController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'currency_id'=>'required|numeric',
-            'kurs_type_id'=>'required|numeric',
-            'value'=>'required|numeric',
-            'date'=>'required|date',
+            'code'=>'required|string',
+            'name'=>'required|string'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Kurs::find($id);
+        $data = KursType::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -103,8 +94,14 @@ class KursController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Kurs::find($id)->delete();
-            return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+            $kurs = KursType::find($id);
+            $check = Kurs::where('kurs_type_id',$kurs->id)->first();
+            if($check){
+                return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
+            }else{
+                $kurs->delete();
+                return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+            }
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
                 return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
@@ -114,7 +111,7 @@ class KursController extends Controller
 
     public function getData(Request $request)
     {
-        $data = Kurs::get();
+        $data = KursType::select('id','name')->orderBy('name')->get();
         return response()->json(['data' => $data]);
     }
 }

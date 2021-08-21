@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kurs extends Model
+class ProductStatus extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'currency_id',
-        'kurs_type_id',
-        'value',
-        'date',
+        'code',
+        'name',
+        'order',
+        'is_stock',
         'insertedBy',
         'updatedBy',
     ];
+
     protected $appends = ['label'];
 
     public function getLabelAttribute()
@@ -23,13 +24,13 @@ class Kurs extends Model
         return $this->name;
     }
 
-    public function currency()
+    public function insertedBy()
     {
-        return $this->belongsTo(Currency::class, 'currency_id');
+        return $this->belongsTo(User::class, 'insertedBy');
     }
 
-    public function type()
+    public function updatedBy()
     {
-        return $this->belongsTo(KursType::class, 'kurs_type_id');
+        return $this->belongsTo(User::class, 'updatedBy');
     }
 }
