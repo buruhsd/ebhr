@@ -119,21 +119,18 @@ class ProductController extends Controller
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Product::find($id);
         $data->update($request->all());
+        $data->units()->delete();
         foreach($request->unit as $key => $item){
-            $dataUpdate = $data->units()->where('unit_id',$item['unit_id'])->first();
-            if($dataUpdate){
-                if($dataUpdate->type == 'Extern'){
-                    $item['value'] = 1;
-                }
-                $item['updatedBy'] = Auth::id();
-                $dataUpdate->update($item);
-            }else{
-                $item['name'] = 'Unit '.++$key;
-                $item['type'] = $type;
-                $item['insertedBy'] = Auth::id();
-                $item['updatedBy'] = Auth::id();
-                $data->units()->create($item);
+            $type = 'Intern';
+            if($key == 0){
+                $type = 'Extern';
+                $item['value'] = 1;
             }
+            $item['name'] = 'Unit '.++$key;
+            $item['type'] = $type;
+            $item['insertedBy'] = Auth::id();
+            $item['updatedBy'] = Auth::id();
+            $data->units()->create($item);
         }
         return response()->json(['data'=>$data]);
     }
