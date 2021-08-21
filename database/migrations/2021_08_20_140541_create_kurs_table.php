@@ -17,7 +17,7 @@ class CreateKursTable extends Migration
             $table->id();
             $table->unsignedBigInteger('currency_id');
             $table->string('name',100);
-            $table->decimal('value',8,4);
+            $table->decimal('value',8,2);
             $table->date('date');
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies');

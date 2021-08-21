@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
+use App\Models\Master\ProductUnit;
 use App\Models\Master\Products as Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class ProductController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Product::with(['unit','category'])->where('name','LIKE',"{$search}%")
+        $data = Product::with('unit:id,code,name','units:id,product_id,unit_id,name,type,value','units.unit:id,code,name','category:id,code,name,parent_id')->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
@@ -56,10 +57,25 @@ class ProductController extends Controller
             'barcode' => "required",
             'unit_id' => "required",
             'category_id' => "required",
+            'unit' => 'required',
+            'unit.*.unit_id' => 'required',
+            'unit.*.value' => 'required',
         ]);
 
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(), 'status' =>1]);
         $data = Product::create($request->all());
+        foreach($request->unit as $key => $item){
+            $type = 'Intern';
+            if($key == 0){
+                $type = 'Extern';
+                $item['value'] = 1;
+            }
+            $item['name'] = 'Unit '.++$key;
+            $item['type'] = $type;
+            $item['insertedBy'] = Auth::id();
+            $item['updatedBy'] = Auth::id();
+            $data->units()->create($item);
+        }
         return response()->json(['data'=>$data]);
     }
 
@@ -96,10 +112,29 @@ class ProductController extends Controller
             'barcode' => "required",
             'unit_id' => "required",
             'category_id' => "required",
+            'unit' => 'required',
+            'unit.*.unit_id' => 'required',
+            'unit.*.value' => 'required',
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Product::find($id);
         $data->update($request->all());
+        foreach($request->unit as $key => $item){
+            $dataUpdate = $data->units()->where('unit_id',$item['unit_id'])->first();
+            if($dataUpdate){
+                if($dataUpdate->type == 'Extern'){
+                    $item['value'] = 1;
+                }
+                $item['updatedBy'] = Auth::id();
+                $dataUpdate->update($item);
+            }else{
+                $item['name'] = 'Unit '.++$key;
+                $item['type'] = $type;
+                $item['insertedBy'] = Auth::id();
+                $item['updatedBy'] = Auth::id();
+                $data->units()->create($item);
+            }
+        }
         return response()->json(['data'=>$data]);
     }
 
@@ -111,7 +146,14 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $data = Product::find($id)->delete();
-        return response()->json(['data' => 'data deleted']);
+        try {
+            ProductUnit::where('product_id',$id)->delete();
+            Product::find($id)->delete();
+            return response()->json(['success'=>true,'message' => 'Data berhasil dihapus']);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json(['success'=>false,'message' => 'Data tidak boleh dihapus']);
+            }
+        }
     }
 }

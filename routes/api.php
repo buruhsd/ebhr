@@ -169,6 +169,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('kurs', 'KursController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('npwp', 'NpwpController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
