@@ -235,6 +235,17 @@ Route::get('employee/nomor/induk', [EmployeeController::class, 'getNoInduk'])->n
 Route::get('employee/nomor/surat', [EmployeeController::class, 'getNoSurat'])->name('api.employee.getNoSurat');
 
 //Purchase
+Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
+    Route::resource('order', 'OrderController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('description', 'DescriptionOrderController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+});
+Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
+Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
 Route::get('purchase/number/{id}', [PurchaseController::class, 'getNumberPP'])->name('api.purchase.number');
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
 Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');

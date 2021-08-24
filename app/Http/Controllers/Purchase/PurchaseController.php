@@ -30,7 +30,7 @@ class PurchaseController extends Controller
                     'purchase_urgentity:id,name',
                     'purchase_items:id,product_id,purchase_letter_id,qty,unit',
                     'purchase_items.products:id,name,product_code')
-                    ->where('id','LIKE',"%{$search}%")
+                    ->where('id','LIKE',"{$search}%")
                     ->orWhere('no_pp', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
                     ->paginate(20);
@@ -102,6 +102,25 @@ class PurchaseController extends Controller
         $purchase->purchase_items()->delete();
         $purchase->delete();
         return response()->json(['data' => 'data deleted']);
+    }
+
+    public function getData(Request $request)
+    {
+        $search = $request->q;
+    	$data = PurchaseLetter::with('branch:id,name',
+                    'warehouse:id,name',
+                    'transaction_type:id,name',
+                    'purchase_category:id,name',
+                    'purchase_necessary:id,name',
+                    'purchase_urgentity:id,name',
+                    'purchase_items:id,product_id,purchase_letter_id,qty,unit',
+                    'purchase_items.products:id,name,product_code')
+                ->where('is_order',0)
+                ->when($search, function ($query) use ($search){
+                    $query->where('no_pp', 'LIKE',"%{$search}%");
+                })
+                ->get();
+        return response()->json(['data' => $data]);
     }
 
     public function approval(Request $request, PurchaseLetter $purchase){

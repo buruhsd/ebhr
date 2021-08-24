@@ -21,6 +21,8 @@ class PurchaseLetter extends Model
         'purchase_category_id',
         'purchase_necessary_id',
         'purchase_urgensity_id',
+        'is_order',
+        'status',
         'insertedBy',
         'updatedBy',
     ];
@@ -88,5 +90,10 @@ class PurchaseLetter extends Model
     public function purchase_urgentity()
     {
         return $this->belongsTo(PurchaseUrgentity::class, 'purchase_urgensity_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'purchase_letter_id');
     }
 }
