@@ -204,12 +204,23 @@ class MasterController extends Controller
                 $gender = 'perempuan';
             }
         }
+        $date_of_birth = null;
+        if(strlen($nik) >= 12){
+            $month = substr($nik,8,2);
+            $year = substr($nik,10,2);
+            $addyear = 19;
+            if($year <= 30){
+                $addyear = 20;
+            }
+            $date_of_birth = $addyear.$year.'-'.$month.'-'.$date;
+        }
         return response()->json([
             'success' => true,
             'nik' => $nik,
             'province' => $province,
             'regency' => $regency,
             'district' => $district,
+            'date_of_birth' => $date_of_birth,
             'gender' => $gender
         ]);
     }

@@ -44,7 +44,7 @@ class EmployeeController extends Controller
 
     public function IdentityCardStore(Request $request){
         $this->validate($request, [
-            'nik' => 'required|numeric|digits:16',
+            'nik' => 'required|numeric|digits:16|unique:identity_cards,nik',
             'name' => 'required',
             'place_of_birth' => 'required',
             'date_of_birth' => 'required',
