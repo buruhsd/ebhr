@@ -29,7 +29,7 @@ class PurchaseController extends Controller
                     'purchase_necessary:id,name',
                     'purchase_urgentity:id,name',
                     'purchase_items:id,product_id,purchase_letter_id,qty,unit',
-                    'purchase_items.products:id,name,product_code')
+                    'purchase_items.products:id,name,product_code,second_name,register_number')
                     ->where('id','LIKE',"{$search}%")
                     ->orWhere('no_pp', 'LIKE',"{$search}%")
                     ->orderBy($orderBy, $sortBy)
@@ -107,14 +107,8 @@ class PurchaseController extends Controller
     public function getData(Request $request)
     {
         $search = $request->q;
-    	$data = PurchaseLetter::with('branch:id,name',
-                    'warehouse:id,name',
-                    'transaction_type:id,name',
-                    'purchase_category:id,name',
-                    'purchase_necessary:id,name',
-                    'purchase_urgentity:id,name',
-                    'purchase_items:id,product_id,purchase_letter_id,qty,unit',
-                    'purchase_items.products:id,name,product_code')
+    	$data = PurchaseLetter::with('purchase_items:id,product_id,purchase_letter_id,qty,unit',
+                    'purchase_items.products:id,name,product_code,second_name,register_number','purchase_items.products.units:product_id,unit_id','purchase_items.products.units.unit:id,name')
                 ->where('is_order',0)
                 ->when($search, function ($query) use ($search){
                     $query->where('no_pp', 'LIKE',"%{$search}%");

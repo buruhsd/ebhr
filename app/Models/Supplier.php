@@ -17,6 +17,13 @@ class Supplier extends Model
         'updatedBy',
     ];
 
+    protected $appends = ['label'];
+
+    public function getLabelAttribute()
+    {
+        return $this->partner->code.' '.$this->partner->name;
+    }
+
     public function partner()
     {
         return $this->belongsTo(Partner::class, 'partner_id');

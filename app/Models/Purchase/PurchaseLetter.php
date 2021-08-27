@@ -27,6 +27,12 @@ class PurchaseLetter extends Model
         'updatedBy',
     ];
 
+    protected $appends = ['label'];
+    public function getLabelAttribute()
+    {
+        return $this->no_pp;
+    }
+
     protected static function boot()
     {
         parent::boot();

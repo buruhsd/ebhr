@@ -29,7 +29,8 @@ class OrderController extends Controller
         }
     	$data = PurchaseOrder::with('branch:id,name',
                     'transaction_type:id,name',
-                    'supplier',
+                    'supplier.partner',
+                    'unit:id,name',
                     'item.products',
                     'purchase_letter')
                 ->where('id','LIKE',"{$search}%")
@@ -44,6 +45,7 @@ class OrderController extends Controller
         $data = PurchaseOrder::with('branch:id,name',
             'transaction_type:id,name',
             'supplier',
+            'unit:id,name',
             'item.products',
             'purchase_letter')->find($id);
         if($data){
@@ -63,6 +65,7 @@ class OrderController extends Controller
             'date_op' => 'required|date',
             'date_estimate' => 'required|date',
             'ppn' => 'required|numeric',
+            'unit_id' => 'required|numeric|exists:units,id',
             'qty' => 'required|numeric|min:1',
             'price' => 'required|numeric|min:1',
             'discount' => 'required|numeric',
@@ -79,8 +82,9 @@ class OrderController extends Controller
         if($totalQty > $item->qty){
             return response()->json(['success' => false, 'message' => 'Jumlah tidak boleh melebihi jumlah barang dari permintaan pembelian']);
         }
-        $net = $request->price - ($request->price * ($request->discount/100));
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(),'net'=>$net]);
+        $price = str_replace('.','',$request->price);
+        $net = $price - ($price * ($request->discount/100));
+        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(),'price'=>$price,'net'=>$net]);
     	PurchaseOrder::create($request->all());
         if($totalQty == $item->qty){
             PurchaseLetter::find($request->purchase_letter_id)->update(['is_order' => 1]);
@@ -97,6 +101,7 @@ class OrderController extends Controller
             'supplier_id' => '|exists:suppliers,id',
             'date_op' => 'required|date',
             'date_estimate' => 'required|date',
+            'unit_id' => 'required|numeric|exists:units,id',
             'ppn' => 'required|numeric',
             'qty' => 'required|numeric',
             'price' => 'required|numeric',
@@ -119,9 +124,9 @@ class OrderController extends Controller
         if($totalQty > $item->qty){
             return response()->json(['success' => false, 'message' => 'Jumlah tidak boleh melebihi jumlah barang dari permintaan pembelian']);
         }
-
-        $net = $request->price - ($request->price * ($request->discount/100));
-        $request->merge(['updatedBy'=>Auth::id(),'net'=>$net]);
+        $price = str_replace('.','',$request->price);
+        $net = $price - ($price * ($request->discount/100));
+        $request->merge(['updatedBy'=>Auth::id(),'price'=>$price,'net'=>$net]);
         $order = PurchaseOrder::find($id);
     	$order->update($request->all());
         $is_order = false;
@@ -150,12 +155,20 @@ class OrderController extends Controller
     	$data = PurchaseOrder::with('branch:id,name',
                     'transaction_type:id,name',
                     'supplier',
+                    'unit:id,name',
                     'item.products',
                     'purchase_letter')
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op', 'LIKE',"%{$search}%");
                 })
+                ->limit(10)
                 ->get();
         return response()->json(['data' => $data]);
+    }
+
+    public function getNumberOP(Request $request, $id)
+    {
+        $number = PurchaseOrder::numberOP($id);
+        return response()->json(['data' => $number]);
     }
 }

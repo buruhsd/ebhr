@@ -189,6 +189,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });
+Route::get('/suppliers', [App\Http\Controllers\Master\SupplierController::class, 'getData'])->name('api.supplier.data');
 Route::get('/supplier_categories', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getData'])->name('api.supplier_category.data');
 Route::get('/supplier_category/parent', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getParent'])->name('api.supplier_category.parent');
 Route::get('/supplier_category/childs', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getChilds'])->name('api.supplier_category.childs');
@@ -244,7 +245,9 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });
+
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
+Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');
 Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
 Route::get('purchase/number/{id}', [PurchaseController::class, 'getNumberPP'])->name('api.purchase.number');
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');

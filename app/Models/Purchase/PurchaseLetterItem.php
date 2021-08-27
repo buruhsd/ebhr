@@ -16,6 +16,11 @@ class PurchaseLetterItem extends Model
         'insertedBy',
         'updatedBy',
     ];
+    protected $appends = ['label'];
+    public function getLabelAttribute()
+    {
+        return $this->products->register_number.' '.$this->products->second_name;
+    }
 
     public function products()
     {

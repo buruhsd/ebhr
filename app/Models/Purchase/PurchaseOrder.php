@@ -4,6 +4,7 @@ namespace App\Models\Purchase;
 
 use App\Models\Branch;
 use App\Models\Supplier;
+use App\Models\Master\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +21,7 @@ class PurchaseOrder extends Model
         'date_op',
         'date_estimate',
         'ppn',
+        'unit_id',
         'qty',
         'price',
         'discount',
@@ -81,6 +83,11 @@ class PurchaseOrder extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function description()

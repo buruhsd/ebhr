@@ -18,6 +18,12 @@ class ProductUnit extends Model
         'updatedBy',
     ];
 
+    protected $appends = ['label'];
+    public function getLabelAttribute()
+    {
+        return $this->unit->name;
+    }
+
     public function product()
     {
         return $this->belongsTo(Products::class, 'product_id');

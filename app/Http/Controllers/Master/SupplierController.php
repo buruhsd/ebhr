@@ -111,4 +111,17 @@ class SupplierController extends Controller
             }
         }
     }
+
+    public function getData(Request $request)
+    {
+        $search = $request->q;
+        $data = Supplier::with('partner:id,code,name','currency:id,name')
+                ->whereHas('partner',function ($query) use ($search){
+                    $query->where('partners.code','LIKE',"%{$search}%")
+                    ->orWhere('partners.name','LIKE',"%{$search}%");
+                })
+                ->limit(10)
+                ->get();
+        return response()->json(['data' => $data]);
+    }
 }
