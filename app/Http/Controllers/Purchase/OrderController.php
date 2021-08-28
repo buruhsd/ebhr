@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Purchase;
 
+use DB;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Purchase\PurchaseOrder;
@@ -29,7 +30,9 @@ class OrderController extends Controller
         }
     	$data = PurchaseOrder::with('branch:id,name',
                     'transaction_type:id,name',
-                    'supplier.partner',
+                    'supplier:id,partner_id,supplier_category_id,currency_id,term_of_payment',
+                    'supplier.currency:id,code,name',
+                    'supplier.partner:id,code,name',
                     'unit:id,name',
                     'item.products',
                     'purchase_letter')
@@ -66,21 +69,22 @@ class OrderController extends Controller
             'date_estimate' => 'required|date',
             'ppn' => 'required|numeric',
             'unit_id' => 'required|numeric|exists:units,id',
-            'qty' => 'required|numeric|min:1',
-            'price' => 'required|numeric|min:1',
+            'qty' => 'required||min:1',
+            'price' => 'required',
             'discount' => 'required|numeric',
             'noted' => 'required',
         ]);
 
-        $checkOrderQty = PurchaseOrder::where([
-            'branch_id'=>$request->branch_id,
-            'purchase_letter_id'=>$request->purchase_letter_id,
-            'purchase_letter_item_id'=>$request->purchase_letter_item_id])
-            ->sum('qty');
-        $totalQty = $request->qty + $checkOrderQty;
-        $item = PurchaseLetterItem::find($request->purchase_letter_item_id);
+        $item = PurchaseLetterItem::with('products.units')->find($request->purchase_letter_item_id);
+        $totalQtyKonversi = DB::table('purchase_orders')
+                ->join('product_units', 'product_units.unit_id', '=', 'purchase_orders.unit_id')
+                ->where('product_units.product_id', '<=', $item->product_id)
+                ->sum(DB::raw('qty * product_units.value'));
+        $konversiQty = $item->products->units->where('unit_id',$request->unit_id)->first()->value;
+        $nilai = $request->qty * $konversiQty;
+        $totalQty = $totalQtyKonversi + $nilai;
         if($totalQty > $item->qty){
-            return response()->json(['success' => false, 'message' => 'Jumlah tidak boleh melebihi jumlah barang dari permintaan pembelian']);
+            return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
         }
         $price = str_replace('.','',$request->price);
         $net = $price - ($price * ($request->discount/100));
@@ -104,7 +108,7 @@ class OrderController extends Controller
             'unit_id' => 'required|numeric|exists:units,id',
             'ppn' => 'required|numeric',
             'qty' => 'required|numeric',
-            'price' => 'required|numeric',
+            'price' => 'required',
             'discount' => 'required|numeric',
             'noted' => 'required',
         ]);
@@ -114,15 +118,17 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Data tidak ada']);
         }
 
-        $checkOrderQty = PurchaseOrder::where([
-            'branch_id'=>$request->branch_id,
-            'purchase_letter_id'=>$request->purchase_letter_id,
-            'purchase_letter_item_id'=>$request->purchase_letter_item_id])
-            ->sum('qty');
-        $totalQty = $request->qty + $checkOrderQty;
-        $item = PurchaseLetterItem::find($request->purchase_letter_item_id);
+        $item = PurchaseLetterItem::with('products.units')->find($request->purchase_letter_item_id);
+        $totalQtyKonversi = DB::table('purchase_orders')
+                ->join('product_units', 'product_units.unit_id', '=', 'purchase_orders.unit_id')
+                ->where('product_units.product_id', '<=', $item->product_id)
+                ->where('purchase_orders.id', '!=', $id)
+                ->sum(DB::raw('qty * product_units.value'));
+        $konversiQty = $item->products->units->where('unit_id',$request->unit_id)->first()->value;
+        $nilai = $request->qty * $konversiQty;
+        $totalQty = $totalQtyKonversi + $nilai;
         if($totalQty > $item->qty){
-            return response()->json(['success' => false, 'message' => 'Jumlah tidak boleh melebihi jumlah barang dari permintaan pembelian']);
+            return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
         }
         $price = str_replace('.','',$request->price);
         $net = $price - ($price * ($request->discount/100));

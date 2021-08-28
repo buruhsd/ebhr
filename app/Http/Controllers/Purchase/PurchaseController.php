@@ -108,7 +108,7 @@ class PurchaseController extends Controller
     {
         $search = $request->q;
     	$data = PurchaseLetter::with('purchase_items:id,product_id,purchase_letter_id,qty,unit',
-                    'purchase_items.products:id,name,product_code,second_name,register_number','purchase_items.products.units:product_id,unit_id','purchase_items.products.units.unit:id,name')
+                    'purchase_items.products:id,name,product_code,second_name,register_number','purchase_items.products.units:product_id,unit_id,value','purchase_items.products.units.unit:id,name')
                 ->where('is_order',0)
                 ->when($search, function ($query) use ($search){
                     $query->where('no_pp', 'LIKE',"%{$search}%");

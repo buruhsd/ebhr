@@ -32,7 +32,9 @@ class ProductController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Product::with('unit:id,code,name','units:id,product_id,unit_id,name,type,value','units.unit:id,code,name','category:id,code,name,parent_id')->where('name','LIKE',"{$search}%")
+        $data = Product::with('unit:id,code,name','units:id,product_id,unit_id,name,type,value','units.unit:id,code,name','category:id,code,name,parent_id')
+            ->where('name','LIKE',"%{$search}%")
+            ->orWhere('second_name','LIKE',"%{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);
