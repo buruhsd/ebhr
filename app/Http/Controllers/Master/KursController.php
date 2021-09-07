@@ -117,4 +117,20 @@ class KursController extends Controller
         $data = Kurs::get();
         return response()->json(['data' => $data]);
     }
+
+    public function getKurs(Request $request)
+    {
+        $data = Kurs::select('value')
+                ->where([
+                    'currency_id'=>$request->currency_id,
+                    'kurs_type_id'=>$request->kurs_type_id
+                ])
+                ->whereDate('date','<=',now())
+                ->orderBy('date','desc')
+                ->first();
+        if($data){
+            $data->value = number_format($data->value,0,',','.');
+        }
+        return response()->json(['data' => $data]);
+    }
 }

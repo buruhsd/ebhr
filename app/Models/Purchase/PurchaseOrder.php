@@ -3,6 +3,7 @@
 namespace App\Models\Purchase;
 
 use App\Models\Branch;
+use App\Models\KursType;
 use App\Models\Supplier;
 use App\Models\Master\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,20 +15,21 @@ class PurchaseOrder extends Model
     protected $fillable = [
         'branch_id',
         'purchase_letter_id',
-        'purchase_letter_item_id',
         'transaction_type_id',
         'supplier_id',
         'no_op',
         'date_op',
         'date_estimate',
         'ppn',
-        'unit_id',
-        'qty',
-        'price',
-        'discount',
-        'net',
+        'total',
+        'max_price_unit',
+        'max_price_item',
+        'kurs_type_id',
+        'kurs',
         'status',
         'noted',
+        'approved_by',
+        'released_by',
         'insertedBy',
         'updatedBy',
     ];
@@ -42,6 +44,11 @@ class PurchaseOrder extends Model
                 abort(500, $e->getMessage());
             }
         });
+    }
+
+    public function getKursAttribute()
+    {
+        return round($this->attributes['kurs'],2);
     }
 
     public static function numberOP($id)
@@ -60,14 +67,14 @@ class PurchaseOrder extends Model
         return $string.$newID;
     }
 
+    public function kurs_type()
+    {
+        return $this->belongsTo(KursType::class, 'kurs_type_id');
+    }
+
     public function purchase_letter()
     {
         return $this->belongsTo(PurchaseLetter::class, 'purchase_letter_id');
-    }
-
-    public function item()
-    {
-        return $this->belongsTo(PurchaseLetterItem::class, 'purchase_letter_item_id');
     }
 
     public function branch()
@@ -85,14 +92,14 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'unit_id');
-    }
-
     public function description()
     {
         return $this->hasOne(PurchaseDescription::class, 'purchase_order_id');
+    }
+
+    public function order_item()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
     }
 
     public function insertedBy()

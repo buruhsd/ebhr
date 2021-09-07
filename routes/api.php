@@ -199,7 +199,9 @@ Route::get('/partner/data', [App\Http\Controllers\Master\PartnerController::clas
 Route::get('/currency/data', [App\Http\Controllers\Master\CurrencyController::class, 'getData'])->name('api.currency.data');
 Route::get('/product_categories', [App\Http\Controllers\Master\ProducCategoryController::class, 'getData'])->name('api.product_category.data');
 Route::get('/kurs_type/data', [App\Http\Controllers\Master\KursTypeController::class, 'getData'])->name('api.kurs_type.data');
+Route::get('/kurs/currency', [App\Http\Controllers\Master\KursController::class, 'getKurs'])->name('api.kurs.getKurs');
 Route::get('/product_status/data', [App\Http\Controllers\Master\ProductStatusController::class, 'getData'])->name('api.product_status.data');
+Route::get('/product/approve/{id}', [App\Http\Controllers\Master\ProductController::class, 'approve'])->name('api.product.approve');
 
 // Excel
 Route::get('/organizations/excel', [App\Http\Controllers\Master\OrganizationController::class, 'export_excel'])->name('api.organization.export_excel');
@@ -247,8 +249,10 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
+Route::get('/purchase/orders/description', [App\Http\Controllers\Purchase\OrderController::class, 'description'])->name('api.purchase.order.description');
 Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');
 Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
+Route::get('purchase/item', [PurchaseController::class, 'getItemPurchase'])->name('api.purchase.getItemPurchase');
 Route::get('purchase/number/{id}', [PurchaseController::class, 'getNumberPP'])->name('api.purchase.number');
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
 Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');

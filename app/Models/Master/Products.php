@@ -20,6 +20,7 @@ class Products extends Model
         'vendor',
         'barcode',
         'status',
+        'is_approve',
         'unit_id',
         'category_id',
         'insertedBy',

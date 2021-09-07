@@ -10,9 +10,6 @@ class PurchaseDescription extends Model
     use HasFactory;
     protected $fillable = [
         'purchase_order_id',
-        'item_name',
-        'brand',
-        'type',
         'noted',
         'status',
         'insertedBy',

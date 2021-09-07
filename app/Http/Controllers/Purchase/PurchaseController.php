@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Purchase\PurchaseLetter;
 use App\Models\Order\Order;
+use App\Models\Purchase\PurchaseLetterItem;
 use App\Http\Resources\Purchase\PurchaseResource;
 use App\Http\Resources\Purchase\PurchaseResourceCollection;
 
@@ -48,7 +49,7 @@ class PurchaseController extends Controller
             'purchase_necessary_id' => 'required',
             'purchase_urgensity_id' => 'required',
             'item' => 'required',
-            'item.*.product_id' => 'required',
+            'item.*.product_id' => 'required|distinct',
             'item.*.qty' => 'required',
             'item.*.unit' => 'required',
         ]);
@@ -73,7 +74,7 @@ class PurchaseController extends Controller
             'purchase_necessary_id' => 'required',
             'purchase_urgensity_id' => 'required',
             'item' => 'required',
-            'item.*.product_id' => 'required',
+            'item.*.product_id' => 'required|distinct',
             'item.*.qty' => 'required',
             'item.*.unit' => 'required',
         ]);
@@ -107,11 +108,26 @@ class PurchaseController extends Controller
     public function getData(Request $request)
     {
         $search = $request->q;
+        $branch = $request->b;
     	$data = PurchaseLetter::with('purchase_items:id,product_id,purchase_letter_id,qty,unit',
                     'purchase_items.products:id,name,product_code,second_name,register_number','purchase_items.products.units:product_id,unit_id,value','purchase_items.products.units.unit:id,name')
                 ->where('is_order',0)
-                ->when($search, function ($query) use ($search){
+                ->where('branch_id', $branch)
+                ->where(function ($query) use ($search){
                     $query->where('no_pp', 'LIKE',"%{$search}%");
+                })
+                ->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function getItemPurchase(Request $request)
+    {
+        $search = $request->q;
+    	$data = PurchaseLetterItem::select('id','purchase_letter_id','product_id','qty','unit')
+                ->with('products:id,register_number,second_name,unit_id','products.unit:id,name','products.units:id,product_id,unit_id,value')
+                ->where('status',0)
+                ->when($search, function ($query) use ($search){
+                    $query->where('purchase_letter_id', $search);
                 })
                 ->get();
         return response()->json(['data' => $data]);

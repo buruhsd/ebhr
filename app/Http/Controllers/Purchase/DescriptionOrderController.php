@@ -46,9 +46,6 @@ class DescriptionOrderController extends Controller
     {
         $this->validate($request, [
             'purchase_order_id' => 'required|exists:purchase_orders,id',
-            'item_name' => 'required',
-            'brand' => 'required',
-            'type' => 'required',
             'noted' => 'required',
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(),'status'=>1]);
@@ -59,9 +56,6 @@ class DescriptionOrderController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'purchase_order_id' => 'required|exists:purchase_orders,id',
-            'item_name' => 'required',
-            'brand' => 'required',
-            'type' => 'required',
             'noted' => 'required',
         ]);
 
