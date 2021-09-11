@@ -15,6 +15,8 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+    // status 0 = new, 1 = approved, 2 = released, 3 = closed
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -41,8 +43,7 @@ class OrderController extends Controller
                     'order_item.purchase_item:id,product_id,qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
-                    'order_item.unit:id,name',
-                    'purchase_letter')
+                    'order_item.unit:id,name')
                 ->where('id','LIKE',"{$search}%")
                 ->orWhere('no_op', 'LIKE',"{$search}%")
                 ->orderBy($orderBy, $sortBy)
@@ -59,7 +60,10 @@ class OrderController extends Controller
             'supplier.partner:id,code,name',
             'kurs_type:id,name',
             'order_item',
-            'purchase_letter')->find($id);
+            'order_item.purchase_item:id,product_id,qty,unit',
+            'order_item.product:id,register_number,name,second_name',
+            'order_item.product.units:id,name,value',
+            'order_item.unit:id,name')->find($id);
         if($data){
             return response()->json(['success' => true, 'data' => $data]);
         }
@@ -70,7 +74,6 @@ class OrderController extends Controller
     {
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
-            'purchase_letter_id' => 'required|exists:purchase_letters,id',
             'transaction_type_id' => 'required|exists:transaction_types,id',
             'supplier_id' => '|exists:suppliers,id',
             'date_op' => 'required|date',
@@ -79,6 +82,7 @@ class OrderController extends Controller
             'kurs_type_id' => 'required|exists:kurs_types,id',
             'noted' => 'required',
             'item' => 'required',
+            'item.*.purchase_letter_id' => 'required|exists:purchase_letters,id',
             'item.*.purchase_letter_item_id' => 'required|distinct|exists:purchase_letter_items,id',
             'item.*.unit_id' => 'required|numeric|exists:units,id',
             'item.*.qty' => 'required||min:1',
@@ -149,7 +153,6 @@ class OrderController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
-            'purchase_letter_id' => 'required|exists:purchase_letters,id',
             'transaction_type_id' => 'required|exists:transaction_types,id',
             'supplier_id' => '|exists:suppliers,id',
             'date_op' => 'required|date',
@@ -158,6 +161,7 @@ class OrderController extends Controller
             'noted' => 'required',
             'item' => 'required',
             'item.*.purchase_order_item_id' => 'required',
+            'item.*.purchase_letter_id' => 'required|exists:purchase_letters,id',
             'item.*.purchase_letter_item_id' => 'required|distinct|exists:purchase_letter_items,id',
             'item.*.unit_id' => 'required|numeric|exists:units,id',
             'item.*.qty' => 'required||min:1',
@@ -320,8 +324,6 @@ class OrderController extends Controller
         return response()->json(['data' => $number]);
     }
 
-
-
     public function description(Request $request)
     {
     	$search = $request->search;
@@ -351,5 +353,35 @@ class OrderController extends Controller
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(20);
         return response()->json($data);
+    }
+
+    public function approve(Request $request,$id)
+    {
+        $order = PurchaseOrder::find($id);
+        $order->status = 1;
+        $order->approved_by = Auth::id();
+        $order->approved_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil diapprove']);
+    }
+
+    public function release(Request $request,$id)
+    {
+        $order = PurchaseOrder::find($id);
+        $order->status = 2;
+        $order->released_by = Auth::id();
+        $order->released_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil direlease']);
+    }
+
+    public function close(Request $request,$id)
+    {
+        $order = PurchaseOrder::find($id);
+        $order->status = 3;
+        $order->closed_by = Auth::id();
+        $order->closed_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil diclose']);
     }
 }

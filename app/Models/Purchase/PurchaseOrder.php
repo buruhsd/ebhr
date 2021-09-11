@@ -14,7 +14,6 @@ class PurchaseOrder extends Model
     use HasFactory;
     protected $fillable = [
         'branch_id',
-        'purchase_letter_id',
         'transaction_type_id',
         'supplier_id',
         'no_op',
@@ -29,7 +28,11 @@ class PurchaseOrder extends Model
         'status',
         'noted',
         'approved_by',
+        'approved_at',
         'released_by',
+        'released_at',
+        'closed_by',
+        'closed_at',
         'insertedBy',
         'updatedBy',
     ];
@@ -70,11 +73,6 @@ class PurchaseOrder extends Model
     public function kurs_type()
     {
         return $this->belongsTo(KursType::class, 'kurs_type_id');
-    }
-
-    public function purchase_letter()
-    {
-        return $this->belongsTo(PurchaseLetter::class, 'purchase_letter_id');
     }
 
     public function branch()

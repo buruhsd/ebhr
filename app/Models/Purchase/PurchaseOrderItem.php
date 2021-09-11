@@ -11,6 +11,7 @@ class PurchaseOrderItem extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'purchase_letter_id',
         'purchase_letter_item_id',
         'purchase_order_id',
         'product_id',
@@ -37,6 +38,11 @@ class PurchaseOrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Products::class, 'product_id');
+    }
+
+    public function purchase_letter()
+    {
+        return $this->belongsTo(PurchaseLetter::class, 'purchase_letter_id');
     }
 
     public function purchase_item()
