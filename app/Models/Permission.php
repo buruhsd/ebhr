@@ -21,7 +21,7 @@ class Permission extends Model implements PermissionContract
 
     protected $guarded = ['id'];
 
-    // protected $appends = ['menu'];
+    protected $appends = ['menu'];
 
     public function menu(){
         return $this->hasOne(Menu::class);
