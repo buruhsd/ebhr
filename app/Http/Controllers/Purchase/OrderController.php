@@ -39,7 +39,9 @@ class OrderController extends Controller
                     'supplier.currency:id,code,name',
                     'supplier.partner:id,code,name',
                     'kurs_type:id,name',
+                    'currency:id,code,name',
                     'order_item',
+                    'order_item.purchase:id,no_pp',
                     'order_item.purchase_item:id,product_id,qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
@@ -113,11 +115,14 @@ class OrderController extends Controller
             $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
             $nilai = $value['qty'] * $konversiQty;
             $totalQty = $totalQtyKonversi + $nilai;
-            $price = str_replace('.','',$value['price']);
-            $price = str_replace(',','.',$price);
+            $discount = $value['discount'];
+            $price = $value['price'] * $kurs;
+            $price = $price - ($price * ($value['discount']/100));
+            // $price = str_replace(',','.',$price);
             if($kurs == 0){
-                $price = str_replace('.','',$value['price_hc']);
-                $price = str_replace(',','.',$price);
+                $price = $value['price_hc'];
+                $price = $price - ($price * ($value['discount']/100));
+                // $price = str_replace(',','.',$price);
             }
 
             if($price > $max_price_unit){
@@ -159,10 +164,10 @@ class OrderController extends Controller
             $nilai = $value['qty'] * $konversiQty;
             $totalQty = $totalQtyKonversi + $nilai;
 
-            $price = str_replace('.','',$value['price']);
-            $price = str_replace(',','.',$price);
-            $price_hc = str_replace('.','',$value['price_hc']);
-            $price_hc = str_replace(',','.',$price_hc);
+            $price = $value['price'];
+            // $price = str_replace(',','.',$price);
+            $price_hc = $value['price_hc'];
+            // $price_hc = str_replace(',','.',$price_hc);
             if($kurs > 0){
                 $price_hc = $price * $kurs;
             }else{
@@ -194,7 +199,7 @@ class OrderController extends Controller
             'supplier_id' => '|exists:suppliers,id',
             'date_op' => 'required|date',
             'date_estimate' => 'required|date',
-            'kurs_type_id' => 'required|exists:kurs_types,id',
+            'kurs_type_id' => 'nullable|exists:kurs_types,id',
             'noted' => 'required',
             'item' => 'required',
             'item.*.purchase_order_item_id' => 'required',

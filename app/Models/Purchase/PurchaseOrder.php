@@ -3,6 +3,7 @@
 namespace App\Models\Purchase;
 
 use App\Models\Branch;
+use App\Models\Currency;
 use App\Models\KursType;
 use App\Models\Supplier;
 use App\Models\Master\Unit;
@@ -101,6 +102,11 @@ class PurchaseOrder extends Model
     public function order_item()
     {
         return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function insertedBy()

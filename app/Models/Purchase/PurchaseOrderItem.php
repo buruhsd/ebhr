@@ -43,7 +43,7 @@ class PurchaseOrderItem extends Model
         return $this->belongsTo(Products::class, 'product_id');
     }
 
-    public function purchase_letter()
+    public function purchase()
     {
         return $this->belongsTo(PurchaseLetter::class, 'purchase_letter_id');
     }

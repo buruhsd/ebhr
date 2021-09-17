@@ -128,9 +128,6 @@ class KursController extends Controller
                 ->whereDate('date','<=',now())
                 ->orderBy('date','desc')
                 ->first();
-        if($data){
-            $data->value = number_format($data->value,0,',','.');
-        }
         return response()->json(['data' => $data]);
     }
 }
