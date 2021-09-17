@@ -79,19 +79,30 @@ class OrderController extends Controller
             'date_op' => 'required|date',
             'date_estimate' => 'required|date',
             'ppn' => 'required|numeric',
-            'kurs_type_id' => 'required|exists:kurs_types,id',
+            'kurs_type_id' => 'nullable|exists:kurs_types,id',
             'noted' => 'required',
             'item' => 'required',
             'item.*.purchase_letter_id' => 'required|exists:purchase_letters,id',
             'item.*.purchase_letter_item_id' => 'required|distinct|exists:purchase_letter_items,id',
             'item.*.unit_id' => 'required|numeric|exists:units,id',
             'item.*.qty' => 'required||min:1',
-            'item.*.price' => 'required',
+            'item.*.price' => 'nullable',
+            'item.*.price_hc' => 'required',
             'item.*.discount' => 'required|numeric',
         ]);
         $total = 0;
         $max_price_unit = 0;
         $max_price_item = 0;
+        $kurs = 0;
+        $currency_id = NULL;
+        $supplier = Supplier::find($request->supplier_id);
+        if($supplier && $request->kurs_type_id){
+            $currency_id = $supplier->currency_id;
+            $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
+                    ->whereDate('date','<=',now())
+                    ->orderBy('date','desc')
+                    ->first()->value;
+        }
         foreach($request->item as $value){
             $purchase_item = PurchaseLetterItem::find($value['purchase_letter_item_id']);
             $totalQtyKonversi = DB::table('purchase_order_items')
@@ -103,6 +114,12 @@ class OrderController extends Controller
             $nilai = $value['qty'] * $konversiQty;
             $totalQty = $totalQtyKonversi + $nilai;
             $price = str_replace('.','',$value['price']);
+            $price = str_replace(',','.',$price);
+            if($kurs == 0){
+                $price = str_replace('.','',$value['price_hc']);
+                $price = str_replace(',','.',$price);
+            }
+
             if($price > $max_price_unit){
                 $max_price_unit = $price;
             }
@@ -115,13 +132,21 @@ class OrderController extends Controller
                 return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
             }
         }
-
-        $currency_id = Supplier::find($request->supplier_id)->currency_id;
-        $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
-                ->whereDate('date','<=',now())
-                ->orderBy('date','desc')
-                ->first()->value;
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id(),'kurs'=>$kurs,'total'=>$total,'max_price_unit'=>$max_price_unit,'max_price_item'=>$max_price_item]);
+        $dpp = round($total,0);
+        $dpp = intval(substr_replace($dpp,"000",-3));
+        $ppn_hc = $total * ($request->ppn/100);
+        $total_op = $total + $ppn_hc;
+        $request->merge([
+            'kurs'=> $kurs,
+            'currency_id'=> $currency_id,
+            'ppn_hc'=> $ppn_hc,
+            'dpp'=> $dpp,
+            'total'=> round($total_op,2),
+            'max_price_unit'=> round($max_price_unit,2),
+            'max_price_item'=> round($max_price_item,2),
+            'insertedBy' => Auth::id(),
+            'updatedBy'=> Auth::id()
+        ]);
     	$data = PurchaseOrder::create($request->all());
         foreach($request->item as $value){
             $purchase_item = PurchaseLetterItem::find($value['purchase_letter_item_id']);
@@ -135,10 +160,22 @@ class OrderController extends Controller
             $totalQty = $totalQtyKonversi + $nilai;
 
             $price = str_replace('.','',$value['price']);
+            $price = str_replace(',','.',$price);
+            $price_hc = str_replace('.','',$value['price_hc']);
+            $price_hc = str_replace(',','.',$price_hc);
+            if($kurs > 0){
+                $price_hc = $price * $kurs;
+            }else{
+                $price = 0;
+            }
             $net = $price - ($price * ($value['discount']/100));
+            $net_hc = $price_hc - ($price_hc * ($value['discount']/100));
             $value['product_id'] = $purchase_item->product_id;
             $value['price'] = $price;
+            $value['price_hc'] = $price_hc;
             $value['net'] = $net;
+            $value['net_hc'] = $net_hc;
+            $value['unit_conversion'] = $konversiQty;
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
             $data->order_item()->create($value);
@@ -176,6 +213,16 @@ class OrderController extends Controller
         $total = 0;
         $max_price_unit = 0;
         $max_price_item = 0;
+        $kurs = 0;
+        $currency_id = NULL;
+        $supplier = Supplier::find($request->supplier_id);
+        if($supplier && $request->kurs_type_id){
+            $currency_id = $supplier->currency_id;
+            $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
+                    ->whereDate('date','<=',now())
+                    ->orderBy('date','desc')
+                    ->first()->value;
+        }
         foreach($request->item as $value){
             $purchase_item = PurchaseLetterItem::find($value['purchase_letter_item_id']);
             $totalQtyKonversi = DB::table('purchase_order_items')
@@ -188,6 +235,12 @@ class OrderController extends Controller
             $nilai = $value['qty'] * $konversiQty;
             $totalQty = $totalQtyKonversi + $nilai;
             $price = str_replace('.','',$value['price']);
+            $price = str_replace(',','.',$price);
+            if($kurs == 0){
+                $price = str_replace('.','',$value['price_hc']);
+                $price = str_replace(',','.',$price);
+            }
+
             if($price > $max_price_unit){
                 $max_price_unit = $price;
             }
@@ -200,12 +253,21 @@ class OrderController extends Controller
                 return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
             }
         }
-        $currency_id = Supplier::find($request->supplier_id)->currency_id;
-        $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
-                ->whereDate('date','<=',now())
-                ->orderBy('date','desc')
-                ->first()->value;
-        $request->merge(['updatedBy'=>Auth::id(),'kurs'=>$kurs,'total'=>$total,'max_price_unit'=>$max_price_unit,'max_price_item'=>$max_price_item]);
+        $dpp = round($total,0);
+        $dpp = intval(substr_replace($dpp,"000",-3));
+        $ppn_hc = $total * ($request->ppn/100);
+        $total_op = $total + $ppn_hc;
+        $request->merge([
+            'kurs'=> $kurs,
+            'currency_id'=> $currency_id,
+            'ppn_hc'=> $ppn_hc,
+            'dpp'=> $dpp,
+            'total'=> round($total_op,2),
+            'max_price_unit'=> round($max_price_unit,2),
+            'max_price_item'=> round($max_price_item,2),
+            'updatedBy'=> Auth::id()
+        ]);
+
     	$order->update($request->all());
         foreach($request->item as $value){
             $purchase_item = PurchaseLetterItem::find($value['purchase_letter_item_id']);
@@ -220,12 +282,25 @@ class OrderController extends Controller
                 $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
                 $nilai = $value['qty'] * $konversiQty;
                 $totalQty = $totalQtyKonversi + $nilai;
+
                 $price = str_replace('.','',$value['price']);
+                $price = str_replace(',','.',$price);
+                $price_hc = str_replace('.','',$value['price_hc']);
+                $price_hc = str_replace(',','.',$price_hc);
+                if($kurs > 0){
+                    $price_hc = $price * $kurs;
+                }else{
+                    $price = 0;
+                }
                 $net = $price - ($price * ($value['discount']/100));
+                $net_hc = $price_hc - ($price_hc * ($value['discount']/100));
                 $value['product_id'] = $purchase_item->product_id;
                 $value['price'] = $price;
+                $value['price_hc'] = $price_hc;
                 $value['net'] = $net;
-                $item['updatedBy'] = Auth::id();
+                $value['net_hc'] = $net_hc;
+                $value['unit_conversion'] = $konversiQty;
+                $value['updatedBy'] = Auth::id();
                 $update->update($value);
                 $status = 0;
                 if($totalQty == $purchase_item->qty){
@@ -244,10 +319,22 @@ class OrderController extends Controller
                 $totalQty = $totalQtyKonversi + $nilai;
 
                 $price = str_replace('.','',$value['price']);
+                $price = str_replace(',','.',$price);
+                $price_hc = str_replace('.','',$value['price_hc']);
+                $price_hc = str_replace(',','.',$price_hc);
+                if($kurs > 0){
+                    $price_hc = $price * $kurs;
+                }else{
+                    $price = 0;
+                }
                 $net = $price - ($price * ($value['discount']/100));
+                $net_hc = $price_hc - ($price_hc * ($value['discount']/100));
                 $value['product_id'] = $purchase_item->product_id;
                 $value['price'] = $price;
+                $value['price_hc'] = $price_hc;
                 $value['net'] = $net;
+                $value['net_hc'] = $net_hc;
+                $value['unit_conversion'] = $konversiQty;
                 $value['insertedBy'] = Auth::id();
                 $value['updatedBy'] = Auth::id();
                 $data->order_item()->create($value);
@@ -262,8 +349,6 @@ class OrderController extends Controller
 
     public function FunctionName(Type $var = null)
     {
-
-
         $item = PurchaseLetterItem::with('products.units')->find($request->purchase_letter_item_id);
         $totalQtyKonversi = DB::table('purchase_orders')
                 ->join('product_units', 'product_units.unit_id', '=', 'purchase_orders.unit_id')
