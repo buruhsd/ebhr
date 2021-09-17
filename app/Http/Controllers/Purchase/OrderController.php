@@ -239,11 +239,14 @@ class OrderController extends Controller
             $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
             $nilai = $value['qty'] * $konversiQty;
             $totalQty = $totalQtyKonversi + $nilai;
-            $price = str_replace('.','',$value['price']);
-            $price = str_replace(',','.',$price);
+            $discount = $value['discount'];
+            $price = $value['price'] * $kurs;
+            $price = $price - ($price * ($value['discount']/100));
+            // $price = str_replace(',','.',$price);
             if($kurs == 0){
-                $price = str_replace('.','',$value['price_hc']);
-                $price = str_replace(',','.',$price);
+                $price = $value['price_hc'];
+                $price = $price - ($price * ($value['discount']/100));
+                // $price = str_replace(',','.',$price);
             }
 
             if($price > $max_price_unit){
@@ -288,10 +291,10 @@ class OrderController extends Controller
                 $nilai = $value['qty'] * $konversiQty;
                 $totalQty = $totalQtyKonversi + $nilai;
 
-                $price = str_replace('.','',$value['price']);
-                $price = str_replace(',','.',$price);
-                $price_hc = str_replace('.','',$value['price_hc']);
-                $price_hc = str_replace(',','.',$price_hc);
+                $price = $value['price'];
+                // $price = str_replace(',','.',$price);
+                $price_hc = $value['price_hc'];
+                // $price_hc = str_replace(',','.',$price_hc);
                 if($kurs > 0){
                     $price_hc = $price * $kurs;
                 }else{
