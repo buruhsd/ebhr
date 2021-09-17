@@ -10,6 +10,7 @@ class PurchaseLetterItem extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'purchase_letter_id',
         'product_id',
         'qty',
         'unit',
@@ -20,7 +21,13 @@ class PurchaseLetterItem extends Model
     protected $appends = ['label'];
     public function getLabelAttribute()
     {
-        return $this->products ? $this->products->register_number.' '.$this->products->second_name : '';
+        // return $this->products ? $this->products->register_number.' '.$this->products->second_name : '';
+        return $this->products ? $this->products->second_name : '';
+    }
+
+    public function purchase()
+    {
+        return $this->belongsTo(PurchaseLetter::class, 'purchase_letter_id');
     }
 
     public function products()

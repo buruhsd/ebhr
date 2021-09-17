@@ -124,10 +124,10 @@ class PurchaseController extends Controller
     {
         $search = $request->q;
     	$data = PurchaseLetterItem::select('id','purchase_letter_id','product_id','qty','unit')
-                ->with('products:id,register_number,second_name,unit_id','products.unit:id,name','products.units:id,product_id,unit_id,value')
+                ->with('purchase:id,no_pp','products:id,register_number,second_name,unit_id','products.unit:id,name','products.units:id,product_id,unit_id,value')
                 ->where('status',0)
-                ->when($search, function ($query) use ($search){
-                    $query->where('purchase_letter_id', $search);
+                ->wherehas('purchase', function ($query) use ($search){
+                    $query->where('purchase_letters.branch_id', $search);
                 })
                 ->get();
         return response()->json(['data' => $data]);
