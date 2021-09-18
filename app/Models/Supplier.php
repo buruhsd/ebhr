@@ -39,6 +39,11 @@ class Supplier extends Model
         return $this->belongsTo(Currency::class, 'currency_id');
     }
 
+    public function product_status()
+    {
+        return $this->hasOne(SupplierStatus::class, 'supplier_id');
+    }
+
     public function insertedBy()
     {
         return $this->belongsTo(User::class, 'insertedBy');

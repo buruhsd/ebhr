@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
-    // status 0 = new, 1 = approved, 2 = released, 3 = closed
+    // status 0 = new, 1 = approved, 2 = released, 3 = closed, 4 = ttb, 5 = ttb complete
 
     public function __construct()
     {
@@ -49,6 +49,18 @@ class OrderController extends Controller
                     'order_item.unit:id,name')
                 ->when($status, function ($query) use ($status){
                     $query->where('status',$status);
+                    if($status == 'new'){
+                        $statusIn = [0];
+                    }elseif($status == 'approve'){
+                        $statusIn = [1];
+                    }elseif($status == 'release'){
+                        $statusIn = [2];
+                    }elseif($status == 'close'){
+                        $statusIn = [3];
+                    }elseif($status == 'all'){
+                        $statusIn = [0,1,2,4];
+                    }
+                    $query->whereIn('status',$statusIn);
                 })
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op','LIKE',"{$search}%");
@@ -370,32 +382,6 @@ class OrderController extends Controller
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }
 
-    public function FunctionName(Type $var = null)
-    {
-        $item = PurchaseLetterItem::with('products.units')->find($request->purchase_letter_item_id);
-        $totalQtyKonversi = DB::table('purchase_orders')
-                ->join('product_units', 'product_units.unit_id', '=', 'purchase_orders.unit_id')
-                ->where('product_units.product_id', '<=', $item->product_id)
-                ->where('purchase_orders.id', '!=', $id)
-                ->sum(DB::raw('qty * product_units.value'));
-        $konversiQty = $item->products->units->where('unit_id',$request->unit_id)->first()->value;
-        $nilai = $request->qty * $konversiQty;
-        $totalQty = $totalQtyKonversi + $nilai;
-        if($totalQty > $item->qty){
-            return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
-        }
-        $price = str_replace('.','',$request->price);
-        $net = $price - ($price * ($request->discount/100));
-        $request->merge(['updatedBy'=>Auth::id(),'price'=>$price,'net'=>$net]);
-        $order = PurchaseOrder::find($id);
-    	$order->update($request->all());
-        $is_order = false;
-        if($totalQty == $item->qty){
-            $is_order = true;
-        }
-        PurchaseLetter::find($request->purchase_letter_id)->update(['is_order' => $is_order]);
-    }
-
     public function destroy($id)
     {
         try {
@@ -495,10 +481,14 @@ class OrderController extends Controller
     public function close(Request $request,$id)
     {
         $order = PurchaseOrder::find($id);
-        $order->status = 3;
-        $order->closed_by = Auth::id();
-        $order->closed_at = now();
-        $order->save();
-        return response()->json(['success'=>true, 'message' => 'Data berhasil diclose']);
+        $data = ['success'=>false, 'message' => 'Data tidak boleh diclose'];
+        if($order->status != 5){
+            $order->status = 3;
+            $order->closed_by = Auth::id();
+            $order->closed_at = now();
+            $order->save();
+            $data = ['success'=>true, 'message' => 'Data berhasil diclose'];
+        }
+        return response()->json($data);
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\Supplier;
+use App\Models\SupplierStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SupplierController extends Controller
+class SupplierStatusController extends Controller
 {
     public function __construct()
     {
@@ -31,9 +31,16 @@ class SupplierController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Supplier::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-                'currency:id,name','category:id,name')
-                ->whereHas('partner',function ($query) use ($search,$sortBy,$orderBy){
+        $data = SupplierStatus::with('supplier.partner.npwp:id,number_npwp,name',
+                    'supplier.category:id,name',
+                    'supplier.currency:id,name',
+                    'supplier.partner.postal_code:id,postal_code',
+                    'supplier.partner.village:id,name',
+                    'supplier.partner.district:id,name',
+                    'supplier.partner.regency:id,name',
+                    'supplier.partner.province:id,name',
+                    'product_status:id,code,name')
+                ->whereHas('supplier.partner',function ($query) use ($search,$sortBy,$orderBy){
                     $query->where('partners.name','LIKE',"%{$search}%")
                     ->orderBy('partners.'.$orderBy, $sortBy);
                 })
@@ -50,13 +57,11 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'partner_id' => 'required',
-            'supplier_category_id' => 'required',
-            'currency_id' => 'nullable',
-            'term_of_payment' => 'required'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'product_status_id' => 'required|exists:product_statuses,id'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = Supplier::create($request->all());
+        $data = SupplierStatus::create($request->all());
         return response()->json(['data'=>$data]);
     }
 
@@ -68,7 +73,13 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        $data = Supplier::find($id);
+        $data = SupplierStatus::with('supplier.partner.npwp:id,number_npwp,name',
+            'supplier.partner.postal_code:id,postal_code',
+            'supplier.partner.village:id,name',
+            'supplier.partner.district:id,name',
+            'supplier.partner.regency:id,name',
+            'supplier.partner.province:id,name',
+            'product_status:id,code,name')->find($id);
         return response()->json(['data'=>$data]);
     }
 
@@ -82,13 +93,11 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'partner_id' => 'required',
-            'supplier_category_id' => 'required',
-            'currency_id' => 'nullable',
-            'term_of_payment' => 'required'
+            'supplier_id' => 'required|exists:suppliers,id',
+            'product_status_id' => 'required|exists:product_statuses,id'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
-        $data = Supplier::find($id);
+        $data = SupplierStatus::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);
     }
@@ -102,41 +111,12 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Supplier::find($id)->delete();
+            $data = SupplierStatus::find($id)->delete();
             return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
                 return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
             }
         }
-    }
-
-    public function getData(Request $request)
-    {
-        $search = $request->q;
-        $data = Supplier::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-        'currency:id,name','category:id,name')
-                ->whereHas('partner',function ($query) use ($search){
-                    $query->where('partners.code','LIKE',"%{$search}%")
-                    ->orWhere('partners.name','LIKE',"%{$search}%");
-                })
-                ->limit(10)
-                ->get();
-        return response()->json(['data' => $data]);
-    }
-
-    public function getDataNotStatus(Request $request)
-    {
-        $search = $request->q;
-        $data = Supplier::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-                'currency:id,name','category:id,name')
-                ->doesntHave('product_status')
-                ->whereHas('partner',function ($query) use ($search){
-                    $query->where('partners.code','LIKE',"%{$search}%")
-                    ->orWhere('partners.name','LIKE',"%{$search}%");
-                })
-                ->limit(10)
-                ->get();
-        return response()->json(['data' => $data]);
     }
 }

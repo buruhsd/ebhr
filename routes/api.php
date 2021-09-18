@@ -165,6 +165,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('supplier_status', 'SupplierStatusController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('supplier_category', 'SupplierCategoryController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -190,6 +194,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
 });
 Route::get('/suppliers', [App\Http\Controllers\Master\SupplierController::class, 'getData'])->name('api.supplier.data');
+Route::get('/suppliers/status', [App\Http\Controllers\Master\SupplierController::class, 'getDataNotStatus'])->name('api.supplier.getDataNotStatus');
 Route::get('/supplier_categories', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getData'])->name('api.supplier_category.data');
 Route::get('/supplier_category/parent', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getParent'])->name('api.supplier_category.parent');
 Route::get('/supplier_category/childs', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getChilds'])->name('api.supplier_category.childs');
