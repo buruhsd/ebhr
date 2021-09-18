@@ -17,6 +17,11 @@ class Kurs extends Model
         'updatedBy',
     ];
 
+    public function getValueAttribute()
+    {
+        return round($this->attributes['value'],2);
+    }
+
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_id');

@@ -25,6 +25,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
     	$search = $request->search;
+    	$status = $request->status;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
@@ -46,8 +47,12 @@ class OrderController extends Controller
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
                     'order_item.unit:id,name')
-                ->where('id','LIKE',"{$search}%")
-                ->orWhere('no_op', 'LIKE',"{$search}%")
+                ->when($status, function ($query) use ($status){
+                    $query->where('status',$status);
+                })
+                ->when($search, function ($query) use ($search){
+                    $query->where('no_op','LIKE',"{$search}%");
+                })
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(20);
         return response()->json($data);
@@ -242,9 +247,9 @@ class OrderController extends Controller
                     ->sum(DB::raw('qty * product_units.value'));
             $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
             $nilai = $value['qty'] * $konversiQty;
-            if($nilai > $purchase_item->rest_qty){
-                return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
-            }
+            // if($nilai > $purchase_item->rest_qty){
+            //     return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
+            // }
             $totalQty = $totalQtyKonversi + $nilai;
             $discount = $value['discount'];
             $price = $value['price'] * $kurs;
@@ -321,7 +326,8 @@ class OrderController extends Controller
                 if($totalQty == $purchase_item->qty){
                     $status = 1;
                 }
-                $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
+                $rest = PurchaseOrderItem::where(['purchase_letter_id'=> $value['purchase_letter_id'],'purchase_letter_item_id'=> $value['purchase_letter_item_id']])->sum(DB::raw('unit_conversion * qty'));
+                $purchase_item->rest_qty = $purchase_item->qty - $rest;
                 $purchase_item->status = $status;
                 $purchase_item->save();
             }else{
