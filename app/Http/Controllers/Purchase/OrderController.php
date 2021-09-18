@@ -434,12 +434,13 @@ class OrderController extends Controller
                     'supplier.currency:id,code,name',
                     'supplier.partner:id,code,name',
                     'kurs_type:id,name',
+                    'currency:id,code,name',
                     'order_item',
+                    'order_item.purchase:id,no_pp',
                     'order_item.purchase_item:id,product_id,qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
-                    'order_item.unit:id,name',
-                    'purchase_letter','description:id,purchase_order_id,noted')
+                    'order_item.unit:id,name')
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op','LIKE',"{$search}%");
                 })
