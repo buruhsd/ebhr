@@ -42,7 +42,7 @@ class OrderController extends Controller
                     'currency:id,code,name',
                     'order_item',
                     'order_item.purchase:id,no_pp',
-                    'order_item.purchase_item:id,product_id,qty,unit',
+                    'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
                     'order_item.unit:id,name')
@@ -62,7 +62,7 @@ class OrderController extends Controller
             'supplier.partner:id,code,name',
             'kurs_type:id,name',
             'order_item',
-            'order_item.purchase_item:id,product_id,qty,unit',
+            'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
             'order_item.product:id,register_number,name,second_name',
             'order_item.product.units:id,name,value',
             'order_item.unit:id,name')->find($id);
@@ -114,6 +114,9 @@ class OrderController extends Controller
                     ->sum(DB::raw('qty * product_units.value'));
             $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
             $nilai = $value['qty'] * $konversiQty;
+            if($nilai > $purchase_item->rest_qty){
+                return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
+            }
             $totalQty = $totalQtyKonversi + $nilai;
             $discount = $value['discount'];
             $price = $value['price'] * $kurs;
@@ -186,8 +189,9 @@ class OrderController extends Controller
             $data->order_item()->create($value);
             if($totalQty == $purchase_item->qty){
                 $purchase_item->status = 1;
-                $purchase_item->save();
             }
+            $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
+            $purchase_item->save();
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
@@ -238,6 +242,9 @@ class OrderController extends Controller
                     ->sum(DB::raw('qty * product_units.value'));
             $konversiQty = $purchase_item->products->units()->where('unit_id',$value['unit_id'])->first()->value;
             $nilai = $value['qty'] * $konversiQty;
+            if($nilai > $purchase_item->rest_qty){
+                return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
+            }
             $totalQty = $totalQtyKonversi + $nilai;
             $discount = $value['discount'];
             $price = $value['price'] * $kurs;
@@ -314,6 +321,7 @@ class OrderController extends Controller
                 if($totalQty == $purchase_item->qty){
                     $status = 1;
                 }
+                $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
                 $purchase_item->status = $status;
                 $purchase_item->save();
             }else{
@@ -348,8 +356,9 @@ class OrderController extends Controller
                 $data->order_item()->create($value);
                 if($totalQty == $purchase_item->qty){
                     $purchase_item->status = 1;
-                    $purchase_item->save();
                 }
+                $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
+                $purchase_item->save();
             }
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
@@ -401,8 +410,15 @@ class OrderController extends Controller
                     'supplier:id,partner_id,supplier_category_id,currency_id,term_of_payment',
                     'supplier.currency:id,code,name',
                     'supplier.partner:id,code,name',
+                    'kurs_type:id,name',
+                    'currency:id,code,name',
                     'order_item',
-                    'purchase_letter')
+                    'description:id,purchase_order_id,noted',
+                    'order_item.purchase:id,no_pp',
+                    'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
+                    'order_item.product:id,register_number,name,second_name',
+                    'order_item.product.units:id,name,value',
+                    'order_item.unit:id,name')
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op', 'LIKE',"%{$search}%");
                 })
@@ -438,7 +454,7 @@ class OrderController extends Controller
                     'order_item',
                     'description:id,purchase_order_id,noted',
                     'order_item.purchase:id,no_pp',
-                    'order_item.purchase_item:id,product_id,qty,unit',
+                    'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
                     'order_item.unit:id,name')

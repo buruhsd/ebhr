@@ -13,6 +13,7 @@ class PurchaseLetterItem extends Model
         'purchase_letter_id',
         'product_id',
         'qty',
+        'rest_qty',
         'unit',
         'status',
         'insertedBy',

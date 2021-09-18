@@ -57,6 +57,7 @@ class PurchaseController extends Controller
     	$data = PurchaseLetter::create($request->all());
 
         foreach($request->item as $item){
+            $item['rest_qty'] = $item['qty'];
             $item['insertedBy'] = Auth::id();
             $item['updatedBy'] = Auth::id();
             $data->purchase_items()->create($item);
@@ -84,9 +85,11 @@ class PurchaseController extends Controller
         foreach($request->item as $item){
             $dataUpdate = $purchase->purchase_items()->where('product_id',$item['product_id'])->first();
             if($dataUpdate){
+                $item['rest_qty'] = $item['qty'];
                 $item['updatedBy'] = Auth::id();
                 $dataUpdate->update($item);
             }else{
+                $item['rest_qty'] = $item['qty'];
                 $item['insertedBy'] = Auth::id();
                 $item['updatedBy'] = Auth::id();
                 $purchase->purchase_items()->create($item);
@@ -123,7 +126,7 @@ class PurchaseController extends Controller
     public function getItemPurchase(Request $request)
     {
         $search = $request->q;
-    	$data = PurchaseLetterItem::select('id','purchase_letter_id','product_id','qty','unit')
+    	$data = PurchaseLetterItem::select('id','purchase_letter_id','product_id','qty','rest_qty','unit')
                 ->with('purchase:id,no_pp','products:id,register_number,second_name,unit_id','products.unit:id,name','products.units:id,product_id,unit_id,value')
                 ->where('status',0)
                 ->wherehas('purchase', function ($query) use ($search){
