@@ -436,6 +436,7 @@ class OrderController extends Controller
                     'kurs_type:id,name',
                     'currency:id,code,name',
                     'order_item',
+                    'description:id,purchase_order_id,noted',
                     'order_item.purchase:id,no_pp',
                     'order_item.purchase_item:id,product_id,qty,unit',
                     'order_item.product:id,register_number,name,second_name',
