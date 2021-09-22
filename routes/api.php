@@ -101,6 +101,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('plafon', 'PlafonController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('supplier', 'SupplierController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
