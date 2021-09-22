@@ -265,6 +265,7 @@ Route::get('/purchase/orders/description', [App\Http\Controllers\Purchase\OrderC
 Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');
 Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
 Route::get('purchase/item', [PurchaseController::class, 'getItemPurchase'])->name('api.purchase.getItemPurchase');
+Route::get('purchase/close/{id}', [PurchaseController::class, 'close'])->name('api.purchase.close');
 Route::get('purchase/number/{id}', [PurchaseController::class, 'getNumberPP'])->name('api.purchase.number');
 Route::get('purchase/list', [PurchaseController::class, 'index'])->name('api.purchase.index');
 Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('api.purchase.show');

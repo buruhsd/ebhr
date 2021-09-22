@@ -13,8 +13,11 @@ use App\Http\Resources\Purchase\PurchaseResourceCollection;
 
 class PurchaseController extends Controller
 {
+    // status 0 = active, 1 = closed
+
     public function index(Request $request){
     	$search = $request->search;
+    	$status = $request->status;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
@@ -31,10 +34,19 @@ class PurchaseController extends Controller
                     'purchase_urgentity:id,name',
                     'purchase_items:id,product_id,purchase_letter_id,qty,unit',
                     'purchase_items.products:id,name,product_code,second_name,register_number')
-                    ->where('id','LIKE',"{$search}%")
-                    ->orWhere('no_pp', 'LIKE',"{$search}%")
-                    ->orderBy($orderBy, $sortBy)
-                    ->paginate(20);
+                ->when($status, function ($query) use ($status){
+                    if($status == 'active'){
+                        $statusIn = [0];
+                    }elseif($status == 'all'){
+                        $statusIn = [0,1];
+                    }
+                    $query->whereIn('status',$statusIn);
+                })
+                ->when($search, function ($query) use ($search){
+                    $query->where('no_pp','LIKE',"{$search}%");
+                })
+                ->orderBy($orderBy, $sortBy)
+                ->paginate(20);
         return response()->json(['data' => $data]);
     }
 
@@ -134,6 +146,17 @@ class PurchaseController extends Controller
                 })
                 ->get();
         return response()->json(['data' => $data]);
+    }
+
+    public function close(Request $request,$id)
+    {
+        $order = PurchaseLetter::find($id);
+        $order->status = 1;
+        $order->closed_by = Auth::id();
+        $order->closed_at = now();
+        $order->save();
+        $data = ['success'=>true, 'message' => 'Data berhasil diclose'];
+        return response()->json($data);
     }
 
     public function approval(Request $request, PurchaseLetter $purchase){

@@ -13,6 +13,7 @@ class Supplier extends Model
         'supplier_category_id',
         'currency_id',
         'term_of_payment',
+        'is_tt',
         'insertedBy',
         'updatedBy',
     ];

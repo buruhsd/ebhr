@@ -48,7 +48,6 @@ class OrderController extends Controller
                     'order_item.product.units:id,name,value',
                     'order_item.unit:id,name')
                 ->when($status, function ($query) use ($status){
-                    $query->where('status',$status);
                     if($status == 'new'){
                         $statusIn = [0];
                     }elseif($status == 'approve'){
@@ -113,10 +112,12 @@ class OrderController extends Controller
         $max_price_unit = 0;
         $max_price_item = 0;
         $kurs = 0;
+        $term_of_payment = 0;
         $currency_id = NULL;
         $supplier = Supplier::find($request->supplier_id);
         if($supplier && $request->kurs_type_id){
             $currency_id = $supplier->currency_id;
+            $term_of_payment = $supplier->term_of_payment;
             $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
                     ->whereDate('date','<=',now())
                     ->orderBy('date','desc')
@@ -159,9 +160,10 @@ class OrderController extends Controller
         }
         $dpp = round($total,0);
         $dpp = intval(substr_replace($dpp,"000",-3));
-        $ppn_hc = $total * ($request->ppn/100);
+        $ppn_hc = $dpp * ($request->ppn/100);
         $total_op = $total + $ppn_hc;
         $request->merge([
+            'term_of_payment'=>$term_of_payment,
             'kurs'=> $kurs,
             'currency_id'=> $currency_id,
             'ppn_hc'=> $ppn_hc,
@@ -240,10 +242,12 @@ class OrderController extends Controller
         $max_price_unit = 0;
         $max_price_item = 0;
         $kurs = 0;
+        $term_of_payment = 0;
         $currency_id = NULL;
         $supplier = Supplier::find($request->supplier_id);
         if($supplier && $request->kurs_type_id){
             $currency_id = $supplier->currency_id;
+            $term_of_payment = $supplier->term_of_payment;
             $kurs = Kurs::where(['currency_id'=>$currency_id,'kurs_type_id'=>$request->kurs_type_id])
                     ->whereDate('date','<=',now())
                     ->orderBy('date','desc')
@@ -287,9 +291,10 @@ class OrderController extends Controller
         }
         $dpp = round($total,0);
         $dpp = intval(substr_replace($dpp,"000",-3));
-        $ppn_hc = $total * ($request->ppn/100);
+        $ppn_hc = $dpp * ($request->ppn/100);
         $total_op = $total + $ppn_hc;
         $request->merge([
+            'term_of_payment'=>$term_of_payment,
             'kurs'=> $kurs,
             'currency_id'=> $currency_id,
             'ppn_hc'=> $ppn_hc,

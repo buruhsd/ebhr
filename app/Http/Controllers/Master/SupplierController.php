@@ -53,7 +53,8 @@ class SupplierController extends Controller
             'partner_id' => 'required',
             'supplier_category_id' => 'required',
             'currency_id' => 'nullable',
-            'term_of_payment' => 'required'
+            'term_of_payment' => 'required',
+            'is_tt'=> 'required'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Supplier::create($request->all());
@@ -85,7 +86,8 @@ class SupplierController extends Controller
             'partner_id' => 'required',
             'supplier_category_id' => 'required',
             'currency_id' => 'nullable',
-            'term_of_payment' => 'required'
+            'term_of_payment' => 'required',
+            'is_tt'=> 'required'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Supplier::find($id);

@@ -3,6 +3,7 @@
 namespace App\Models\Purchase;
 
 use App\Models\Branch;
+use App\Models\Warehouse;
 use App\Models\Currency;
 use App\Models\KursType;
 use App\Models\Supplier;
@@ -10,34 +11,28 @@ use App\Models\Master\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseOrder extends Model
+class Receipt extends Model
 {
     use HasFactory;
     protected $fillable = [
         'branch_id',
-        'transaction_type_id',
+        'warehouse_id',
+        'purchase_order_id',
         'supplier_id',
-        'no_op',
-        'date_op',
-        'date_estimate',
+        'number',
+        'date',
         'ppn',
         'term_of_payment',
-        'ppn_hc',
-        'dpp',
-        'total',
-        'max_price_unit',
-        'max_price_item',
         'currency_id',
         'kurs_type_id',
         'kurs',
+        'ppn_valas',
+        'ppn_idr',
+        'total_valas',
+        'total_idr',
+        'dpp',
         'status',
         'noted',
-        'approved_by',
-        'approved_at',
-        'released_by',
-        'released_at',
-        'closed_by',
-        'closed_at',
         'insertedBy',
         'updatedBy',
     ];
@@ -47,7 +42,7 @@ class PurchaseOrder extends Model
         parent::boot();
         static::creating(function ($model) {
             try {
-                $model->no_op = self::numberOP($model->branch_id);
+                $model->no_op = self::generateNumber($model->branch_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
             }
@@ -63,7 +58,6 @@ class PurchaseOrder extends Model
 
     public function getStatusTextAttribute()
     {
-    // status 0 = new, 1 = approved, 2 = released, 3 = closed, 4 = ttb, 5 = ttb complete
         if($this->status == 0){
             $status = 'Active';
         }elseif($this->status == 1){
@@ -80,10 +74,10 @@ class PurchaseOrder extends Model
         return $this->status == 0 ? 'Active' : 'Closed';
     }
 
-    public static function numberOP($id)
+    public static function generateNumber($id)
     {
         $branch = Branch::find($id)->alias_name;
-        $string = 'OPB'.date('y').'/'.date('m').'/'.$branch;
+        $string = 'TTB'.date('y').'/'.date('m').'/'.$branch;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
@@ -96,19 +90,24 @@ class PurchaseOrder extends Model
         return $string.$newID;
     }
 
-    public function kurs_type()
-    {
-        return $this->belongsTo(KursType::class, 'kurs_type_id');
-    }
-
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function transaction_type()
+    public function warehouse_id()
     {
-        return $this->belongsTo(TransactionType::class, 'transaction_type_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+    }
+
+    public function purchase_order()
+    {
+        return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');
+    }
+
+    public function kurs_type()
+    {
+        return $this->belongsTo(KursType::class, 'kurs_type_id');
     }
 
     public function supplier()
@@ -116,14 +115,9 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
-    public function description()
+    public function receipt_items()
     {
-        return $this->hasOne(PurchaseDescription::class, 'purchase_order_id');
-    }
-
-    public function order_item()
-    {
-        return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
+        return $this->hasMany(ReceiptItems::class, 'receipt_item_id');
     }
 
     public function currency()

@@ -23,14 +23,21 @@ class PurchaseLetter extends Model
         'purchase_urgensity_id',
         'is_order',
         'status',
+        'closed_by',
+        'closed_at',
         'insertedBy',
         'updatedBy',
     ];
 
-    protected $appends = ['label'];
+    protected $appends = ['label','status_text'];
     public function getLabelAttribute()
     {
         return $this->no_pp;
+    }
+
+    public function getStatusTextAttribute()
+    {
+        return $this->status == 0 ? 'Active' : 'Closed';
     }
 
     protected static function boot()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use Auth;
 use App\Models\Branch;
+use App\Models\Purchase\PurchaseLetter;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class BranchController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required",
-            "alias_name" => "required|unique:branches,alias_name|alpha|string|max:2"
+            "alias_name" => "required|alpha|string|max:2|unique:branches,alias_name,".$id
         ]);
         $request->merge(['updatedBy'=>Auth::id(),'alias_name'=>strtoupper($request->alias_name)]);
         $data = Branch::find($id);
@@ -95,7 +96,12 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        $data = Branch::find($id)->delete();
-        return response()->json(['data' => 'data deleted']);
+        $check = PurchaseLetter::where('branch_id',$id)->first();
+        if($check){
+            return response()->json(['message' => 'Data sudah digunakan pada Tabel/Transaksi lain','success'=>false]);
+        }else{
+            $data = Branch::find($id)->delete();
+            return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+        }
     }
 }
