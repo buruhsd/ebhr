@@ -255,6 +255,10 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
     Route::resource('description', 'DescriptionOrderController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+
+    Route::resource('receipt', 'ReceiptController', ['only' => [
+        'index','store'
+    ]]);
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
@@ -277,3 +281,6 @@ Route::get('purchase/{purchase}/approval', [PurchaseController::class, 'approval
 Route::post('purchase/{purchase}/create-order', [PurchaseController::class, 'createOrder'])->name('api.purchase.createOrder');
 Route::post('purchase/{order}/close-order', [PurchaseController::class, 'closeOrder'])->name('api.purchase.closeOrder');
 Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
+
+//Receipt
+// Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');

@@ -10,6 +10,7 @@ use App\Models\Supplier;
 use App\Models\Master\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Receipt extends Model
 {
@@ -42,7 +43,7 @@ class Receipt extends Model
         parent::boot();
         static::creating(function ($model) {
             try {
-                $model->no_op = self::generateNumber($model->branch_id);
+                $model->number = self::generateNumber($model->branch_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
             }
@@ -82,7 +83,7 @@ class Receipt extends Model
         $latest = self::where('branch_id',$id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
-            $format = $latest->no_op;
+            $format = $latest->number;
         }
         $id = substr($format, -4);
         $newID = intval($id) + 1;
@@ -117,7 +118,7 @@ class Receipt extends Model
 
     public function receipt_items()
     {
-        return $this->hasMany(ReceiptItems::class, 'receipt_item_id');
+        return $this->hasMany(ReceiptItems::class, 'receipt_id');
     }
 
     public function currency()
