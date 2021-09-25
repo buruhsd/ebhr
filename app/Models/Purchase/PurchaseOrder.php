@@ -63,21 +63,25 @@ class PurchaseOrder extends Model
 
     public function getStatusTextAttribute()
     {
-    // status 0 = new, 1 = approved, 2 = released, 3 = closed, 4 = ttb, 5 = ttb complete
+        // status 0 = new, 1 = approved, 2 = Reject approved, 3 = released, 4 = Reject released, 5 = closed, 6 = On Process, 7 = Done
         if($this->status == 0){
-            $status = 'Active';
+            $status = 'New';
         }elseif($this->status == 1){
-            $status = 'Approved';
+            $status = 'App';
         }elseif($this->status == 2){
-            $status = 'Released';
+            $status = 'Reject App';
         }elseif($this->status == 3){
-            $status = 'Closed';
+            $status = 'Release';
         }elseif($this->status == 4){
-            $status = 'TTB';
+            $status = 'Reject Release';
         }elseif($this->status == 5){
-            $status = 'TTB Done';
+            $status = 'Close';
+        }elseif($this->status == 6){
+            $status = 'On Process';
+        }elseif($this->status == 7){
+            $status = 'Done';
         }
-        return $this->status == 0 ? 'Active' : 'Closed';
+        return $status;
     }
 
     public static function numberOP($id)
@@ -134,6 +138,21 @@ class PurchaseOrder extends Model
     public function insertedBy()
     {
         return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function approved_by()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function released_by()
+    {
+        return $this->belongsTo(User::class, 'released_by');
+    }
+
+    public function closed_by()
+    {
+        return $this->belongsTo(User::class, 'closed_by');
     }
 
     public function updatedBy()

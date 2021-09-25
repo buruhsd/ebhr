@@ -37,7 +37,7 @@ class PurchaseLetter extends Model
 
     public function getStatusTextAttribute()
     {
-        return $this->status == 0 ? 'Active' : 'Closed';
+        return $this->status == 0 ? 'New' : 'Close';
     }
 
     protected static function boot()
