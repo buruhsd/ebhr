@@ -77,7 +77,7 @@ class OrderController extends Controller
                     }elseif($status == 'done'){
                         $statusIn = [7];
                     }elseif($status == 'all'){
-                        $statusIn = [0,1,2,3,4,5,6];
+                        $statusIn = [0,1,2,3,4,6];
                     }
                     $query->whereIn('status',$statusIn);
                 })
