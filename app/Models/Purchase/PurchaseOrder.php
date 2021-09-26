@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\KursType;

@@ -50,10 +50,10 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'partner_id' => 'required',
-            'supplier_category_id' => 'required',
-            'currency_id' => 'nullable',
-            'term_of_payment' => 'required',
+            'partner_id' => 'required|integer',
+            'supplier_category_id' => 'required|integer',
+            'currency_id' => 'nullable|integer',
+            'term_of_payment' => 'required|integer',
             'is_tt'=> 'required'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -83,10 +83,10 @@ class SupplierController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'partner_id' => 'required',
-            'supplier_category_id' => 'required',
-            'currency_id' => 'nullable',
-            'term_of_payment' => 'required',
+            'partner_id' => 'required|integer',
+            'supplier_category_id' => 'required|integer',
+            'currency_id' => 'nullable|integer',
+            'term_of_payment' => 'required|integer',
             'is_tt'=> 'required'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

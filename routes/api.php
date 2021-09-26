@@ -263,7 +263,9 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
 Route::get('/purchase/orders/approve/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'approve'])->name('api.purchase.order.approve');
+Route::get('/purchase/orders/approve/reject/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'reject_approve'])->name('api.purchase.order.reject_approve');
 Route::get('/purchase/orders/release/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'release'])->name('api.purchase.order.release');
+Route::get('/purchase/orders/release/reject/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'reject_release'])->name('api.purchase.order.reject_release');
 Route::get('/purchase/orders/close/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'close'])->name('api.purchase.order.close');
 Route::get('/purchase/orders/description', [App\Http\Controllers\Purchase\OrderController::class, 'description'])->name('api.purchase.order.description');
 Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');

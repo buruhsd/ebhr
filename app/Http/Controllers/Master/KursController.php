@@ -27,10 +27,10 @@ class KursController extends Controller
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
-            $orderBy = 'value';
+            $orderBy = 'date';
         }
         if(is_null($sortBy)){
-            $sortBy = 'asc';
+            $sortBy = 'desc';
         }
         $data = Kurs::with('currency:id,name,code','type:id,name')
             ->when($search, function ($query) use ($search){
@@ -51,10 +51,12 @@ class KursController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'currency_id'=>'required|numeric',
-            'kurs_type_id'=>'required|numeric',
+            'currency_id'=>'required|integer',
+            'kurs_type_id'=>'required|integer',
             'value'=>'required|numeric',
             'date'=>'required|date',
+            'number_kmk' => 'required|string|max:25',
+            'kmk_at' => 'required|date',
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = Kurs::create($request->all());
@@ -83,10 +85,12 @@ class KursController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'currency_id'=>'required|numeric',
-            'kurs_type_id'=>'required|numeric',
+            'currency_id'=>'required|integer',
+            'kurs_type_id'=>'required|integer',
             'value'=>'required|numeric',
             'date'=>'required|date',
+            'number_kmk' => 'required|string|max:25',
+            'kmk_at' => 'required|date',
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = Kurs::find($id);

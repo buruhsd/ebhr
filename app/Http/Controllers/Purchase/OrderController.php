@@ -15,8 +15,7 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
-    // status 0 = new, 1 = approved, 2 = released, 3 = closed, 4 = ttb, 5 = ttb complete
-
+    // status 0 = new, 1 = approved, 2 = Reject approved, 3 = released, 4 = Reject released, 5 = closed, 6 = On Process, 7 = Done
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -51,6 +50,9 @@ class OrderController extends Controller
                     'supplier.partner:id,code,name',
                     'kurs_type:id,name',
                     'currency:id,code,name',
+                    'approved_by:id,name',
+                    'released_by:id,name',
+                    'closed_by:id,name',
                     'order_item',
                     'order_item.purchase:id,no_pp',
                     'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
@@ -60,14 +62,22 @@ class OrderController extends Controller
                 ->when($status, function ($query) use ($status){
                     if($status == 'new'){
                         $statusIn = [0];
-                    }elseif($status == 'approve'){
+                    }elseif($status == 'app'){
                         $statusIn = [1];
-                    }elseif($status == 'release'){
+                    }elseif($status == 'reject_app'){
                         $statusIn = [2];
-                    }elseif($status == 'close'){
+                    }elseif($status == 'release'){
                         $statusIn = [3];
+                    }elseif($status == 'reject_release'){
+                        $statusIn = [4];
+                    }elseif($status == 'close'){
+                        $statusIn = [5];
+                    }elseif($status == 'on_proses'){
+                        $statusIn = [6];
+                    }elseif($status == 'done'){
+                        $statusIn = [7];
                     }elseif($status == 'all'){
-                        $statusIn = [0,1,2,4];
+                        $statusIn = [0,1,2,3,4,5,6];
                     }
                     $query->whereIn('status',$statusIn);
                 })
@@ -490,22 +500,42 @@ class OrderController extends Controller
         return response()->json(['success'=>true, 'message' => 'Data berhasil diapprove']);
     }
 
-    public function release(Request $request,$id)
+    public function reject_approve(Request $request,$id)
     {
         $order = PurchaseOrder::find($id);
         $order->status = 2;
+        $order->approved_by = Auth::id();
+        $order->approved_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil direject']);
+    }
+
+    public function release(Request $request,$id)
+    {
+        $order = PurchaseOrder::find($id);
+        $order->status = 3;
         $order->released_by = Auth::id();
         $order->released_at = now();
         $order->save();
         return response()->json(['success'=>true, 'message' => 'Data berhasil direlease']);
     }
 
+    public function reject_release(Request $request,$id)
+    {
+        $order = PurchaseOrder::find($id);
+        $order->status = 4;
+        $order->released_by = Auth::id();
+        $order->released_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil direject']);
+    }
+
     public function close(Request $request,$id)
     {
         $order = PurchaseOrder::find($id);
         $data = ['success'=>false, 'message' => 'Data tidak boleh diclose'];
-        if($order->status != 5){
-            $order->status = 3;
+        if($order->status != 7){
+            $order->status = 5;
             $order->closed_by = Auth::id();
             $order->closed_at = now();
             $order->save();

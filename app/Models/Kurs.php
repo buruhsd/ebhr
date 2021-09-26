@@ -13,6 +13,8 @@ class Kurs extends Model
         'kurs_type_id',
         'value',
         'date',
+        'number_kmk',
+        'kmk_at',
         'insertedBy',
         'updatedBy',
     ];
