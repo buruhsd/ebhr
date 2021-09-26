@@ -24,6 +24,9 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
+    	$from_date = $request->from_date;
+    	$to_date = $request->to_date;
+    	$branch = $request->branch;
     	$search = $request->search;
     	$status = $request->status;
         $sortBy = $request->input('sortby');
@@ -34,6 +37,13 @@ class OrderController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'desc';
         }
+
+
+        if(is_null($from_date) || is_null($to_date)){
+            $to_date = date('Y-m-d');
+            $from_date = date('Y-m-d', strtotime($to_date. '-10 months'));
+        }
+
     	$data = PurchaseOrder::with('branch:id,name',
                     'transaction_type:id,name',
                     'supplier:id,partner_id,supplier_category_id,currency_id,term_of_payment',
@@ -64,6 +74,13 @@ class OrderController extends Controller
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op','LIKE',"{$search}%");
                 })
+                ->when($branch, function ($query) use ($branch){
+                    $query->whereHas('branch',function ($q) use ($branch){
+                        $q->where('branches.id',$branch);
+                    });
+                })
+                ->whereDate('date_op','>=',$from_date)
+                ->whereDate('date_op','<=',$to_date)
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(20);
         return response()->json($data);
