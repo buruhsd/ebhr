@@ -229,6 +229,7 @@ class OrderController extends Controller
             $value['price_hc'] = $price_hc;
             $value['net'] = $net;
             $value['net_hc'] = $net_hc;
+            $value['rest_qty'] = $value['qty'];
             $value['unit_conversion'] = $konversiQty;
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
@@ -363,6 +364,7 @@ class OrderController extends Controller
                 $value['price_hc'] = $price_hc;
                 $value['net'] = $net;
                 $value['net_hc'] = $net_hc;
+                $value['rest_qty'] = $value['qty'];
                 $value['unit_conversion'] = $konversiQty;
                 $value['updatedBy'] = Auth::id();
                 $update->update($value);
@@ -400,6 +402,7 @@ class OrderController extends Controller
                 $value['price_hc'] = $price_hc;
                 $value['net'] = $net;
                 $value['net_hc'] = $net_hc;
+                $value['rest_qty'] = $value['qty'];
                 $value['unit_conversion'] = $konversiQty;
                 $value['insertedBy'] = Auth::id();
                 $value['updatedBy'] = Auth::id();
@@ -447,6 +450,32 @@ class OrderController extends Controller
                     $query->where('no_op', 'LIKE',"%{$search}%");
                 })
                 ->limit(10)
+                ->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function getDataTtb(Request $request)
+    {
+        $search = $request->q;
+    	$data = PurchaseOrder::with('branch:id,name',
+                    'transaction_type:id,name',
+                    'supplier:id,partner_id,supplier_category_id,currency_id,term_of_payment',
+                    'supplier.currency:id,code,name',
+                    'supplier.partner:id,code,name',
+                    'supplier.product_status:id,supplier_id,product_status_id',
+                    'kurs_type:id,name',
+                    'currency:id,code,name',
+                    'description:id,purchase_order_id,noted',
+                    'order_item_ttb',
+                    'order_item_ttb.purchase:id,no_pp',
+                    'order_item_ttb.purchase_item:id,product_id,qty,rest_qty,unit',
+                    'order_item_ttb.product:id,register_number,name,second_name',
+                    'order_item_ttb.product.units',
+                    'order_item_ttb.unit:id,name')
+                ->when($search, function ($query) use ($search){
+                    $query->where('no_op', 'LIKE',"%{$search}%");
+                })
+                ->where('status',3)
                 ->get();
         return response()->json(['data' => $data]);
     }

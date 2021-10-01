@@ -2,8 +2,9 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Branch;
-use App\Models\Warehouse;
+use App\Models\Master\Warehouse;
 use App\Models\Currency;
 use App\Models\KursType;
 use App\Models\Supplier;
@@ -60,19 +61,9 @@ class Receipt extends Model
     public function getStatusTextAttribute()
     {
         if($this->status == 0){
-            $status = 'Active';
-        }elseif($this->status == 1){
-            $status = 'Approved';
-        }elseif($this->status == 2){
-            $status = 'Released';
-        }elseif($this->status == 3){
-            $status = 'Closed';
-        }elseif($this->status == 4){
-            $status = 'TTB';
-        }elseif($this->status == 5){
-            $status = 'TTB Done';
+            $status = 'Done';
         }
-        return $this->status == 0 ? 'Active' : 'Closed';
+        return $status;
     }
 
     public static function generateNumber($id)
@@ -96,7 +87,7 @@ class Receipt extends Model
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function warehouse_id()
+    public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }

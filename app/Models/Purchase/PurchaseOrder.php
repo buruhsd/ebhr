@@ -55,7 +55,12 @@ class PurchaseOrder extends Model
         });
     }
 
-    protected $appends = ['status_text'];
+    protected $appends = ['label','status_text'];
+
+    public function getLabelAttribute()
+    {
+        return $this->no_op;
+    }
 
     public function getKursAttribute()
     {
@@ -129,6 +134,11 @@ class PurchaseOrder extends Model
     public function order_item()
     {
         return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
+    }
+
+    public function order_item_ttb()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id')->where('status',0);
     }
 
     public function currency()

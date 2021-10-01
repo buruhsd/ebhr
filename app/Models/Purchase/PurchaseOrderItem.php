@@ -18,6 +18,7 @@ class PurchaseOrderItem extends Model
         'unit_id',
         'unit_conversion',
         'qty',
+        'rest_qty',
         'price',
         'price_hc',
         'discount',
