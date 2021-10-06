@@ -61,7 +61,7 @@ class Receipt extends Model
     public function getStatusTextAttribute()
     {
         if($this->status == 0){
-            $status = 'Done';
+            $status = '-';
         }
         return $status;
     }

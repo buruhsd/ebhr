@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
 use App\Models\Master\ProductStatus;
@@ -14,6 +15,7 @@ class ReceiptItems extends Model
     protected $fillable = [
         'receipt_id',
         'purchase_order_item_id',
+        'product_id',
         'product_status_id',
         'unit_op_id',
         'unit_id',
@@ -44,6 +46,11 @@ class ReceiptItems extends Model
     public function receipt()
     {
         return $this->belongsTo(Receipt::class, 'receipt_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Products::class, 'product_id');
     }
 
     public function unit_ttb()

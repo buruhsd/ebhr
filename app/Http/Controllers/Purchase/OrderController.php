@@ -471,6 +471,7 @@ class OrderController extends Controller
                     'order_item_ttb.purchase_item:id,product_id,qty,rest_qty,unit',
                     'order_item_ttb.product:id,register_number,name,second_name',
                     'order_item_ttb.product.units',
+                    'order_item_ttb.product.serial_number',
                     'order_item_ttb.unit:id,name')
                 ->when($search, function ($query) use ($search){
                     $query->where('no_op', 'LIKE',"%{$search}%");

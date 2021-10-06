@@ -169,6 +169,14 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('product_serial_number', 'ProductSerialNumberController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('bpb_type', 'BpbTypeController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('supplier_status', 'SupplierStatusController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -271,6 +279,7 @@ Route::get('/purchase/orders/close/{id}', [App\Http\Controllers\Purchase\OrderCo
 Route::get('/purchase/orders/description', [App\Http\Controllers\Purchase\OrderController::class, 'description'])->name('api.purchase.order.description');
 Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');
 Route::get('/purchase/receipts/number/{id}', [App\Http\Controllers\Purchase\ReceiptController::class, 'getNumberReceipt'])->name('api.purchase.receipt.number');
+Route::get('/purchase/receipts/product/serial_number', [App\Http\Controllers\Purchase\ReceiptController::class, 'product_serial_number'])->name('api.purchase.receipt.product_serial_number');
 Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
 Route::get('purchase/item', [PurchaseController::class, 'getItemPurchase'])->name('api.purchase.getItemPurchase');
 Route::get('purchase/close/{id}', [PurchaseController::class, 'close'])->name('api.purchase.close');

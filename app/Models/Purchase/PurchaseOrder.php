@@ -146,11 +146,6 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Currency::class, 'currency_id');
     }
 
-    public function insertedBy()
-    {
-        return $this->belongsTo(User::class, 'insertedBy');
-    }
-
     public function approved_by()
     {
         return $this->belongsTo(User::class, 'approved_by');
@@ -164,6 +159,11 @@ class PurchaseOrder extends Model
     public function closed_by()
     {
         return $this->belongsTo(User::class, 'closed_by');
+    }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
     }
 
     public function updatedBy()

@@ -28,6 +28,7 @@ class ReceiptController extends Controller
             'purchase_order',
             'receipt_items',
             'receipt_items.purchase_order_item.product',
+            'receipt_items.purchase_order_item.product.serial_number',
             'receipt_items.unit_ttb:id,name',
             'receipt_items.unit_op:id,name',
             'receipt_items.product_status:id,name',
@@ -71,6 +72,7 @@ class ReceiptController extends Controller
             }
             $total_valas += $net * $item['qty'];
             $total_idr += $net_hc * $item['qty'];
+            $item['product_id'] = $po_item->product_id;
             $item['unit_op_id'] = $po_item->unit_id;
             $item['qty_op'] = $po_item->qty;
             $item['unit_id'] = $po_item->product->units()->where('type', 'extern')->first()->unit_id;
@@ -137,5 +139,24 @@ class ReceiptController extends Controller
     {
         $number = Receipt::generateNumber($id);
         return response()->json(['data' => $number]);
+    }
+
+    public function product_serial_number(){
+        $data = ReceiptItems::with(
+            'receipt',
+            'purchase_order_item',
+            'product.serial_number',
+            'unit_ttb:id,name',
+            'unit_op:id,name',
+            'product_status:id,name',
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->whereHas('product', function ($query){
+                $query->whereHas('serial_number', function ($q){
+                    $q->where('product_serial_numbers.is_serial_number',1);
+                });
+            })
+            ->orderBy('created_at', 'desc')->paginate(10);
+        return response()->json($data);
     }
 }

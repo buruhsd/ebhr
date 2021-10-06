@@ -62,6 +62,11 @@ class Products extends Model
         return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
+    public function serial_number()
+    {
+        return $this->hasOne(ProductSerialNumber::class, 'product_id');
+    }
+
     public function insertedBy()
     {
         return $this->belongsTo(User::class, 'insertedBy');
