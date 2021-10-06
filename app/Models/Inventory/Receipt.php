@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Purchase;
+namespace App\Models\Inventory;
 
 use App\Models\User;
 use App\Models\Branch;
@@ -9,6 +9,7 @@ use App\Models\Currency;
 use App\Models\KursType;
 use App\Models\Supplier;
 use App\Models\Master\Unit;
+use App\Models\Purchase\PurchaseOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Auth;

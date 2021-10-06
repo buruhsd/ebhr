@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models\Purchase;
+namespace App\Models\Inventory;
 
 use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
 use App\Models\Master\ProductStatus;
+use App\Models\Purchase\PurchaseOrderItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

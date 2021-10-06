@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Purchase;
+namespace App\Http\Controllers\Inventory;
 
 
 use DB;
 use Auth;
 use App\Models\Kurs;
 use App\Models\Supplier;
-use App\Models\Purchase\Receipt;
-use App\Models\Purchase\ReceiptItems;
+use App\Models\Inventory\Receipt;
+use App\Models\Inventory\ReceiptItems;
 use App\Models\Purchase\PurchaseOrder;
 use App\Models\Purchase\PurchaseOrderItem;
 use App\Models\Purchase\PurchaseLetter;

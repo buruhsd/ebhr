@@ -205,6 +205,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });
+
 Route::get('/suppliers', [App\Http\Controllers\Master\SupplierController::class, 'getData'])->name('api.supplier.data');
 Route::get('/suppliers/status', [App\Http\Controllers\Master\SupplierController::class, 'getDataNotStatus'])->name('api.supplier.getDataNotStatus');
 Route::get('/supplier_categories', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getData'])->name('api.supplier_category.data');
@@ -263,10 +264,15 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
     Route::resource('description', 'DescriptionOrderController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+});
 
+//Purchase
+Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('receipt', 'ReceiptController', ['only' => [
         'index','store'
     ]]);
+    Route::get('receipts/number/{id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'getNumberReceipt']);
+    Route::get('receipts/product/serial_number', [App\Http\Controllers\Inventory\ReceiptController::class, 'product_serial_number']);
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
@@ -278,8 +284,6 @@ Route::get('/purchase/orders/release/reject/{id}', [App\Http\Controllers\Purchas
 Route::get('/purchase/orders/close/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'close'])->name('api.purchase.order.close');
 Route::get('/purchase/orders/description', [App\Http\Controllers\Purchase\OrderController::class, 'description'])->name('api.purchase.order.description');
 Route::get('/purchase/orders/number/{id}', [App\Http\Controllers\Purchase\OrderController::class, 'getNumberOP'])->name('api.purchase.order.number');
-Route::get('/purchase/receipts/number/{id}', [App\Http\Controllers\Purchase\ReceiptController::class, 'getNumberReceipt'])->name('api.purchase.receipt.number');
-Route::get('/purchase/receipts/product/serial_number', [App\Http\Controllers\Purchase\ReceiptController::class, 'product_serial_number'])->name('api.purchase.receipt.product_serial_number');
 Route::get('purchase/search', [PurchaseController::class, 'getData'])->name('api.purchase.getData');
 Route::get('purchase/item', [PurchaseController::class, 'getItemPurchase'])->name('api.purchase.getItemPurchase');
 Route::get('purchase/close/{id}', [PurchaseController::class, 'close'])->name('api.purchase.close');
