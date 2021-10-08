@@ -120,7 +120,7 @@ class OrderController extends Controller
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
             'transaction_type_id' => 'required|exists:transaction_types,id',
-            'supplier_id' => '|exists:suppliers,id',
+            'supplier_id' => 'required|exists:suppliers,id',
             'date_op' => 'required|date',
             'date_estimate' => 'required|date',
             'ppn' => 'required|numeric',

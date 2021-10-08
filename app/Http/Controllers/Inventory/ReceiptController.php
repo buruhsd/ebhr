@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Inventory;
 
-
 use DB;
 use Auth;
 use App\Models\Kurs;
@@ -18,7 +17,12 @@ use Illuminate\Http\Request;
 
 class ReceiptController extends Controller
 {
-    public function index(){
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
+    public function index(Request $request){
         $data = Receipt::with(
             'branch:id,code,name',
             'warehouse:id,code,name',

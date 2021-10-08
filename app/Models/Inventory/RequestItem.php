@@ -33,7 +33,7 @@ class RequestItem extends Model
         parent::boot();
         static::creating(function ($model) {
             try {
-                $model->number = self::generateNumber($model->branch_id,$model->bpb_type_id);
+                $model->number_spb = self::generateNumber($model->branch_id,$model->bpb_type_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
             }
@@ -43,13 +43,13 @@ class RequestItem extends Model
     public static function generateNumber($id,$bpb_type_id)
     {
         $branch = Branch::find($id)->alias_name;
-        $type = Branch::find($bpb_type_id)->code;
+        $type = BpbType::find($bpb_type_id)->code;
         $string = 'SPB'.date('y').'/'.date('m').'/'.$branch.$type;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
-            $format = $latest->number;
+            $format = $latest->number_spb;
         }
         $id = substr($format, -4);
         $newID = intval($id) + 1;
@@ -75,6 +75,11 @@ class RequestItem extends Model
     public function usage_group()
     {
         return $this->belongsTo(UsageGroup::class, 'usage_group_id');
+    }
+
+    public function detail_items()
+    {
+        return $this->hasMany(RequestItemDetail::class, 'request_item_id');
     }
 
     public function insertedBy()
