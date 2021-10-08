@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Master\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -108,5 +109,20 @@ class PurchaseLetter extends Model
     public function orders()
     {
         return $this->hasMany(PurchaseOrder::class, 'purchase_letter_id');
+    }
+
+    public function closedBy()
+    {
+        return $this->belongsTo(User::class, 'closed_by');
+    }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
     }
 }

@@ -31,7 +31,10 @@ class MaritalStatusController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = MaritalStatus::where('status_name','LIKE',"{$search}%")
+        $data = MaritalStatus::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('status_name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

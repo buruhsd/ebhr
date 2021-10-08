@@ -58,7 +58,9 @@ class OrderController extends Controller
                     'order_item.purchase_item:id,product_id,qty,rest_qty,unit',
                     'order_item.product:id,register_number,name,second_name',
                     'order_item.product.units:id,name,value',
-                    'order_item.unit:id,name')
+                    'order_item.unit:id,name',
+                    'insertedBy:id,name',
+                    'updatedBy:id,name')
                 ->when($status, function ($query) use ($status){
                     if($status == 'new'){
                         $statusIn = [0];

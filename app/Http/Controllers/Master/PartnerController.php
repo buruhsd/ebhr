@@ -32,7 +32,9 @@ class PartnerController extends Controller
             $sortBy = 'asc';
         }
         $data = Partner::with('npwp:id,name,number_npwp','postal_code:id,postal_code','village:id,district_id,name',
-                'district:id,regency_id,name','regency:id,province_id,name','province:id,name')
+                'district:id,regency_id,name','regency:id,province_id,name','province:id,name',
+                'insertedBy:id,name',
+                'updatedBy:id,name')
             ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);

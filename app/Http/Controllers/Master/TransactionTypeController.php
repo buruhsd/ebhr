@@ -31,7 +31,10 @@ class TransactionTypeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = TransactionType::where('name','LIKE',"{$search}%")
+        $data = TransactionType::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

@@ -20,4 +20,14 @@ class WorkType extends Model
     {
         return $this->type_name;
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }

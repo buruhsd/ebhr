@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Master\Products;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,5 +40,15 @@ class PurchaseLetterItem extends Model
     public function orders()
     {
         return $this->hasMany(PurchaseOrder::class, 'purchase_letter_item_id');
+    }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
     }
 }

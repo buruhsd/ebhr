@@ -25,7 +25,9 @@ class DescriptionOrderController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'desc';
         }
-    	$data = PurchaseDescription::with('order')
+    	$data = PurchaseDescription::with('order',
+                'insertedBy:id,name',
+                'updatedBy:id,name')
                 ->where('id','LIKE',"%{$search}%")
                 ->orWhere('item_name', 'LIKE',"{$search}%")
                 ->orderBy($orderBy, $sortBy)

@@ -21,4 +21,14 @@ class PointOfHire extends Model
     {
         return $this->name;
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }

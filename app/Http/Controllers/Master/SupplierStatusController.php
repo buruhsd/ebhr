@@ -39,7 +39,9 @@ class SupplierStatusController extends Controller
                     'supplier.partner.district:id,name',
                     'supplier.partner.regency:id,name',
                     'supplier.partner.province:id,name',
-                    'product_status:id,code,name')
+                    'product_status:id,code,name',
+                    'insertedBy:id,name',
+                    'updatedBy:id,name')
                 ->whereHas('supplier.partner',function ($query) use ($search,$sortBy,$orderBy){
                     $query->where('partners.name','LIKE',"%{$search}%")
                     ->orderBy('partners.'.$orderBy, $sortBy);

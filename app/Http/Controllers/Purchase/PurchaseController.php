@@ -33,7 +33,10 @@ class PurchaseController extends Controller
                     'purchase_necessary:id,name',
                     'purchase_urgentity:id,name',
                     'purchase_items:id,product_id,purchase_letter_id,qty,unit',
-                    'purchase_items.products:id,name,product_code,second_name,register_number')
+                    'purchase_items.products:id,name,product_code,second_name,register_number',
+                    'closedBy:id,name',
+                    'insertedBy:id,name',
+                    'updatedBy:id,name')
                 ->when($status, function ($query) use ($status){
                     if($status == 'active'){
                         $statusIn = [0];

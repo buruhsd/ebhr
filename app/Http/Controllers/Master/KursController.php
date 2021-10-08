@@ -32,7 +32,9 @@ class KursController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'desc';
         }
-        $data = Kurs::with('currency:id,name,code','type:id,name')
+        
+        $data = Kurs::with('currency:id,name,code','type:id,name','insertedBy:id,name',
+            'updatedBy:id,name')
             ->when($search, function ($query) use ($search){
                 $query->whereHas('type', function ($q) use ($search){
                     $q->where('kurs_types.name',$search);

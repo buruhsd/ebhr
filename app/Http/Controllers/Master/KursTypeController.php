@@ -32,7 +32,10 @@ class KursTypeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = KursType::where('name','LIKE',"{$search}%")
+        $data = KursType::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

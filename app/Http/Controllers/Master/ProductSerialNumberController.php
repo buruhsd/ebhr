@@ -25,7 +25,10 @@ class ProductSerialNumberController extends Controller
         $search = $request->search;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
-        $data = ProductSerialNumber::with('product')->when($search, function ($query) use ($search){
+        $data = ProductSerialNumber::with('product',
+                    'insertedBy:id,name',
+                    'updatedBy:id,name')
+                    ->when($search, function ($query) use ($search){
                     $query->whereHas('product', function ($q) use ($search){
                        $q->where('name','LIKE',"{$search}%")
                            ->orwhere('second_name','LIKE',"{$search}%")

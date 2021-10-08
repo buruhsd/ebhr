@@ -20,4 +20,14 @@ class Religion extends Model
     {
         return $this->religion_name;
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }

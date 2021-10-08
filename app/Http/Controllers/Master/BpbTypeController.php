@@ -31,7 +31,10 @@ class BpbTypeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = BpbType::where('name','LIKE',"{$search}%")
+        $data = BpbType::with(
+                'insertedBy:id,name',
+                'updatedBy:id,name')
+                ->where('name','LIKE',"{$search}%")
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(10);
         return response()->json($data);

@@ -33,4 +33,14 @@ class Kurs extends Model
     {
         return $this->belongsTo(KursType::class, 'kurs_type_id');
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }

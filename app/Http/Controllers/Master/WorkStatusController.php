@@ -31,7 +31,10 @@ class WorkStatusController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = WorkStatus::where('name','LIKE',"{$search}%")
+        $data = WorkStatus::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

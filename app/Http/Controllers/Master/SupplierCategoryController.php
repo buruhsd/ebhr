@@ -31,7 +31,10 @@ class SupplierCategoryController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = SupplierCategory::with('parent')->where('name','LIKE',"{$search}%")
+        $data = SupplierCategory::with('parent',
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

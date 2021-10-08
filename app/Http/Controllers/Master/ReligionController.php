@@ -31,7 +31,10 @@ class ReligionController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Religion::where('religion_name','LIKE',"{$search}%")
+        $data = Religion::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('religion_name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

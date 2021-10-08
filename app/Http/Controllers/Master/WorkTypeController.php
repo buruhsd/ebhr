@@ -31,7 +31,10 @@ class WorkTypeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = WorkType::where('type_name','LIKE',"{$search}%")
+        $data = WorkType::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('type_name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

@@ -31,7 +31,10 @@ class WorkPatternController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = WorkPattern::where('name','LIKE',"{$search}%")
+        $data = WorkPattern::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

@@ -134,4 +134,14 @@ class Employee extends Model
     {
         return $this->belongsTo(DevelopmentStatus::class, 'development_status_id');
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }

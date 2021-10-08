@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ class Unit extends Model
         'insertedBy',
         'updatedBy',
     ];
-    
+
     protected $appends = ['label'];
 
     public function getLabelAttribute()

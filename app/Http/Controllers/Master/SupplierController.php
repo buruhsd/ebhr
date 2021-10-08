@@ -32,7 +32,9 @@ class SupplierController extends Controller
             $sortBy = 'asc';
         }
         $data = Supplier::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-                'currency:id,name','category:id,name')
+                'currency:id,name','category:id,name',
+                'insertedBy:id,name',
+                'updatedBy:id,name')
                 ->whereHas('partner',function ($query) use ($search,$sortBy,$orderBy){
                     $query->where('partners.name','LIKE',"%{$search}%")
                     ->orderBy('partners.'.$orderBy, $sortBy);

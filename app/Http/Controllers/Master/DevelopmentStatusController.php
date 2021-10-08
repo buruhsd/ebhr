@@ -31,7 +31,10 @@ class DevelopmentStatusController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = DevelopmentStatus::where('name','LIKE',"{$search}%")
+        $data = DevelopmentStatus::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

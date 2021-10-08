@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,5 +58,15 @@ class PurchaseOrderItem extends Model
     public function purchase_order()
     {
         return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');
+    }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
     }
 }

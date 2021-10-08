@@ -31,7 +31,11 @@ class NpwpController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = Npwp::with('postal_code:id,postal_code','village:id,district_id,name','district:id,regency_id,name','regency:id,province_id,name','province:id,name')
+        $data = Npwp::with('postal_code:id,postal_code',
+            'village:id,district_id,name','district:id,regency_id,name',
+            'regency:id,province_id,name','province:id,name',
+            'insertedBy:id,name',
+            'updatedBy:id,name')
             ->where('number_npwp','LIKE',"{$search}%")
             ->orWhere('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)

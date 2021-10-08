@@ -31,7 +31,10 @@ class WorkGroupController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = WorkGroup::where('name','LIKE',"{$search}%")
+        $data = WorkGroup::with(
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->where('name','LIKE',"{$search}%")
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

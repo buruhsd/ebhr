@@ -32,7 +32,9 @@ class PlafonController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'desc';
         }
-        $data = Plafon::with('approval_level:id,code_position,name','release_level:id,code_position,name')
+        $data = Plafon::with('approval_level:id,code_position,name','release_level:id,code_position,name',
+            'insertedBy:id,name',
+            'updatedBy:id,name')
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

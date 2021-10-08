@@ -80,4 +80,14 @@ class IdentityCard extends Model
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
+
+    public function insertedBy()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updatedBy');
+    }
 }
