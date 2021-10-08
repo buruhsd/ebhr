@@ -181,6 +181,14 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('usage_group', 'UsageGroupController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('user_unit', 'UserUnitController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('supplier_category', 'SupplierCategoryController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use Auth;
-use App\Models\BpbType;
+use App\Models\UsageGroup;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class BpbTypeController extends Controller
+class UsageGroupController extends Controller
 {
     public function __construct()
     {
@@ -31,12 +31,11 @@ class BpbTypeController extends Controller
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = BpbType::where('name','LIKE',"{$search}%")
-                ->orderBy($orderBy, $sortBy)
-                ->paginate(10);
+        $data = UsageGroup::with('insertedBy:id,name','updatedBy:id,name')->where('name','LIKE',"{$search}%")
+            ->orderBy($orderBy, $sortBy)
+            ->paginate(10);
         return response()->json($data);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -46,18 +45,12 @@ class BpbTypeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required|unique:bpb_types,code|alpha_num|max:1",
+            "code" => "required|string|max:4|unique:usage_groups,code",
             "name" => "required",
-            "is_warehouse" => "required",
-            "is_number_pkb" => "required",
         ]);
-        $request->merge([
-            'code'=>strtoupper($request->code),
-            'insertedBy' => Auth::id(),
-            'updatedBy'=>Auth::id()
-        ]);
-        BpbType::create($request->all());
-        return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
+        $request->merge(['code'=>strtoupper($request->code),'insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
+        $data = UsageGroup::create($request->all());
+        return response()->json(['data'=>$data]);
     }
 
     /**
@@ -68,8 +61,8 @@ class BpbTypeController extends Controller
      */
     public function show($id)
     {
-        $data = BpbType::find($id);
-        return response()->json(['success' => true, 'data'=>$data]);
+        $data = UsageGroup::with('insertedBy:id,name','updatedBy:id,name')->find($id);
+        return response()->json(['data'=>$data]);
     }
 
     /**
@@ -82,15 +75,13 @@ class BpbTypeController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required|alpha_num|max:1|unique:bpb_types,code,".$id,
+            "code" => "required|string|max:4|unique:usage_groups,code,".$id,
             "name" => "required",
-            "is_warehouse" => "required",
-            "is_number_pkb" => "required"
         ]);
         $request->merge(['code'=>strtoupper($request->code),'updatedBy'=>Auth::id()]);
-        $data = BpbType::find($id);
+        $data = UsageGroup::find($id);
         $data->update($request->all());
-        return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
+        return response()->json(['data'=>$data]);
     }
 
     /**
@@ -102,7 +93,7 @@ class BpbTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $data = BpbType::find($id)->delete();
+            $data = UsageGroup::find($id)->delete();
             return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
