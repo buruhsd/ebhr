@@ -103,4 +103,9 @@ class UserUnitController extends Controller
             }
         }
     }
+
+    public function getData(){
+        $data = UserUnit::get();
+        return response()->json(['data' => $data]);
+    }
 }

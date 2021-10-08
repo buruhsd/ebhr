@@ -57,6 +57,20 @@ class RequestItem extends Model
         return $string.$newID;
     }
 
+    protected $appends = ['status_text'];
+
+    public function getStatusTextAttribute()
+    {
+        if($this->status == 0){
+            $status = 'New';
+        }elseif($this->status == 1){
+            $status = 'Approve';
+        }elseif($this->status == 2){
+            $status = 'Reject';
+        }
+        return $status;
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');

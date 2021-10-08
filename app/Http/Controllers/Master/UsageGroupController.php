@@ -101,4 +101,9 @@ class UsageGroupController extends Controller
             }
         }
     }
+
+    public function getData(){
+        $data = UsageGroup::get();
+        return response()->json(['data' => $data]);
+    }
 }

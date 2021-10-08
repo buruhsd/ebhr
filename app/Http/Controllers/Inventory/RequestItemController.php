@@ -19,7 +19,7 @@ class RequestItemController extends Controller
     }
 
     public function index(Request $request){
-        $search = $request->q;
+        $search = $request->search;
         $data = RequestItem::with(
             'branch:id,code,name',
             'organization:id,code,name,level',
@@ -67,7 +67,7 @@ class RequestItemController extends Controller
             'date_pkb' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.product_id' => 'required|exists:products,id',
+            'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.qty' => 'required|numeric|min:1'
         ]);
 
@@ -98,8 +98,7 @@ class RequestItemController extends Controller
             'date_pkb' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.request_item_detail_id' => 'required|exists:request_item_details,id',
-            'item.*.product_id' => 'required|exists:products,id',
+            'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.qty' => 'required|numeric|min:1'
         ]);
 
@@ -113,16 +112,11 @@ class RequestItemController extends Controller
         ]);
 
     	$requestItem->update($request->all());
+        $requestItem->detail_items()->delete();
         foreach($request->item as $value){
-            $itemDetail = $requestItem->detail_items()->where('id', $value['request_item_detail_id'])->first();
-            if($itemDetail){
-                $value['updatedBy'] = Auth::id();
-                $itemDetail->update($value);
-            }else{
-                $value['insertedBy'] = Auth::id();
-                $value['updatedBy'] = Auth::id();
-                $requestItem->detail_items()->create($value);
-            }
+            $value['insertedBy'] = Auth::id();
+            $value['updatedBy'] = Auth::id();
+            $requestItem->detail_items()->create($value);
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }

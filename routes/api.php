@@ -176,6 +176,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('bpb_type', 'BpbTypeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('/bpb_types', [App\Http\Controllers\Master\BpbTypeController::class, 'getData']);
 
     Route::resource('supplier_status', 'SupplierStatusController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
@@ -184,10 +185,12 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('usage_group', 'UsageGroupController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('/usage_groups', [App\Http\Controllers\Master\UsageGroupController::class, 'getData']);
 
     Route::resource('user_unit', 'UserUnitController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('/user_units', [App\Http\Controllers\Master\UserUnitController::class, 'getData']);
 
     Route::resource('supplier_category', 'SupplierCategoryController', ['only' => [
         'index','show', 'store', 'update', 'destroy'

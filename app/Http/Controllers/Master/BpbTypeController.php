@@ -110,4 +110,9 @@ class BpbTypeController extends Controller
             }
         }
     }
+
+    public function getData(){
+        $data = BpbType::get();
+        return response()->json(['data' => $data]);
+    }
 }
