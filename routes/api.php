@@ -314,7 +314,7 @@ Route::group(['namespace' => 'Purchase','prefix'=>'purchase'], function() {
 // Inventory
 Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('receipt', 'ReceiptController', ['only' => [
-        'index','store'
+        'index','store', 'update'
     ]]);
     Route::get('receipts/number/{id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'getNumberReceipt']);
     Route::get('receipts/item/{product_id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'get_items_by_product']);
