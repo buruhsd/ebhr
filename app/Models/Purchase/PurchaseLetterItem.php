@@ -21,6 +21,17 @@ class PurchaseLetterItem extends Model
         'updatedBy',
     ];
     protected $appends = ['label'];
+
+    public function getQtyAttribute()
+    {
+        return round($this->attributes['qty'],2);
+    }
+
+    public function getRestQtyAttribute()
+    {
+        return round($this->attributes['rest_qty'],2);
+    }
+    
     public function getLabelAttribute()
     {
         // return $this->products ? $this->products->register_number.' '.$this->products->second_name : '';

@@ -138,6 +138,8 @@ class OrderController extends Controller
             'item.*.discount' => 'required|numeric',
         ]);
         $total = 0;
+        $total_fc = 0;
+        $total_hc = 0;
         $max_price_unit = 0;
         $max_price_item = 0;
         $kurs = 0;
@@ -183,20 +185,41 @@ class OrderController extends Controller
                 $max_price_item = $total_item;
             }
             $total += $total_item;
+            $total_fc += $value['qty'] * ($value['price'] ? $value['price'] - ($value['price'] * ($value['discount']/100)) : 0);
+            $total_hc += $value['qty'] * ($value['price_hc'] ? $value['price_hc'] - ($value['price_hc'] * ($value['discount']/100)) : 0);
             if($totalQty > $purchase_item->qty){
                 return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
             }
         }
-        $dpp = round($total,0);
-        $dpp = intval(substr_replace($dpp,"000",-3));
-        $ppn_hc = $dpp * ($request->ppn/100);
+        if($request->ppn < 0){
+            $ppn_ = ($request->ppn * -1) + 100;
+            $total = $total/($ppn_/100);
+            $total_fc = $total_fc/($ppn_/100);
+            $total_hc = $total_hc/($ppn_/100);
+            $dpp = round($total,0);
+            $dpp = intval(substr_replace($dpp,"000",-3));
+            $ppn_fc = $total_fc * (($request->ppn*-1)/100);
+            $ppn_hc = $dpp * (($request->ppn*-1)/100);
+            // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
+        }else{
+            $dpp = round($total,0);
+            $dpp = intval(substr_replace($dpp,"000",-3));
+            $ppn_fc = $total_fc * ($request->ppn/100);
+            $ppn_hc = $dpp * ($request->ppn/100);
+            // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
+        }
         $total_op = $total + $ppn_hc;
+        $grand_total_fc = $total_fc + $ppn_fc;
         $request->merge([
             'term_of_payment'=>$term_of_payment,
             'kurs'=> $kurs,
             'currency_id'=> $currency_id,
+            'ppn_fc'=> $ppn_fc,
             'ppn_hc'=> $ppn_hc,
+            'total_fc'=> round($total_fc,2),
+            'total_hc'=> round($total_hc,2),
             'dpp'=> $dpp,
+            'grand_total_fc'=> round($grand_total_fc,2),
             'total'=> round($total_op,2),
             'max_price_unit'=> round($max_price_unit,2),
             'max_price_item'=> round($max_price_item,2),
@@ -269,6 +292,8 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Data tidak ada']);
         }
         $total = 0;
+        $total_fc = 0;
+        $total_hc = 0;
         $max_price_unit = 0;
         $max_price_item = 0;
         $kurs = 0;
@@ -315,20 +340,42 @@ class OrderController extends Controller
                 $max_price_item = $total_item;
             }
             $total += $total_item;
+            $total_fc += $value['qty'] * ($value['price'] ? $value['price'] - ($value['price'] * ($value['discount']/100)) : 0);
+            $total_hc += $value['qty'] * ($value['price_hc'] ? $value['price_hc'] - ($value['price_hc'] * ($value['discount']/100)) : 0);
             if($totalQty > $purchase_item->qty){
                 return response()->json(['success' => false, 'message' => 'Jumlah OP tidak boleh melebihi dari jumlah PP']);
             }
         }
-        $dpp = round($total,0);
-        $dpp = intval(substr_replace($dpp,"000",-3));
-        $ppn_hc = $dpp * ($request->ppn/100);
+
+        if($request->ppn < 0){
+            $ppn_ = ($request->ppn * -1) + 100;
+            $total = $total/($ppn_/100);
+            $total_fc = $total_fc/($ppn_/100);
+            $total_hc = $total_hc/($ppn_/100);
+            $dpp = round($total,0);
+            $dpp = intval(substr_replace($dpp,"000",-3));
+            $ppn_fc = $total_fc * (($request->ppn*-1)/100);
+            $ppn_hc = $dpp * (($request->ppn*-1)/100);
+            // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
+        }else{
+            $dpp = round($total,0);
+            $dpp = intval(substr_replace($dpp,"000",-3));
+            $ppn_fc = $total_fc * ($request->ppn/100);
+            $ppn_hc = $dpp * ($request->ppn/100);
+            // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
+        }
         $total_op = $total + $ppn_hc;
+        $grand_total_fc = $total_fc + $ppn_fc;
         $request->merge([
             'term_of_payment'=>$term_of_payment,
             'kurs'=> $kurs,
             'currency_id'=> $currency_id,
+            'ppn_fc'=> $ppn_fc,
             'ppn_hc'=> $ppn_hc,
+            'total_fc'=> round($total_fc,2),
+            'total_hc'=> round($total_hc,2),
             'dpp'=> $dpp,
+            'grand_total_fc'=> round($grand_total_fc,2),
             'total'=> round($total_op,2),
             'max_price_unit'=> round($max_price_unit,2),
             'max_price_item'=> round($max_price_item,2),
