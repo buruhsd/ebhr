@@ -93,9 +93,13 @@ class ReceiptController extends Controller
         }
 
         $term_of_payment = Supplier::find($supplier_id)->term_of_payment;
-        $dpp = round($total_idr,0);
-        $dpp = intval(substr_replace($dpp,"000",-3));
-        $ppn_idr = $dpp * ($op->ppn/100);
+        $dpp = $total_idr;
+        // $dpp = intval(substr_replace($dpp,"000",-3));
+        $ppn = $op->ppn;
+        if($ppn < 0){
+            $ppn = ($ppn * -1) + 100;
+        }
+        $ppn_idr = $dpp * ($ppn/100);
         $payload = array_merge($request->all(),[
             'supplier_id' => $supplier_id,
             'ppn' => $op->ppn,

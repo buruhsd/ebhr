@@ -196,14 +196,14 @@ class OrderController extends Controller
             $total = $total/($ppn_/100);
             $total_fc = $total_fc/($ppn_/100);
             $total_hc = $total_hc/($ppn_/100);
-            $dpp = round($total,0);
-            $dpp = intval(substr_replace($dpp,"000",-3));
+            $dpp = $total;
+            // $dpp = intval(substr_replace($dpp,"000",-3));
             $ppn_fc = $total_fc * (($request->ppn*-1)/100);
             $ppn_hc = $dpp * (($request->ppn*-1)/100);
             // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
         }else{
-            $dpp = round($total,0);
-            $dpp = intval(substr_replace($dpp,"000",-3));
+            $dpp = $total;
+            // $dpp = intval(substr_replace($dpp,"000",-3));
             $ppn_fc = $total_fc * ($request->ppn/100);
             $ppn_hc = $dpp * ($request->ppn/100);
             // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
@@ -352,14 +352,14 @@ class OrderController extends Controller
             $total = $total/($ppn_/100);
             $total_fc = $total_fc/($ppn_/100);
             $total_hc = $total_hc/($ppn_/100);
-            $dpp = round($total,0);
-            $dpp = intval(substr_replace($dpp,"000",-3));
+            $dpp = $total;
+            // $dpp = intval(substr_replace($dpp,"000",-3));
             $ppn_fc = $total_fc * (($request->ppn*-1)/100);
             $ppn_hc = $dpp * (($request->ppn*-1)/100);
             // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));
         }else{
-            $dpp = round($total,0);
-            $dpp = intval(substr_replace($dpp,"000",-3));
+            $dpp = $total;
+            // $dpp = intval(substr_replace($dpp,"000",-3));
             $ppn_fc = $total_fc * ($request->ppn/100);
             $ppn_hc = $dpp * ($request->ppn/100);
             // $ppn_hc = intval(substr_replace($ppn_hc,"000",-3));

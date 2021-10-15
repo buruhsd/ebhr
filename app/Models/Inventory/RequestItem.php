@@ -47,6 +47,7 @@ class RequestItem extends Model
         $string = 'SPB'.date('y').'/'.date('m').'/'.$branch.$type;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
+            ->where('bpb_type_id',$bpb_type_id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
             $format = $latest->number_spb;
