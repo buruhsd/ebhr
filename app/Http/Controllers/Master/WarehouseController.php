@@ -118,4 +118,10 @@ class WarehouseController extends Controller
             }
         }
     }
+
+    public function getData(Request $request)
+    {
+        $data = Warehouse::select('id','code','name')->orderBy('name')->get();
+        return response()->json(['data' => $data]);
+    }
 }

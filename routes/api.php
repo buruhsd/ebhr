@@ -156,6 +156,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('ware_house', 'WarehouseController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('/warehouse/getData', [App\Http\Controllers\Master\WarehouseController::class, 'getData']);
 
     Route::resource('product_category', 'ProducCategoryController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
@@ -285,9 +286,14 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('request_item', 'RequestItemController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::resource('product_expenditure', 'ProductExpenditureController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
     Route::get('receipts/number/{id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'getNumberReceipt']);
     Route::get('receipts/product/serial_number', [App\Http\Controllers\Inventory\ReceiptController::class, 'product_serial_number']);
     Route::get('request_item/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'getAutoNumber']);
+    Route::get('request_items/getData', [App\Http\Controllers\Inventory\RequestItemController::class, 'getData']);
+    Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');

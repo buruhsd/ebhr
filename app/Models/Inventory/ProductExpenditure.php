@@ -5,23 +5,22 @@ namespace App\Models\Inventory;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\BpbType;
-use App\Models\Organization;
-use App\Models\UsageGroup;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Master\Warehouse;
+use App\Models\Inventory\RequestItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class RequestItem extends Model
+class ProductExpenditure extends Model
 {
     use HasFactory;
     protected $fillable = [
         'branch_id',
-        'organization_id',
+        'request_item_id',
         'bpb_type_id',
-        'usage_group_id',
-        'number_spb',
-        'date_spb',
-        'number_pkb',
-        'date_pkb',
+        'warehouse_id',
+        'destination_warehouse_id',
+        'number_bpb',
+        'date_bpb',
         'note',
         'status',
         'insertedBy',
@@ -33,24 +32,25 @@ class RequestItem extends Model
         parent::boot();
         static::creating(function ($model) {
             try {
-                $model->number_spb = self::generateNumber($model->branch_id,$model->bpb_type_id);
+                $model->number_bpb = self::generateNumber($model->branch_id,$model->request_item_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
             }
         });
     }
 
-    public static function generateNumber($id,$bpb_type_id)
+    public static function generateNumber($id,$requestItemId)
     {
         $branch = Branch::find($id)->alias_name;
-        $type = BpbType::find($bpb_type_id)->code;
-        $string = 'SPB'.date('y').'/'.date('m').'/'.$branch.$type;
+        $requestItem = RequestItem::find($requestItemId);
+        $type = BpbType::find($requestItem->bpb_type_id)->code;
+        $string = 'BPB'.date('y').'/'.date('m').'/'.$branch.$type;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
-            ->where('bpb_type_id',$bpb_type_id)
+            ->where('bpb_type_id',$requestItem->bpb_type_id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
-            $format = $latest->number_spb;
+            $format = $latest->number_bpb;
         }
         $id = substr($format, -4);
         $newID = intval($id) + 1;
@@ -58,12 +58,7 @@ class RequestItem extends Model
         return $string.$newID;
     }
 
-    protected $appends = ['status_text','label'];
-
-    public function getLabelAttribute()
-    {
-        return $this->number_spb;
-    }
+    protected $appends = ['status_text'];
 
     public function getStatusTextAttribute()
     {
@@ -77,14 +72,14 @@ class RequestItem extends Model
         return $status;
     }
 
+    public function request_item()
+    {
+        return $this->belongsTo(RequestItem::class, 'request_item_id');
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
-    }
-
-    public function organization()
-    {
-        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
     public function bpb_type()
@@ -92,14 +87,19 @@ class RequestItem extends Model
         return $this->belongsTo(BpbType::class, 'bpb_type_id');
     }
 
-    public function usage_group()
+    public function warehouse()
     {
-        return $this->belongsTo(UsageGroup::class, 'usage_group_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+    }
+
+    public function destination_warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'destination_warehouse_id');
     }
 
     public function detail_items()
     {
-        return $this->hasMany(RequestItemDetail::class, 'request_item_id');
+        return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id');
     }
 
     public function insertedBy()

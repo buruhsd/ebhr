@@ -138,4 +138,26 @@ class RequestItemController extends Controller
         $number = RequestItem::generateNumber($branch_id,$type_id);
         return response()->json(['data' => $number]);
     }
+
+    public function getData(Request $request)
+    {
+        $search = $request->search;
+        $data = RequestItem::with(
+            'branch:id,code,name',
+            'organization:id,code,name,level',
+            'bpb_type:id,code,name,is_warehouse,is_number_pkb',
+            'usage_group:id,code,name',
+            'detail_items',
+            'detail_items.product:id,register_number,name,second_name,product_number',
+            'detail_items.product.serial_number',
+            'detail_items.unit:id,name',
+            'insertedBy:id,name',
+            'updatedBy:id,name')
+            ->when($search, function ($query) use ($search){
+                $query->where('number_spb', 'LIKE',"%{$search}%");
+            })
+            ->limit(10)
+            ->get();
+        return response()->json(['data' => $data]);
+    }
 }
