@@ -18,8 +18,17 @@ class RequestItemController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
+    	$from_date = $request->from_date;
+    	$to_date = $request->to_date;
+    	$branch = $request->branch;
+    	$status = $request->status;
         $search = $request->search;
+        if(is_null($from_date) || is_null($to_date)){
+            $to_date = date('Y-m-d');
+            $from_date = date('Y-m-d', strtotime($to_date. '-10 months'));
+        }
         $data = RequestItem::with(
             'branch:id,code,name',
             'organization:id,code,name,level',
@@ -28,11 +37,34 @@ class RequestItemController extends Controller
             'detail_items',
             'detail_items.product:id,register_number,name,second_name,product_number',
             'detail_items.unit:id,name',
+            'approved_by:id,name',
+            'closed_by:id,name',
             'insertedBy:id,name',
             'updatedBy:id,name')
+            ->when($status, function ($query) use ($status){
+                if($status == 'new'){
+                    $statusIn = [0];
+                }elseif($status == 'approve'){
+                    $statusIn = [1];
+                }elseif($status == 'reject'){
+                    $statusIn = [2];
+                }elseif($status == 'close'){
+                    $statusIn = [3];
+                }elseif($status == 'all'){
+                    $statusIn = [0,1,2,3];
+                }
+                $query->whereIn('status',$statusIn);
+            })
             ->when($search, function ($query) use ($search){
                 $query->where('number_spb', 'LIKE',"%{$search}%");
             })
+            ->when($branch, function ($query) use ($branch){
+                $query->whereHas('branch',function ($q) use ($branch){
+                    $q->where('branches.id',$branch);
+                });
+            })
+            ->whereDate('date_spb','>=',$from_date)
+            ->whereDate('date_spb','<=',$to_date)
             ->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($data);
     }
@@ -159,5 +191,35 @@ class RequestItemController extends Controller
             ->limit(10)
             ->get();
         return response()->json(['data' => $data]);
+    }
+
+    public function approve(Request $request,$id)
+    {
+        $order = RequestItem::find($id);
+        $order->status = 1;
+        $order->approved_by = Auth::id();
+        $order->approved_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil diapprove']);
+    }
+
+    public function reject(Request $request,$id)
+    {
+        $order = RequestItem::find($id);
+        $order->status = 2;
+        $order->approved_by = Auth::id();
+        $order->approved_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil direject']);
+    }
+
+    public function close(Request $request,$id)
+    {
+        $order = RequestItem::find($id);
+        $order->status = 3;
+        $order->closed_by = Auth::id();
+        $order->closed_at = now();
+        $order->save();
+        return response()->json(['success'=>true, 'message' => 'Data berhasil diclose']);
     }
 }

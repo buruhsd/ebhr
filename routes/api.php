@@ -283,6 +283,10 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('receipt', 'ReceiptController', ['only' => [
         'index','store'
     ]]);
+    Route::get('receipts/number/{id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'getNumberReceipt']);
+    Route::get('receipts/item/{product_id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'get_items_by_product']);
+    Route::get('receipts/product/serial_number', [App\Http\Controllers\Inventory\ReceiptController::class, 'product_serial_number']);
+
     Route::resource('serial_number', 'SerialNumberController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -292,14 +296,15 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('request_item', 'RequestItemController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('request_item/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'getAutoNumber']);
+    Route::get('request_items/getData', [App\Http\Controllers\Inventory\RequestItemController::class, 'getData']);
+    Route::get('request_items/approve/{id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'approve']);
+    Route::get('request_items/reject/{id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'reject']);
+    Route::get('request_items/close/{id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'close']);
+
     Route::resource('product_expenditure', 'ProductExpenditureController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
-    Route::get('receipts/number/{id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'getNumberReceipt']);
-    Route::get('receipts/item/{product_id}', [App\Http\Controllers\Inventory\ReceiptController::class, 'get_items_by_product']);
-    Route::get('receipts/product/serial_number', [App\Http\Controllers\Inventory\ReceiptController::class, 'product_serial_number']);
-    Route::get('request_item/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\RequestItemController::class, 'getAutoNumber']);
-    Route::get('request_items/getData', [App\Http\Controllers\Inventory\RequestItemController::class, 'getData']);
     Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
 });
 

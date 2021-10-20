@@ -24,6 +24,10 @@ class RequestItem extends Model
         'date_pkb',
         'note',
         'status',
+        'approved_by',
+        'approved_at',
+        'closed_by',
+        'closed_at',
         'insertedBy',
         'updatedBy',
     ];
@@ -73,6 +77,8 @@ class RequestItem extends Model
             $status = 'Approve';
         }elseif($this->status == 2){
             $status = 'Reject';
+        }elseif($this->status == 3){
+            $status = 'Close';
         }
         return $status;
     }
@@ -100,6 +106,16 @@ class RequestItem extends Model
     public function detail_items()
     {
         return $this->hasMany(RequestItemDetail::class, 'request_item_id');
+    }
+
+    public function approved_by()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function closed_by()
+    {
+        return $this->belongsTo(User::class, 'closed_by');
     }
 
     public function insertedBy()
