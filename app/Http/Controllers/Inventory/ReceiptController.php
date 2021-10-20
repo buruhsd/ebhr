@@ -138,8 +138,14 @@ class ReceiptController extends Controller
                     ->sum(DB::raw('receipt_items.qty'));
         if($total_qty_ttb == $total_qty_op){
             $op->status = 6;
-            $op->save();
         }
+        $chekc_receipt = Receipt::select('id','status')
+            ->has('receipt_items_serial')
+            ->where('id',$receipt->id)->first();
+        if(is_null($chekc_receipt)){
+            $op->status = 7;
+        }
+        $op->save();
         return response()->json(['success' => true, 'message' => 'Berhasil menambahkan data penerimaan barang']);
     }
 
@@ -149,22 +155,28 @@ class ReceiptController extends Controller
         return response()->json(['data' => $number]);
     }
 
-    public function product_serial_number(){
-        $data = ReceiptItems::with(
-            'receipt',
-            'purchase_order_item',
-            'product.serial_number',
-            'unit_ttb:id,name',
-            'unit_op:id,name',
-            'product_status:id,name',
-            'insertedBy:id,name',
-            'updatedBy:id,name')
-            ->whereHas('product', function ($query){
-                $query->whereHas('serial_number', function ($q){
-                    $q->where('product_serial_numbers.is_serial_number',1);
-                });
-            })
-            ->orderBy('created_at', 'desc')->paginate(10);
-        return response()->json($data);
+    public function product_serial_number(Request $request)
+    {
+        $search = $request->search;
+        $data = Receipt::select('id','warehouse_id','number as label','date')->with(
+                'warehouse:id,code,name',
+                'receipt_items_serial:id,receipt_id,product_id,product_status_id,unit_id,qty',
+                'receipt_items_serial.product:id,register_number,name,second_name',
+                'receipt_items_serial.product_status:id,code,name',
+                'receipt_items_serial.unit_ttb:id,code,name',
+            )->has('receipt_items_serial')
+            ->where('status',0)
+            ->when($search, function ($query) use ($search){
+                $query->where('number', 'LIKE',"%{$search}%");
+            })->get();
+        return response()->json(['data' => $data]);
+    }
+
+    public function get_items_by_product(Request $request,$product_id)
+    {
+        $data = ReceiptItems::with('receipt:id,supplier_id,number,date',
+                'receipt.supplier.partner:id,code,name','unit_op:id,name')
+                ->where('product_id',$product_id)->get();
+        return response()->json(['data' => $data]);
     }
 }

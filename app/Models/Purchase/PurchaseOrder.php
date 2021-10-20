@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Currency;
 use App\Models\KursType;
 use App\Models\Supplier;
+use App\Inventory\Receipt;
 use App\Models\Master\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -143,6 +144,11 @@ class PurchaseOrder extends Model
     public function order_item_ttb()
     {
         return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id')->where('status',0);
+    }
+
+    public function data_ttb()
+    {
+        return $this->hasMany(Receipt::class, 'purchase_order_id')->where('status',0);
     }
 
     public function currency()
