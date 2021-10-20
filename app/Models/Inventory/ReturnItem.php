@@ -4,23 +4,19 @@ namespace App\Models\Inventory;
 
 use App\Models\User;
 use App\Models\Branch;
-use App\Models\BpbType;
 use App\Models\Master\Warehouse;
-use App\Models\Inventory\RequestItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductExpenditure extends Model
+class ReturnItem extends Model
 {
     use HasFactory;
     protected $fillable = [
         'branch_id',
-        'request_item_id',
-        'bpb_type_id',
         'warehouse_id',
-        'destination_warehouse_id',
-        'number_bpb',
-        'date_bpb',
+        'product_expenditure_id',
+        'number',
+        'date',
         'note',
         'status',
         'insertedBy',
@@ -32,25 +28,22 @@ class ProductExpenditure extends Model
         parent::boot();
         static::creating(function ($model) {
             try {
-                $model->number_bpb = self::generateNumber($model->branch_id,$model->request_item_id);
+                $model->number = self::generateNumber($model->branch_id);
             } catch (UnsatisfiedDependencyException $e) {
                 abort(500, $e->getMessage());
             }
         });
     }
 
-    public static function generateNumber($id,$requestItemId)
+    public static function generateNumber($id)
     {
         $branch = Branch::find($id)->alias_name;
-        $requestItem = RequestItem::find($requestItemId);
-        $type = BpbType::find($requestItem->bpb_type_id)->code;
-        $string = 'BPB'.date('y').'/'.date('m').'/'.$branch.$type;
+        $string = 'KG'.date('y').'/'.date('m').'/'.$branch;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
-            ->where('bpb_type_id',$requestItem->bpb_type_id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
-            $format = $latest->number_bpb;
+            $format = $latest->number;
         }
         $id = substr($format, -4);
         $newID = intval($id) + 1;
@@ -72,9 +65,9 @@ class ProductExpenditure extends Model
         return $status;
     }
 
-    public function request_item()
+    public function product_expenditure()
     {
-        return $this->belongsTo(RequestItem::class, 'request_item_id');
+        return $this->belongsTo(ProductExpenditure::class, 'product_expenditure_id');
     }
 
     public function branch()
@@ -82,29 +75,14 @@ class ProductExpenditure extends Model
         return $this->belongsTo(Branch::class, 'branch_id');
     }
 
-    public function bpb_type()
-    {
-        return $this->belongsTo(BpbType::class, 'bpb_type_id');
-    }
-
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 
-    public function destination_warehouse()
-    {
-        return $this->belongsTo(Warehouse::class, 'destination_warehouse_id');
-    }
-
     public function detail_items()
     {
-        return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id');
-    }
-
-    public function detail_return_items()
-    {
-        return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id')->where('is_return',1);
+        return $this->hasMany(ReturnItemDetail::class, 'return_item_id');
     }
 
     public function insertedBy()

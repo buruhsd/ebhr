@@ -9,31 +9,30 @@ use App\Models\Master\ProductStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductExpenditureDetail extends Model
+class ReturnItemDetail extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'product_expenditure_id',
-        'request_item_detail_id',
+        'return_item_id',
+        'product_expenditure_detail_id',
         'product_id',
         'product_status_id',
         'unit_id',
         'qty',
-        'is_serial_number',
-        'is_return',
+        'note',
         'status',
         'insertedBy',
         'updatedBy',
     ];
 
-    public function product_expenditure()
+    public function return_item()
     {
-        return $this->belongsTo(ProductExpenditure::class, 'product_expenditure_id');
+        return $this->belongsTo(ReturnItem::class, 'return_item_id');
     }
 
-    public function request_item_detail()
+    public function product_expenditure_detail()
     {
-        return $this->belongsTo(RequestItemDetail::class, 'request_item_detail_id');
+        return $this->belongsTo(ProductExpenditureDetail::class, 'product_expenditure_detail_id');
     }
 
     public function product()

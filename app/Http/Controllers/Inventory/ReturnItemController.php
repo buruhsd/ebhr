@@ -6,39 +6,38 @@ use DB;
 use Auth;
 use App\Models\User;
 use App\Models\Branch;
-use App\Models\BpbType;
-use App\Models\Inventory\RequestItem;
-use App\Models\Inventory\RequestItemDetail;
-use App\Models\Inventory\ProductExpenditure;
-use App\Models\Master\ProductSerialNumber;
+use App\Models\Inventory\ReturnItem;
+use App\Models\Inventory\ReturnItemDetail;
 use App\Models\Inventory\ProductExpenditureDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProductExpenditureController extends Controller
+class ReturnItemController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:api');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $search = $request->search;
-        $data = ProductExpenditure::with(
-            'request_item:id,bpb_type_id,number_spb,date_spb',
-            'request_item.bpb_type:id,code,name,is_warehouse,is_number_pkb',
+        $data = ReturnItem::with(
             'branch:id,code,name',
             'warehouse:id,code,name',
-            'destination_warehouse:id,code,name',
+            'product_expenditure:id,date_bpb,number_bpb as label',
             'detail_items',
             'detail_items.product:id,register_number,name,second_name,product_number',
             'detail_items.unit:id,name',
             'detail_items.product_status:id,name',
-            'detail_items.request_item_detail.unit:id,code,name',
+            'detail_items.product_expenditure_detail',
+            'detail_items.product_expenditure_detail.product:id,register_number,name,second_name,product_number',
+            'detail_items.product_expenditure_detail.product_status:id,name',
+            'detail_items.product_expenditure_detail.unit:id,name',
             'insertedBy:id,name',
             'updatedBy:id,name')
             ->when($search, function ($query) use ($search){
-                $query->where('number_bpb', 'LIKE',"%{$search}%");
+                $query->where('number', 'LIKE',"%{$search}%");
             })
             ->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($data);
@@ -46,16 +45,13 @@ class ProductExpenditureController extends Controller
 
     public function show($id)
     {
-        $data = ProductExpenditure::with(
-            'request_item:id,number_spb,date_spb',
+        $data = ReturnItem::with(
             'branch:id,code,name',
             'warehouse:id,code,name',
-            'destination_warehouse:id,code,name',
             'detail_items',
             'detail_items.product:id,register_number,name,second_name,product_number',
             'detail_items.unit:id,name',
             'detail_items.product_status:id,name',
-            'detail_items.request_item_detail.unit:id,code,name',
             'insertedBy:id,name',
             'updatedBy:id,name')->find($id);
         if($data){
@@ -68,44 +64,35 @@ class ProductExpenditureController extends Controller
     {
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
-            'request_item_id' => 'required|exists:request_items,id',
+            'product_expenditure_id' => 'required|exists:product_expenditures,id',
             'warehouse_id' => 'required|exists:warehouses,id',
-            'destination_warehouse_id' => 'nullable|exists:warehouses,id',
-            'date_bpb' => 'required|date',
+            'date' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.request_item_detail_id' => 'required|distinct|exists:request_item_details,id',
+            'item.*.product_expenditure_detail_id' => 'required|exists:product_expenditure_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
             'item.*.unit_id' => 'required|distinct|exists:units,id',
             'item.*.qty' => 'required|numeric|min:1',
-            'item.*.is_serial_number' => 'required'
+            'item.*.note' => 'required'
         ]);
         foreach($request->item as $value){
-            $requestItemDetail = RequestItemDetail::find($value['request_item_detail_id']);
-            if($value['qty'] > $requestItemDetail->qty){
-                return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah SPB']);
+            $check_data = ProductExpenditureDetail::find($value['product_expenditure_detail_id']);
+            if($value['qty'] > $check_data->qty){
+                return response()->json(['success' => false, 'message' => 'Jumlah KG tidak boleh melebihi dari jumlah BPB']);
             }
         }
 
-        $bpb_type_id = RequestItem::find($request->request_item_id)->bpb_type_id;
         $request->merge([
-            'bpb_type_id'=> $bpb_type_id,
             'insertedBy' => Auth::id(),
             'updatedBy'=> Auth::id()
         ]);
 
-    	$productExpenditure = ProductExpenditure::create($request->all());
+    	$saveData = ReturnItem::create($request->all());
         foreach($request->item as $value){
-            $is_return = false;
-            $product = ProductSerialNumber::where('product_id',$value['product_id'])->first();
-            if($product){
-                $is_return = $product->is_return;
-            }
-            $value['is_return'] = $is_return;
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
-            $productExpenditure->detail_items()->create($value);
+            $saveData->detail_items()->create($value);
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
@@ -113,44 +100,41 @@ class ProductExpenditureController extends Controller
     public function update(Request $request, $id){
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
-            'request_item_id' => 'required|exists:request_items,id',
+            'product_expenditure_id' => 'required|exists:product_expenditures,id',
             'warehouse_id' => 'required|exists:warehouses,id',
-            'destination_warehouse_id' => 'nullable|exists:warehouses,id',
-            'date_bpb' => 'required|date',
+            'date' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.request_item_detail_id' => 'required|distinct|exists:request_item_details,id',
+            'item.*.product_expenditure_detail_id' => 'required|exists:product_expenditure_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
             'item.*.unit_id' => 'required|distinct|exists:units,id',
             'item.*.qty' => 'required|numeric|min:1',
-            'item.*.is_serial_number' => 'required'
+            'item.*.note' => 'required'
         ]);
 
-        $productExpenditure = ProductExpenditure::find($id);
-        if(is_null($productExpenditure)){
+        $updateData = ReturnItem::find($id);
+        if(is_null($updateData)){
             return response()->json(['success' => false, 'message' => 'Data tidak ada']);
         }
 
         foreach($request->item as $value){
-            $requestItemDetail = RequestItemDetail::find($value['request_item_detail_id']);
-            if($value['qty'] > $requestItemDetail->qty){
-                return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah SPB']);
+            $check_data = ProductExpenditureDetail::find($value['product_expenditure_detail_id']);
+            if($value['qty'] > $check_data->qty){
+                return response()->json(['success' => false, 'message' => 'Jumlah KG tidak boleh melebihi dari jumlah BPB']);
             }
         }
 
-        $bpb_type_id = RequestItem::find($request->request_item_id)->bpb_type_id;
         $request->merge([
-            'bpb_type_id'=> $bpb_type_id,
             'updatedBy'=> Auth::id()
         ]);
 
-    	$productExpenditure->update($request->all());
-        $productExpenditure->detail_items()->delete();
+    	$updateData->update($request->all());
+        $updateData->detail_items()->delete();
         foreach($request->item as $value){
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
-            $productExpenditure->detail_items()->create($value);
+            $updateData->detail_items()->create($value);
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }
@@ -158,7 +142,7 @@ class ProductExpenditureController extends Controller
     public function destroy($id)
     {
         try {
-            $data = ProductExpenditure::find($id)->delete();
+            $data = ReturnItem::find($id)->delete();
             return response()->json(['success'=>true, 'message' => 'Data berhasil dihapus']);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
@@ -167,24 +151,9 @@ class ProductExpenditureController extends Controller
         }
     }
 
-    public function getAutoNumber(Request $request, $branch_id,$type_id)
+    public function getAutoNumber(Request $request, $branch_id)
     {
-        $number = ProductExpenditure::generateNumber($branch_id,$type_id);
+        $number = ReturnItem::generateNumber($branch_id);
         return response()->json(['data' => $number]);
-    }
-
-    public function get_data_return(Request $request)
-    {
-        $search = $request->search;
-        $data = ProductExpenditure::select('id','number_bpb as label','date_bpb')->with(
-                'detail_return_items',
-                'detail_return_items.product:id,register_number,name,second_name',
-                'detail_return_items.product_status:id,name',
-                'detail_return_items.unit:id,name',
-            )->has('detail_return_items')
-            ->when($search, function ($query) use ($search){
-                $query->where('number_bpb', 'LIKE',"%{$search}%");
-            })->get();
-        return response()->json(['data' => $data]);
     }
 }
