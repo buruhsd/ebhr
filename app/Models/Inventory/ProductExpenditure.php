@@ -102,6 +102,11 @@ class ProductExpenditure extends Model
         return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id');
     }
 
+    public function detail_serial_items()
+    {
+        return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id')->where(['is_serial_number'=>1,'status'=>0]);
+    }
+
     public function detail_return_items()
     {
         return $this->hasMany(ProductExpenditureDetail::class, 'product_expenditure_id')->where('is_return',1);

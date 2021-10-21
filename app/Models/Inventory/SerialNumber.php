@@ -18,6 +18,8 @@ class SerialNumber extends Model
         'warehouse_id',
         'receipt_id',
         'receipt_item_id',
+        'product_expenditure_id',
+        'product_expenditure_detail_id',
         'product_id',
         'product_status_id',
         'type',
@@ -49,6 +51,16 @@ class SerialNumber extends Model
     public function receipt_item()
     {
         return $this->belongsTo(ReceiptItems::class, 'receipt_item_id');
+    }
+
+    public function product_expenditure()
+    {
+        return $this->belongsTo(ProductExpenditure::class, 'product_expenditure_id');
+    }
+
+    public function product_expenditure_detail()
+    {
+        return $this->belongsTo(ProductExpenditureDetail::class, 'product_expenditure_detail_id');
     }
 
     public function product()

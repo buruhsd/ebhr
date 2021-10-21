@@ -290,7 +290,9 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('serial_number', 'SerialNumberController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
-    Route::get('serial_numbers/detail', [App\Http\Controllers\Inventory\SerialNumberController::class, 'getDataNoseri']);
+    Route::post('serial_numbers/bpb', [App\Http\Controllers\Inventory\SerialNumberController::class, 'storeBpb']);
+    Route::get('serial_numbers/products/{product_id}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'getDataNoseriByProduct']);
+    Route::get('serial_numbers/detail/{type}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'getDataNoseri']);
     Route::patch('serial_numbers/detail/{id}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'updateNoseri']);
 
     Route::resource('request_item', 'RequestItemController', ['only' => [
@@ -307,6 +309,7 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     ]]);
     Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
     Route::get('product_expenditures/return', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_return']);
+    Route::get('product_expenditures/serial', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_serial']);
 
     Route::resource('return_item', 'ReturnItemController', ['only' => [
         'index','show', 'store', 'update', 'destroy'

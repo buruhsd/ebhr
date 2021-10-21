@@ -9,6 +9,8 @@ use App\Models\Purchase\PurchaseOrder;
 use App\Models\Inventory\ReceiptItems;
 use App\Models\Inventory\SerialNumber;
 use App\Models\Inventory\SerialNumberDetail;
+use App\Models\Inventory\ProductExpenditure;
+use App\Models\Inventory\ProductExpenditureDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -109,6 +111,56 @@ class SerialNumberController extends Controller
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
 
+    public function storeBpb(Request $request)
+    {
+        $this->validate($request, [
+            'branch_id' => 'required|exists:branches,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'product_expenditure_id' => 'required|exists:product_expenditures,id',
+            'product_expenditure_detail_id' => 'required|exists:product_expenditure_details,id',
+            'product_id' => 'required|exists:products,id',
+            'product_status_id' => 'required|exists:product_statuses,id',
+            'item' => 'required',
+            'item.*.no_seri' => 'required|distinct|unique:serial_number_details,no_seri,null,id,no_seri,serial_number_id',
+        ]);
+
+        $receiptItems = ProductExpenditureDetail::find($request->product_expenditure_detail_id);
+        $qty = $receiptItems->qty;
+        $total_item = count($request->item);
+        if($qty != $total_item){
+            return response()->json(['success' => false, 'message' => 'Jumlah Nomor seri harus sama dengan jumlah qty BPB']);
+        }
+
+        $request->merge([
+            'type' => 'BPB',
+            'insertedBy' => Auth::id(),
+            'updatedBy'=> Auth::id()
+        ]);
+
+    	$saveData = SerialNumber::create($request->all());
+        foreach($request->item as $value){
+            $number = SerialNumberDetail::find($value['no_seri']);
+            $value['no_seri'] = $number->no_seri;
+            $value['insertedBy'] = Auth::id();
+            $value['updatedBy'] = Auth::id();
+            $saveData->details()->create($value);
+            $number->update(['status' => 1]);
+        }
+        $receiptItems->status = 1;
+        $receiptItems->save();
+
+        $check_receipt = ProductExpenditure::select('id','status')
+            ->has('detail_serial_items')
+            ->where('id',$request->product_expenditure_id)->first();
+        if(is_null($check_receipt)){
+            $receipt = ProductExpenditure::select('id','status')
+                ->where('id',$request->product_expenditure_id)->first();
+            $receipt->status = 1;
+            $receipt->save();
+        }
+        return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
+    }
+
     public function update(Request $request, $id){
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
@@ -161,13 +213,15 @@ class SerialNumberController extends Controller
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }
 
-    public function getDataNoseri(Request $request){
+    public function getDataNoseri(Request $request,$type)
+    {
         $search = $request->search;
         $data = SerialNumberDetail::with(
             'serial_number',
             'serial_number.branch:id,code,name',
             'serial_number.warehouse:id,code,name',
             'serial_number.receipt:id,number,date',
+            'serial_number.product_expenditure:id,number_bpb,date_bpb',
             'serial_number.product:id,register_number,name,second_name',
             'serial_number.product_status:id,name',
             'insertedBy:id,name',
@@ -179,8 +233,8 @@ class SerialNumberController extends Controller
                     });
                 })->orWhere('no_seri','LIKE',"{$search}%");
             })
-            ->whereHas('serial_number', function ($query){
-                $query->where('serial_numbers.type','TTB');
+            ->whereHas('serial_number', function ($query) use ($type){
+                $query->where('serial_numbers.type',$type);
             })
             ->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($data);
@@ -215,5 +269,23 @@ class SerialNumberController extends Controller
                 return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
             }
         }
+    }
+
+    public function getDataNoseriByProduct(Request $request,$product_id)
+    {
+        $search = $request->search;
+        $data = SerialNumberDetail::select('id','serial_number_id','no_seri as label')
+            ->where('status',0)
+            ->when($search, function ($query) use ($search){
+                $query->where('no_seri','LIKE',"{$search}%");
+            })
+            ->whereHas('serial_number', function ($query) use ($product_id){
+                $query->where('serial_numbers.product_id',$product_id);
+            })
+            ->whereHas('serial_number', function ($query){
+                $query->where('serial_numbers.type','!=','BPB');
+            })
+            ->orderBy('created_at', 'desc')->get();
+        return response()->json($data);
     }
 }

@@ -77,7 +77,7 @@ class ProductExpenditureController extends Controller
             'item.*.request_item_detail_id' => 'required|distinct|exists:request_item_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
-            'item.*.unit_id' => 'required|distinct|exists:units,id',
+            'item.*.unit_id' => 'required|exists:units,id',
             'item.*.qty' => 'required|numeric|min:1',
             'item.*.is_serial_number' => 'required'
         ]);
@@ -122,7 +122,7 @@ class ProductExpenditureController extends Controller
             'item.*.request_item_detail_id' => 'required|distinct|exists:request_item_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
-            'item.*.unit_id' => 'required|distinct|exists:units,id',
+            'item.*.unit_id' => 'required|exists:units,id',
             'item.*.qty' => 'required|numeric|min:1',
             'item.*.is_serial_number' => 'required'
         ]);
@@ -173,10 +173,27 @@ class ProductExpenditureController extends Controller
         return response()->json(['data' => $number]);
     }
 
+    public function get_data_serial(Request $request)
+    {
+        $search = $request->search;
+        $data = ProductExpenditure::select('id','warehouse_id','number_bpb as label','date_bpb')->with(
+                'warehouse:id,code,name',
+                'detail_serial_items',
+                'detail_serial_items.product:id,register_number,name,second_name',
+                'detail_serial_items.product_status:id,name',
+                'detail_serial_items.unit:id,name',
+            )->has('detail_serial_items')
+            ->when($search, function ($query) use ($search){
+                $query->where('number_bpb', 'LIKE',"%{$search}%");
+            })->get();
+        return response()->json(['data' => $data]);
+    }
+
     public function get_data_return(Request $request)
     {
         $search = $request->search;
-        $data = ProductExpenditure::select('id','number_bpb as label','date_bpb')->with(
+        $data = ProductExpenditure::select('id','warehouse_id','number_bpb as label','date_bpb')->with(
+                'warehouse:id,code,name',
                 'detail_return_items',
                 'detail_return_items.product:id,register_number,name,second_name',
                 'detail_return_items.product_status:id,name',
