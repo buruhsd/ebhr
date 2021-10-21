@@ -117,12 +117,7 @@ class Receipt extends Model
     public function receipt_items_serial()
     {
         return $this->hasMany(ReceiptItems::class, 'receipt_id')
-            ->where('status',0)
-            ->whereHas('product', function ($query){
-                $query->whereHas('serial_number', function ($q){
-                    $q->where('product_serial_numbers.is_serial_number',1);
-                });
-            });
+            ->where(['status'=> 0,'is_serial_number'=> 1]);
     }
 
     public function currency()

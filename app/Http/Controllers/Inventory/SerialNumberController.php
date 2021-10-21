@@ -179,6 +179,9 @@ class SerialNumberController extends Controller
                     });
                 })->orWhere('no_seri','LIKE',"{$search}%");
             })
+            ->whereHas('serial_number', function ($query){
+                $query->where('serial_numbers.type','TTB');
+            })
             ->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($data);
     }

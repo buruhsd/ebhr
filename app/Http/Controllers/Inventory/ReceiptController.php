@@ -74,6 +74,13 @@ class ReceiptController extends Controller
                 $net = $po_item->net/$po_item->unit_conversion;
                 $net_hc = $po_item->net_hc/$po_item->unit_conversion;
             }
+            $is_return = false;
+            $is_serial_number = false;
+            $serial = $po_item->product->serial_number;
+            if($serial){
+                $is_return = $serial->is_return;
+                $is_serial_number = $serial->is_serial_number;
+            }
             $total_valas += $net * $item['qty'];
             $total_idr += $net_hc * $item['qty'];
             $item['product_id'] = $po_item->product_id;
@@ -87,6 +94,8 @@ class ReceiptController extends Controller
             $item['discount'] = $po_item->discount;
             $item['net_valas'] = $po_item->net;
             $item['net_idr'] = $po_item->net_hc;
+            $item['is_serial_number'] = $is_serial_number;
+            $item['is_return'] = $is_return;
             $item['insertedBy'] = Auth::id();
             $item['updatedBy'] = Auth::id();
             array_push($arrItem, $item);

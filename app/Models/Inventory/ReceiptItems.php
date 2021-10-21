@@ -29,6 +29,8 @@ class ReceiptItems extends Model
         'discount',
         'price_idr',
         'net_idr',
+        'is_serial_number',
+        'is_return',
         'status',
         'insertedBy',
         'updatedBy',
