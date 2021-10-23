@@ -50,6 +50,7 @@ class BpbTypeController extends Controller
     {
         $this->validate($request, [
             "code" => "required|unique:bpb_types,code|alpha_num|max:1",
+            "alias_code" => "required|unique:bpb_types,alias_code|alpha_num",
             "name" => "required",
             "is_warehouse" => "required",
             "is_number_pkb" => "required",
@@ -86,12 +87,16 @@ class BpbTypeController extends Controller
     {
         $this->validate($request, [
             "code" => "required|alpha_num|max:1|unique:bpb_types,code,".$id,
+            "alias_code" => "nullable|alpha_num|unique:bpb_types,alias_code,".$id,
             "name" => "required",
             "is_warehouse" => "required",
             "is_number_pkb" => "required"
         ]);
         $request->merge(['code'=>strtoupper($request->code),'updatedBy'=>Auth::id()]);
         $data = BpbType::find($id);
+        if(!$data->alias_code){
+            $request->merge(['alias_code'=>strtoupper($request->alias_code)]);
+        }
         $data->update($request->all());
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }

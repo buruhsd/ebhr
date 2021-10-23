@@ -10,6 +10,7 @@ class BpbType extends Model
     use HasFactory;
     protected $fillable = [
         'code',
+        'alias_code',
         'name',
         'is_warehouse',
         'is_number_pkb',
