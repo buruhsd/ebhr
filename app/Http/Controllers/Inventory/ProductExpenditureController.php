@@ -175,6 +175,7 @@ class ProductExpenditureController extends Controller
 
     public function get_data_serial(Request $request)
     {
+        $branch = $request->branch;
         $search = $request->search;
         $data = ProductExpenditure::select('id','warehouse_id','number_bpb as label','date_bpb')->with(
                 'warehouse:id,code,name',
@@ -183,6 +184,9 @@ class ProductExpenditureController extends Controller
                 'detail_serial_items.product_status:id,name',
                 'detail_serial_items.unit:id,name',
             )->has('detail_serial_items')
+            ->when($branch, function ($query) use ($branch){
+                $query->where('branch_id', $branch);
+            })
             ->when($search, function ($query) use ($search){
                 $query->where('number_bpb', 'LIKE',"%{$search}%");
             })->get();
@@ -191,6 +195,7 @@ class ProductExpenditureController extends Controller
 
     public function get_data_return(Request $request)
     {
+        $branch = $request->branch;
         $search = $request->search;
         $data = ProductExpenditure::select('id','warehouse_id','number_bpb as label','date_bpb')->with(
                 'warehouse:id,code,name',
@@ -199,6 +204,9 @@ class ProductExpenditureController extends Controller
                 'detail_return_items.product_status:id,name',
                 'detail_return_items.unit:id,name',
             )->has('detail_return_items')
+            ->when($branch, function ($query) use ($branch){
+                $query->where('branch_id', $branch);
+            })
             ->when($search, function ($query) use ($search){
                 $query->where('number_bpb', 'LIKE',"%{$search}%");
             })->get();

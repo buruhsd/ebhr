@@ -166,6 +166,7 @@ class ReceiptController extends Controller
 
     public function product_serial_number(Request $request)
     {
+        $branch = $request->branch;
         $search = $request->search;
         $data = Receipt::select('id','warehouse_id','number as label','date')->with(
                 'warehouse:id,code,name',
@@ -175,6 +176,9 @@ class ReceiptController extends Controller
                 'receipt_items_serial.unit_ttb:id,code,name',
             )->has('receipt_items_serial')
             ->where('status',0)
+            ->when($branch, function ($query) use ($branch){
+                $query->where('branch_id', $branch);
+            })
             ->when($search, function ($query) use ($search){
                 $query->where('number', 'LIKE',"%{$search}%");
             })->get();

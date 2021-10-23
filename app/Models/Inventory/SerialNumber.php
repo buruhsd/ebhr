@@ -23,6 +23,7 @@ class SerialNumber extends Model
         'product_id',
         'product_status_id',
         'type',
+        'dk',
         'status',
         'insertedBy',
         'updatedBy',

@@ -83,6 +83,7 @@ class SerialNumberController extends Controller
         }
 
         $request->merge([
+            'dk' => 'D',
             'type' => 'TTB',
             'insertedBy' => Auth::id(),
             'updatedBy'=> Auth::id()
@@ -132,6 +133,7 @@ class SerialNumberController extends Controller
         }
 
         $request->merge([
+            'dk' => 'K',
             'type' => 'BPB',
             'insertedBy' => Auth::id(),
             'updatedBy'=> Auth::id()

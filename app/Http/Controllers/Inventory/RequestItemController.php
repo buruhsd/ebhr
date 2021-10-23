@@ -173,18 +173,23 @@ class RequestItemController extends Controller
 
     public function getData(Request $request)
     {
+        $branch = $request->branch;
         $search = $request->search;
         $data = RequestItem::with(
-            'branch:id,code,name',
-            'organization:id,code,name,level',
-            'bpb_type:id,code,name,is_warehouse,is_number_pkb',
-            'usage_group:id,code,name',
-            'detail_items',
-            'detail_items.product:id,register_number,name,second_name,product_number',
-            'detail_items.product.serial_number',
-            'detail_items.unit:id,name',
-            'insertedBy:id,name',
-            'updatedBy:id,name')
+                'branch:id,code,name',
+                'organization:id,code,name,level',
+                'bpb_type:id,code,name,is_warehouse,is_number_pkb',
+                'usage_group:id,code,name',
+                'detail_items',
+                'detail_items.product:id,register_number,name,second_name,product_number',
+                'detail_items.product.serial_number',
+                'detail_items.unit:id,name',
+                'insertedBy:id,name',
+                'updatedBy:id,name')
+            ->where('status',1)
+            ->when($branch, function ($query) use ($branch){
+                $query->where('branch_id', $branch);
+            })
             ->when($search, function ($query) use ($search){
                 $query->where('number_spb', 'LIKE',"%{$search}%");
             })
