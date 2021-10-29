@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductExpenditureDetail extends Model
 {
+    // status 0 => belum di buatkan nomer seri, 1 => sudah dibuatkan nomor seri
+
     use HasFactory;
     protected $fillable = [
         'product_expenditure_id',

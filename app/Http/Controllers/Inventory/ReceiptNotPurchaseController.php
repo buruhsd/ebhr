@@ -37,11 +37,12 @@ class ReceiptNotPurchaseController extends Controller
             'detail_items.product:id,register_number,name,second_name,product_number',
             'detail_items.unit:id,name',
             'detail_items.product_status:id,name',
-            'detail_items.expenditure_detail:id,qty',
+            'detail_items.expenditure_detail:id,unit_id,qty',
+            'detail_items.expenditure_detail.unit:id,name',
             'insertedBy:id,name',
             'updatedBy:id,name')
             ->when($search, function ($query) use ($search){
-                $query->where('number_bpb', 'LIKE',"%{$search}%");
+                $query->where('number', 'LIKE',"%{$search}%");
             })
             ->orderBy('created_at', 'desc')->paginate(10);
         return response()->json($data);
@@ -79,7 +80,7 @@ class ReceiptNotPurchaseController extends Controller
             'date' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.expenditure_detail_id' => 'required|distinct|exists:product_expenditure_details,id',
+            'item.*.expenditure_detail_id' => 'nullable|distinct|exists:product_expenditure_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
             'item.*.unit_id' => 'required|exists:units,id',
@@ -92,10 +93,19 @@ class ReceiptNotPurchaseController extends Controller
         ]);
 
     	$savedata = ReceiptNotPurchase::create($request->all());
+        if($request->product_expenditure_id){
+            ProductExpenditure::find($request->product_expenditure_id)->update(['status'=>2]);
+        }
         foreach($request->item as $value){
-            $expenditure_detail = ProductExpenditureDetail::find($value['expenditure_detail_id']);
-            $value['is_serial_number'] = $expenditure_detail->is_serial_number;
-            $value['is_return'] = $expenditure_detail->is_return;
+            $is_return = false;
+            $is_serial_number = false;
+            if($value['expenditure_detail_id']){
+                $expenditure_detail = ProductExpenditureDetail::find($value['expenditure_detail_id']);
+                $is_return = $expenditure_detail->is_return;
+                $is_serial_number = $expenditure_detail->is_serial_number;
+            }
+            $value['is_serial_number'] = $is_serial_number;
+            $value['is_return'] = $is_return;
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
             $savedata->detail_items()->create($value);
@@ -114,8 +124,8 @@ class ReceiptNotPurchaseController extends Controller
             'date' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
-            'item.*.id' => 'required|distinct|exists:receipt_not_purchase_details,id',
-            'item.*.expenditure_detail_id' => 'required|distinct|exists:product_expenditure_details,id',
+            'item.*.id' => 'nullable|distinct|exists:receipt_not_purchase_details,id',
+            'item.*.expenditure_detail_id' => 'nullable|distinct|exists:product_expenditure_details,id',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.product_status_id' => 'required|exists:product_statuses,id',
             'item.*.unit_id' => 'required|exists:units,id',
@@ -131,12 +141,40 @@ class ReceiptNotPurchaseController extends Controller
             'updatedBy'=> Auth::id()
         ]);
 
+        if($request->product_expenditure_id && $updateData->product_expenditure_id != $request->product_expenditure_id){
+            ProductExpenditure::find($request->product_expenditure_id)->update(['status'=>2]);
+            ProductExpenditure::find($updateData->product_expenditure_id)->update(['status'=>1]);
+        }
+
     	$updateData->update($request->all());
         foreach($request->item as $value){
-            $detail = ReceiptNotPurchaseDetail::find($value['id']);
-            $value['insertedBy'] = Auth::id();
-            $value['updatedBy'] = Auth::id();
-            $detail->update($value);
+            if($value['id']){
+                $detail = ReceiptNotPurchaseDetail::find($value['id']);
+                $is_return = false;
+                $is_serial_number = false;
+                if($value['expenditure_detail_id']){
+                    $expenditure_detail = ProductExpenditureDetail::find($value['expenditure_detail_id']);
+                    $is_return = $expenditure_detail->is_return;
+                    $is_serial_number = $expenditure_detail->is_serial_number;
+                }
+                $value['is_serial_number'] = $is_serial_number;
+                $value['is_return'] = $is_return;
+                $value['updatedBy'] = Auth::id();
+                $detail->update($value);
+            }else{
+                $is_return = false;
+                $is_serial_number = false;
+                if($value['expenditure_detail_id']){
+                    $expenditure_detail = ProductExpenditureDetail::find($value['expenditure_detail_id']);
+                    $is_return = $expenditure_detail->is_return;
+                    $is_serial_number = $expenditure_detail->is_serial_number;
+                }
+                $value['is_serial_number'] = $is_serial_number;
+                $value['is_return'] = $is_return;
+                $value['insertedBy'] = Auth::id();
+                $value['updatedBy'] = Auth::id();
+                $updateData->detail_items()->create($value);
+            }
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }

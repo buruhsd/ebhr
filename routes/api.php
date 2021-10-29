@@ -312,6 +312,7 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::resource('product_expenditure', 'ProductExpenditureController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+    Route::get('product_expenditures/getData', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getData']);
     Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
     Route::get('product_expenditures/return', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_return']);
     Route::get('product_expenditures/serial', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_serial']);

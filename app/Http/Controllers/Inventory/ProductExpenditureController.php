@@ -179,6 +179,29 @@ class ProductExpenditureController extends Controller
         return response()->json(['data' => $number]);
     }
 
+    public function getData(Request $request)
+    {
+        $branch = $request->branch;
+        $search = $request->search;
+        $data = ProductExpenditure::select('id','number_bpb','number_bpb as label', 'date_bpb','destination_warehouse_id')->with(
+                'destination_warehouse:id,code,name',
+                'detail_items',
+                'detail_items.product:id,register_number,name,second_name,product_number',
+                'detail_items.product.serial_number:id,product_id,is_serial_number',
+                'detail_items.unit:id,name',
+                'detail_items.product_status:id,name')
+            ->where('status',1)
+            ->when($branch, function ($query) use ($branch){
+                $query->where('branch_id', $branch);
+            })
+            ->when($search, function ($query) use ($search){
+                $query->where('number_bpb', 'LIKE',"%{$search}%");
+            })
+            ->limit(10)
+            ->get();
+        return response()->json(['data' => $data]);
+    }
+
     public function get_data_serial(Request $request)
     {
         $branch = $request->branch;

@@ -125,8 +125,8 @@ class SerialNumberController extends Controller
             'item.*.no_seri' => 'required|distinct|unique:serial_number_details,no_seri,null,id,no_seri,serial_number_id',
         ]);
 
-        $receiptItems = ProductExpenditureDetail::find($request->product_expenditure_detail_id);
-        $qty = $receiptItems->qty;
+        $expenditureDetail = ProductExpenditureDetail::find($request->product_expenditure_detail_id);
+        $qty = $expenditureDetail->qty;
         $total_item = count($request->item);
         if($qty != $total_item){
             return response()->json(['success' => false, 'message' => 'Jumlah Nomor seri harus sama dengan jumlah qty BPB']);
@@ -148,17 +148,17 @@ class SerialNumberController extends Controller
             $saveData->details()->create($value);
             $number->update(['status' => 1]);
         }
-        $receiptItems->status = 1;
-        $receiptItems->save();
+        $expenditureDetail->status = 1;
+        $expenditureDetail->save();
 
-        $check_receipt = ProductExpenditure::select('id','status')
+        $check = ProductExpenditure::select('id','status')
             ->has('detail_serial_items')
             ->where('id',$request->product_expenditure_id)->first();
-        if(is_null($check_receipt)){
-            $receipt = ProductExpenditure::select('id','status')
+        if(is_null($check)){
+            $expenditure = ProductExpenditure::select('id','status')
                 ->where('id',$request->product_expenditure_id)->first();
-            $receipt->status = 1;
-            $receipt->save();
+            $expenditure->status = 1;
+            $expenditure->save();
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }

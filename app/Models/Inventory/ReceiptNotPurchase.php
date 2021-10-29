@@ -48,7 +48,7 @@ class ReceiptNotPurchase extends Model
             ->where('pbp_type_id',$type_id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
         if($latest){
-            $format = $latest->number_bpb;
+            $format = $latest->number;
         }
         $id = substr($format, -4);
         $newID = intval($id) + 1;

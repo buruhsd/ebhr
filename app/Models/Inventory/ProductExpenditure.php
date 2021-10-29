@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductExpenditure extends Model
 {
+    // status 0 => belum di buatkan nomer seri, 1 => sudah dibuatkan nomor seri , 2 => dibuatkan penerimaan barang bukan pembelian
     use HasFactory;
     protected $fillable = [
         'branch_id',
