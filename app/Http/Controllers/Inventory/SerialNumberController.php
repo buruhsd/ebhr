@@ -245,17 +245,26 @@ class SerialNumberController extends Controller
     public function updateNoseri(Request $request, $id)
     {
         $this->validate($request, [
-            "no_seri" => "required|string|unique:serial_number_details,no_seri,".$id
+            "no_seri" => "required|exists:serial_number_details,id"
         ]);
 
         $updateData = SerialNumberDetail::find($id);
         if(is_null($updateData)){
             return response()->json(['success' => false, 'message' => 'Data tidak ada']);
         }
-
+        $old_number = $updateData->no_seri;
+        $number = SerialNumberDetail::find($request->no_seri);
         $request->merge([
+            'no_seri'=> $number->no_seri,
             'updatedBy'=> Auth::id()
         ]);
+        $number->status = 1;
+        $number->save();
+        SerialNumberDetail::where(['no_seri'=> $old_number,'status' => 1])
+                ->whereHas('serial_number', function ($query){
+                    $query->where('serial_numbers.dk','D');
+                })
+                ->update(['status' => 0]);
 
     	$updateData->update($request->all());
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);

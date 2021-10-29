@@ -179,6 +179,11 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
     Route::get('/bpb_types', [App\Http\Controllers\Master\BpbTypeController::class, 'getData']);
 
+    Route::resource('pbp_type', 'PbpTypeController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('/pbp_types', [App\Http\Controllers\Master\PbpTypeController::class, 'getData']);
+
     Route::resource('supplier_status', 'SupplierStatusController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -310,6 +315,13 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
     Route::get('product_expenditures/return', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_return']);
     Route::get('product_expenditures/serial', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_serial']);
+
+    Route::resource('receipt_not_purchase', 'ReceiptNotPurchaseController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('receipt_not_purchase/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ReceiptNotPurchaseController::class, 'getAutoNumber']);
+    Route::get('receipt_not_purchase/data/return', [App\Http\Controllers\Inventory\ReceiptNotPurchaseController::class, 'get_data_return']);
+    Route::get('receipt_not_purchase/data/serial', [App\Http\Controllers\Inventory\ReceiptNotPurchaseController::class, 'get_data_serial']);
 
     Route::resource('return_item', 'ReturnItemController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
