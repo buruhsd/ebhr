@@ -88,9 +88,9 @@ class ProductExpenditureController extends Controller
             }
         }
 
-        $bpb_type_id = RequestItem::find($request->request_item_id)->bpb_type_id;
+        $requestItem = RequestItem::find($request->request_item_id);
         $request->merge([
-            'bpb_type_id'=> $bpb_type_id,
+            'bpb_type_id'=> $requestItem->bpb_type_id,
             'insertedBy' => Auth::id(),
             'updatedBy'=> Auth::id()
         ]);
@@ -107,6 +107,7 @@ class ProductExpenditureController extends Controller
             $value['updatedBy'] = Auth::id();
             $productExpenditure->detail_items()->create($value);
         }
+        $requestItem->update(['status'=>4]);
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
 
@@ -139,11 +140,16 @@ class ProductExpenditureController extends Controller
             }
         }
 
-        $bpb_type_id = RequestItem::find($request->request_item_id)->bpb_type_id;
+        $requestItem = RequestItem::find($request->request_item_id);
         $request->merge([
-            'bpb_type_id'=> $bpb_type_id,
+            'bpb_type_id'=> $requestItem->bpb_type_id,
             'updatedBy'=> Auth::id()
         ]);
+
+        if($productExpenditure->request_item_id != $request->request_item_id){
+            $requestItem->update(['status'=>4]);
+            RequestItem::find($productExpenditure->request_item_id)->update(['status'=>1]);
+        }
 
     	$productExpenditure->update($request->all());
         $productExpenditure->detail_items()->delete();

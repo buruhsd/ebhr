@@ -79,6 +79,8 @@ class RequestItem extends Model
             $status = 'Reject';
         }elseif($this->status == 3){
             $status = 'Close';
+        }elseif($this->status == 4){
+            $status = 'Done';
         }
         return $status;
     }
