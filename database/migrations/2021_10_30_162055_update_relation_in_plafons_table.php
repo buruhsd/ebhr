@@ -14,8 +14,6 @@ class UpdateRelationInPlafonsTable extends Migration
     public function up()
     {
         Schema::table('plafons', function (Blueprint $table) {
-            $table->dropForeign('plafons_approval_level_id_foreign');
-            $table->dropForeign('plafons_release_level_id_foreign');
             $table->foreign('approval_level_id')->references('id')->on('organization_levels');
             $table->foreign('release_level_id')->references('id')->on('organization_levels');
         });
