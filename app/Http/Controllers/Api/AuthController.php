@@ -30,6 +30,7 @@ class AuthController extends Controller
     public function login(ValidateUserLogin $request){
 
         $credentials = request(['email', 'password']);
+        $permission = Auth::User()->getPermissions();
         if (!$token = auth()->attempt($credentials)) {
             return  response()->json([
                 'type' =>'failed',
@@ -40,10 +41,15 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
+
+        $menus = Menu::where('parent_id', 0)->get();
+
+       
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
             'token' => $token,
+            'menu' => $menu,
             'user' => new UserResource($user)
         ]);
         return response()->json(compact('token'));
