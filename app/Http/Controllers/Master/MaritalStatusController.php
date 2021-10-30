@@ -48,7 +48,7 @@ class MaritalStatusController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:marital_statuses,code",
             "status_name" => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -78,7 +78,7 @@ class MaritalStatusController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:marital_statuses,code,".$id,
             "status_name" => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

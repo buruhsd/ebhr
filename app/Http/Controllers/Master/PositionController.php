@@ -50,9 +50,9 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'code_position' => 'required',
+            "code_position" => "required|unique:positions,code_position",
             'name' => 'required',
-            'code_shorting' => 'required',
+            'code_shorting' => 'required|unique:positions,code_shorting',
             'is_struktural' => 'required'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -82,9 +82,9 @@ class PositionController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'code_position' => 'required',
+            "code_position" => "required|unique:positions,code_position,".$id,
             'name' => 'required',
-            'code_shorting' => 'required',
+            'code_shorting' => 'required|unique:positions,code_shorting,'.$id,
             'is_struktural' => 'required'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

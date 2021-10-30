@@ -78,7 +78,7 @@ class CurrencyController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required|unique:currencies,code|max:3",
+            "code" => "required|max:3|unique:currencies,code,".$id,
             "name" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id(),'code'=>strtoupper($request->code)]);

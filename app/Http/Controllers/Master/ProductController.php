@@ -53,7 +53,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_code' => "required",
+            "product_code" => "required|unique:products,product_code",
             'name' => "required",
             'second_name' => "required",
             'spesification' => "required",
@@ -109,7 +109,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_code' => "required",
+            "product_code" => "required|unique:products,product_code,".$id,
             'name' => "required",
             'second_name' => "required",
             'spesification' => "required",

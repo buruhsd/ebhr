@@ -50,7 +50,7 @@ class BranchController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:branches,code",
             "name" => "required",
             "alias_name" => "required|unique:branches,alias_name|alpha|string|max:2"
         ]);
@@ -81,7 +81,7 @@ class BranchController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:branches,code,".$id,
             "name" => "required",
             "alias_name" => "required|alpha|string|max:2|unique:branches,alias_name,".$id
         ]);

@@ -48,7 +48,7 @@ class DevelopmentStatusController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:development_statuses,code",
             "name" => "required",
             "abbreviation"=>"required",
             "description" => "required",
@@ -80,7 +80,7 @@ class DevelopmentStatusController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:development_statuses,code,".$id,
             "name" => "required",
             "abbreviation"=>"required",
             "description" => "required",

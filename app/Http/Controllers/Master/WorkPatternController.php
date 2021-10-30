@@ -48,7 +48,7 @@ class WorkPatternController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:work_patterns,code",
             "name" => "required",
             "presensi" => "required"
         ]);
@@ -79,7 +79,7 @@ class WorkPatternController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:work_patterns,code,".$id,
             "name" => "required",
             "presensi" => "required"
         ]);

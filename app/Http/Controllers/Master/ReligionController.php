@@ -48,7 +48,7 @@ class ReligionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:religions,code",
             "religion_name" => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -78,7 +78,7 @@ class ReligionController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:religions,code,".$id,
             "religion_name" => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

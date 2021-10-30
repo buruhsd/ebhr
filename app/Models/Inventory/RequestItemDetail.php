@@ -16,10 +16,23 @@ class RequestItemDetail extends Model
         'product_id',
         'unit_id',
         'qty',
+        'rest_qty',
         'status',
         'insertedBy',
         'updatedBy',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            try {
+                $model->rest_qty = $model->qty;
+            } catch (UnsatisfiedDependencyException $e) {
+                abort(500, $e->getMessage());
+            }
+        });
+    }
 
     public function request_item_id()
     {

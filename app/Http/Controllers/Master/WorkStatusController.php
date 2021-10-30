@@ -79,7 +79,7 @@ class WorkStatusController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:work_statuses,code,".$id,
             "name" => "required"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

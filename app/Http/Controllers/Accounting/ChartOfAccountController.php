@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\Accounting;
 
 use Auth;
-use App\Models\PbpType;
+use App\Models\Accounting\ChartOfAccount;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PbpTypeController extends Controller
+class ChartOfAccountController extends Controller
 {
     public function __construct()
     {
@@ -26,15 +26,16 @@ class PbpTypeController extends Controller
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
-            $orderBy = 'name';
+            $orderBy = 'code';
         }
         if(is_null($sortBy)){
             $sortBy = 'asc';
         }
-        $data = PbpType::with(
+        $data = ChartOfAccount::with(
+                'valas:id,name',
                 'insertedBy:id,name',
                 'updatedBy:id,name')
-                ->where('name','LIKE',"{$search}%")
+                ->where($orderBy,'LIKE',"{$search}%")
                 ->orderBy($orderBy, $sortBy)
                 ->paginate(10);
         return response()->json($data);
@@ -49,17 +50,32 @@ class PbpTypeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required|unique:pbp_types,code|alpha_num|max:1",
-            "name" => "required",
-            "is_warehouse" => "required",
-            // "is_number" => "required",
+            "parent_id" => "nullable|integer",
+            "code" => "required|integer|unique:chart_of_accounts,code",
+            "name" => "required|string",
+            "level" => "required|integer",
+            "normal_balance" => "required|max:1",
+            "detail_general" => "required|max:1",
+            "classification" => "required",
+            "currency_id" => "nullable|exists:currencies,id",
+            "is_close" => "required",
         ]);
+
+        $level = $request->level;
+        $classification = $request->classification;
+        if($request->parent_id){
+            $parent = ChartOfAccount::find($request->parent_id);
+            $level = $parent->level;
+            $classification = $parent->classification;
+        }
+
         $request->merge([
-            'code'=>strtoupper($request->code),
+            'level'=> $level,
+            'classification'=> $classification,
             'insertedBy' => Auth::id(),
             'updatedBy'=>Auth::id()
         ]);
-        PbpType::create($request->all());
+        ChartOfAccount::create($request->all());
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
 
@@ -71,7 +87,10 @@ class PbpTypeController extends Controller
      */
     public function show($id)
     {
-        $data = PbpType::find($id);
+        $data = ChartOfAccount::with(
+            'valas:id,name',
+            'insertedBy:id,name',
+            'updatedBy:id,name')->find($id);
         return response()->json(['success' => true, 'data'=>$data]);
     }
 
@@ -85,17 +104,33 @@ class PbpTypeController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required|alpha_num|max:1|unique:pbp_types,code,".$id,
-            "name" => "required",
-            "is_warehouse" => "required",
-            // "is_number" => "required"
+            "parent_id" => "nullable|integer",
+            "code" => "required|integer|unique:chart_of_accounts,code,".$id,
+            "name" => "required|string",
+            "level" => "required|integer",
+            "normal_balance" => "required|max:1",
+            "detail_general" => "required|max:1",
+            "classification" => "required",
+            "currency_id" => "nullable|exists:currencies,id",
+            "is_close" => "required",
         ]);
-        $request->merge(['code'=>strtoupper($request->code),'updatedBy'=>Auth::id()]);
-        $data = PbpType::find($id);
-        if(!$data->alias_code){
-            $request->merge(['alias_code'=>strtoupper($request->alias_code)]);
+
+        $updateData = ChartOfAccount::find($id);
+        $level = $request->level;
+        $classification = $request->classification;
+        if($request->parent_id){
+            $parent = ChartOfAccount::find($request->parent_id);
+            $level = $parent->level;
+            $classification = $parent->classification;
         }
-        $data->update($request->all());
+
+        $request->merge([
+            'level'=> $level,
+            'classification'=> $classification,
+            'insertedBy' => Auth::id(),
+            'updatedBy'=>Auth::id()
+        ]);
+        $updateData->update($request->all());
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }
 
@@ -108,7 +143,7 @@ class PbpTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $data = PbpType::find($id)->delete();
+            $data = ChartOfAccount::find($id)->delete();
             return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
         }catch(\Illuminate\Database\QueryException $ex) {
             if($ex->getCode() === '23000') {
@@ -117,8 +152,9 @@ class PbpTypeController extends Controller
         }
     }
 
-    public function getData(){
-        $data = PbpType::get();
+    public function getData()
+    {
+        $data = ChartOfAccount::where('detail_general','U')->get();
         return response()->json(['data' => $data]);
     }
 }

@@ -49,7 +49,7 @@ class KursTypeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'code'=>'required|string',
+            "code" => "required|unique:kurs,code",
             'name'=>'required|string'
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -79,7 +79,7 @@ class KursTypeController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'code'=>'required|string',
+            "code" => "required|unique:kurs,code,".$id,
             'name'=>'required|string'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

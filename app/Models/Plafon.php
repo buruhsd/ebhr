@@ -21,12 +21,12 @@ class Plafon extends Model
 
     public function approval_level()
     {
-        return $this->belongsTo(Position::class, 'approval_level_id');
+        return $this->belongsTo(OrganizationLevel::class, 'approval_level_id');
     }
 
     public function release_level()
     {
-        return $this->belongsTo(Position::class, 'release_level_id');
+        return $this->belongsTo(OrganizationLevel::class, 'release_level_id');
     }
 
     public function insertedBy()

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Organization extends Model
+class OrganizationLevel extends Model
 {
     use HasFactory;
     protected $fillable = [
         'code',
         'name',
-        'level_id',
-        'description',
         'insertedBy',
         'updatedBy',
     ];
@@ -21,11 +19,6 @@ class Organization extends Model
     public function getLabelAttribute()
     {
         return $this->name;
-    }
-
-    public function level()
-    {
-        return $this->belongsTo(OrganizationLevel::class, 'level_id');
     }
 
     public function insertedBy()

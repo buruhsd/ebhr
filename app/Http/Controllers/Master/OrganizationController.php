@@ -34,6 +34,7 @@ class OrganizationController extends Controller
             $sortBy = 'asc';
         }
         $data = Organization::with(
+            'level:id,name',
             'insertedBy:id,name',
             'updatedBy:id,name')
             ->where('name','LIKE',"{$search}%")
@@ -50,9 +51,9 @@ class OrganizationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:organizations,code",
             "name" => "required",
-            "level" => "required",
+            "level_id" => "required|exists:organization_levels,id",
             "description" => "required",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -82,9 +83,9 @@ class OrganizationController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:organizations,code,".$id,
             "name" => "required",
-            "level" => "required",
+            "level_id" => "required|exists:organization_levels,id",
             "description" => "required",
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
@@ -101,8 +102,14 @@ class OrganizationController extends Controller
      */
     public function destroy($id)
     {
-        $data = Organization::find($id)->delete();
-        return response()->json(['data' => 'data deleted']);
+        try {
+            Organization::find($id)->delete();
+            return response()->json(['message' => 'Data berhasil dihapus','success'=>true]);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json(['message' => 'Data tidak boleh dihapus','success'=>false]);
+            }
+        }
     }
 
     public function export_excel()

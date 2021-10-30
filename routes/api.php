@@ -85,6 +85,11 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('organization_level', 'OrganizationLevelController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('/organization_levels/getData', [App\Http\Controllers\Master\OrganizationLevelController::class, 'getData']);
+
     Route::resource('development_status', 'DevelopmentStatusController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -356,3 +361,13 @@ Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'c
 
 //Receipt
 // Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
+
+// Accounting
+Route::group(['namespace' => 'Accounting','prefix'=>'accounting'], function() {
+    // master
+    Route::group(['prefix'=>'master'], function() {
+        Route::resource('chart_of_accounts', 'ChartOfAccountController', ['only' => [
+            'index','show', 'store', 'update', 'destroy'
+        ]]);
+    });
+});

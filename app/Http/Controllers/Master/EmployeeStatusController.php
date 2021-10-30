@@ -48,9 +48,9 @@ class EmployeeStatusController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:employee_statuses,code",
             "name" => "required",
-            "code_shorting" => "required",
+            "code_shorting" => "required|unique:employee_statuses,code_shorting",
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = EmployeeStatus::create($request->all());
@@ -79,9 +79,9 @@ class EmployeeStatusController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:employee_statuses,code,".$id,
             "name" => "required",
-            "code_shorting" => "required",
+            "code_shorting" => "required|unique:employee_statuses,code_shorting,".$id,
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = EmployeeStatus::find($id);

@@ -106,12 +106,23 @@ class ProductExpenditureController extends Controller
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
             $productExpenditure->detail_items()->create($value);
+
+            $requestItemDetail = RequestItemDetail::find($value['request_item_detail_id']);
+            if($value['qty'] == $requestItemDetail->rest_qty){
+                $requestItemDetail->status = 1;
+            }
+            $requestItemDetail->rest_qty = $requestItemDetail->rest_qty - $value['qty'];
+            $requestItemDetail->save();
         }
-        $requestItem->update(['status'=>4]);
+        $check = RequestItemDetail::where(['request_item_id'=>$request->request_item_id])->sum('rest_qty');
+        if($check == 0){
+            $requestItem->update(['status'=>4]);
+        }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $this->validate($request, [
             'branch_id' => 'required|exists:branches,id',
             'request_item_id' => 'required|exists:request_items,id',
@@ -147,16 +158,33 @@ class ProductExpenditureController extends Controller
         ]);
 
         if($productExpenditure->request_item_id != $request->request_item_id){
-            $requestItem->update(['status'=>4]);
             RequestItem::find($productExpenditure->request_item_id)->update(['status'=>1]);
         }
 
     	$productExpenditure->update($request->all());
-        $productExpenditure->detail_items()->delete();
+        // $productExpenditure->detail_items()->delete();
         foreach($request->item as $value){
-            $value['insertedBy'] = Auth::id();
-            $value['updatedBy'] = Auth::id();
-            $productExpenditure->detail_items()->create($value);
+            $detail = ProductExpenditureDetail::find($value['id']);
+            if($detail){
+                $value['insertedBy'] = Auth::id();
+                $value['updatedBy'] = Auth::id();
+                $detail->update($value);
+
+                $itemDetail = RequestItemDetail::find($value['request_item_detail_id']);
+                $usedQty = ProductExpenditureDetail::where('request_item_detail_id',$value['request_item_detail_id'])->sum('qty');
+                $status = 0;
+                if(($itemDetail->qty - $usedQty) == 0){
+                    $status = 1;
+                }
+                $itemDetail->rest_qty = $itemDetail->qty - $usedQty;
+                $itemDetail->status = $status;
+                $itemDetail->save();
+            }
+        }
+
+        $check = RequestItemDetail::where(['request_item_id'=>$requestItem->id])->sum('rest_qty');
+        if($check == 0){
+            $requestItem->update(['status'=>4]);
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }

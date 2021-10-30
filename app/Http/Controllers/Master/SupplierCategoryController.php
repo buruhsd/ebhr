@@ -48,8 +48,7 @@ class SupplierCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            // "code" => "required|unique:supplier_categories,code",
-            "code" => "required",
+            "code" => "required|unique:supplier_categories,code",
             "name" => "required",
             "parent_id" => "nullable",
         ]);
@@ -80,8 +79,7 @@ class SupplierCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            // "code" => "required|unique:supplier_categories,code",
-            "code" => "required",
+            "code" => "required|unique:supplier_categories,code,".$id,
             "name" => "required",
             "parent_id" => "nullable",
         ]);

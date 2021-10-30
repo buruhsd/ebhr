@@ -48,7 +48,7 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:units,code",
             "name" => "required",
             "description" => "required",
         ]);
@@ -79,7 +79,7 @@ class UnitController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:units,code,".$id,
             "name" => "required",
             "description" => "required",
         ]);

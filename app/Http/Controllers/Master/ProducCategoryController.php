@@ -48,7 +48,7 @@ class ProducCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:product_categories,code",
             "name" => "required",
             "parent_id" => "nullable",
         ]);
@@ -79,7 +79,7 @@ class ProducCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            "code" => "required",
+            "code" => "required|unique:product_categories,code,".$id,
             "name" => "required",
             "parent_id" => "nullable",
         ]);
