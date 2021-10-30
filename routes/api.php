@@ -364,10 +364,8 @@ Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'c
 
 // Accounting
 Route::group(['namespace' => 'Accounting','prefix'=>'accounting'], function() {
-    // master
-    Route::group(['prefix'=>'master'], function() {
-        Route::resource('chart_of_accounts', 'ChartOfAccountController', ['only' => [
-            'index','show', 'store', 'update', 'destroy'
-        ]]);
-    });
+    Route::resource('chart_of_accounts', 'ChartOfAccountController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('chart_of_accounts/data/parent', [App\Http\Controllers\Accounting\ChartOfAccountController::class, 'getDataParents']);
 });

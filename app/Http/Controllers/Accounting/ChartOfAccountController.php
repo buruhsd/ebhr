@@ -32,6 +32,7 @@ class ChartOfAccountController extends Controller
             $sortBy = 'asc';
         }
         $data = ChartOfAccount::with(
+                'parent',
                 'valas:id,name',
                 'insertedBy:id,name',
                 'updatedBy:id,name')
@@ -65,7 +66,7 @@ class ChartOfAccountController extends Controller
         $classification = $request->classification;
         if($request->parent_id){
             $parent = ChartOfAccount::find($request->parent_id);
-            $level = $parent->level;
+            $level = $parent->level + 1;
             $classification = $parent->classification;
         }
 
@@ -120,7 +121,7 @@ class ChartOfAccountController extends Controller
         $classification = $request->classification;
         if($request->parent_id){
             $parent = ChartOfAccount::find($request->parent_id);
-            $level = $parent->level;
+            $level = $parent->level + 1;
             $classification = $parent->classification;
         }
 
@@ -152,9 +153,9 @@ class ChartOfAccountController extends Controller
         }
     }
 
-    public function getData()
+    public function getDataParents()
     {
         $data = ChartOfAccount::where('detail_general','U')->get();
-        return response()->json(['data' => $data]);
+        return response()->json($data);
     }
 }
