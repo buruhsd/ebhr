@@ -11,6 +11,8 @@ class OrganizationLevel extends Model
     protected $fillable = [
         'code',
         'name',
+        'management',
+        'data_order',
         'insertedBy',
         'updatedBy',
     ];

@@ -50,6 +50,8 @@ class OrganizationLevelController extends Controller
         $this->validate($request, [
             "code" => "required|unique:organization_levels,code",
             "name" => "required",
+            "management" => "required",
+            "data_order" => "required|integer"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = OrganizationLevel::create($request->all());
@@ -80,6 +82,8 @@ class OrganizationLevelController extends Controller
         $this->validate($request, [
             "code" => "required|unique:organization_levels,code,".$id,
             "name" => "required",
+            "management" => "required",
+            "data_order" => "required|integer"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         $data = OrganizationLevel::find($id);

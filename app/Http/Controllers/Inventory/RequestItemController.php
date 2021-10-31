@@ -31,7 +31,7 @@ class RequestItemController extends Controller
         }
         $data = RequestItem::with(
             'branch:id,code,name',
-            'organization:id,code,name,level',
+            'organization:id,code,name',
             'bpb_type:id,code,name,is_warehouse,is_number_pkb',
             'usage_group:id,code,name',
             'detail_items',
