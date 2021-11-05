@@ -322,6 +322,7 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
     Route::get('product_expenditures/getData', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getData']);
+    Route::get('product_expenditures/getDataRetur', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getDataRetur']);
     Route::get('product_expenditure/number/{branch_id}/{type_id}', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'getAutoNumber']);
     Route::get('product_expenditures/return', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_return']);
     Route::get('product_expenditures/serial', [App\Http\Controllers\Inventory\ProductExpenditureController::class, 'get_data_serial']);
@@ -337,6 +338,11 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
     Route::get('return_item/number/{branch_id}', [App\Http\Controllers\Inventory\ReturnItemController::class, 'getAutoNumber']);
+
+    Route::resource('return_bpb', 'ReturnBpbController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('return_bpb/number/{branch_id}', [App\Http\Controllers\Inventory\ReturnBpbController::class, 'getAutoNumber']);
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');
