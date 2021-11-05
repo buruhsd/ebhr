@@ -37,7 +37,13 @@ class ChartOfAccountController extends Controller
                 'insertedBy:id,name',
                 'updatedBy:id,name')
                 ->where($orderBy,'LIKE',"{$search}%")
-                ->orderBy($orderBy, $sortBy)
+                ->when($orderBy, function ($query) use ($orderBy){
+                    if($orderBy == 'code'){
+                        $query->orderByRaw('SUBSTR(code, 1 ,14)');
+                    }else{
+                        $query->orderBy($orderBy, $sortBy);
+                    }
+                })
                 ->paginate(10);
         return response()->json($data);
     }
