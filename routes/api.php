@@ -226,6 +226,10 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('partner', 'PartnerController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+
+    Route::resource('authority_spb', 'AuthoritySpbController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
 });
 
 Route::get('/suppliers', [App\Http\Controllers\Master\SupplierController::class, 'getData'])->name('api.supplier.data');
