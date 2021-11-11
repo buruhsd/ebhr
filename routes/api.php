@@ -183,6 +183,7 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
     Route::get('/bpb_types', [App\Http\Controllers\Master\BpbTypeController::class, 'getData']);
+    Route::get('/customType', [App\Http\Controllers\Master\BpbTypeController::class, 'customType']);
 
     Route::resource('pbp_type', 'PbpTypeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
@@ -228,6 +229,14 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     ]]);
 
     Route::resource('authority_spb', 'AuthoritySpbController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('limit_stock', 'LimitStockController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
+    Route::resource('journal_code', 'JournalCodeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
 });

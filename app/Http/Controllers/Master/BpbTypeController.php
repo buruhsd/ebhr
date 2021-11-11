@@ -123,4 +123,15 @@ class BpbTypeController extends Controller
         $data = BpbType::get();
         return response()->json(['data' => $data]);
     }
+
+    public function customType()
+    {
+        $data = array(
+            ['id'=>'TTB','label'=>'TTB'],
+            ['id'=>'BPB','label'=>'BPB'],
+            ['id'=>'PBP','label'=>'PBP'],
+            ['id'=>'Memorial','label'=>'Memorial']
+        );
+        return response()->json($data);
+    }
 }
