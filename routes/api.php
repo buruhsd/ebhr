@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Master\WorkStatusController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockCardController;
 
 use App\Http\Controllers\Purchase\PurchaseController;
 /*
@@ -377,6 +378,8 @@ Route::get('purchase/{purchase}/approval', [PurchaseController::class, 'approval
 Route::post('purchase/{purchase}/create-order', [PurchaseController::class, 'createOrder'])->name('api.purchase.createOrder');
 Route::post('purchase/{order}/close-order', [PurchaseController::class, 'closeOrder'])->name('api.purchase.closeOrder');
 Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
+
+Route::get('stock/card', [StockCardController::class, 'stockCard'])->name('api.stockCard');
 
 //Receipt
 // Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
