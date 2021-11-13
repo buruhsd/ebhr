@@ -74,8 +74,8 @@ class AuthoritySpbController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_id' => 'required|exists:products,id|unique:authority_spbs,product_id,'.$request->product_id.',id,approval_level_id,'.$request->approval_level_id,
-            'approval_level_id' => 'required|exists:organization_levels,id|unique:authority_spbs,approval_level_id,'.$request->approval_level_id.',id,product_id,'.$request->product_id,
+            'product_id' => 'required|exists:products,id|unique:authority_spbs,product_id',
+            'approval_level_id' => 'required|exists:organization_levels,id',
         ]);
         $request->merge([
             'insertedBy' => Auth::id(),
@@ -111,8 +111,8 @@ class AuthoritySpbController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_id' => 'required|exists:products,id|unique:authority_spbs,product_id,'.$id.',id,approval_level_id,'.$request->approval_level_id,
-            'approval_level_id' => 'required|exists:organization_levels,id|unique:authority_spbs,approval_level_id,'.$id.',id,product_id,'.$request->product_id,
+            'product_id' => 'required|exists:products,id|unique:authority_spbs,product_id,'.$id,
+            'approval_level_id' => 'required|exists:organization_levels,id',
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
         AuthoritySpb::find($id)->update($request->all());
