@@ -42,7 +42,7 @@ class ProductCategory extends Model
 
     public function getLabelAttribute()
     {
-        return $this->name;
+        return $this->code .' - '. $this->name;
     }
 
     public function childs()

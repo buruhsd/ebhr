@@ -39,10 +39,12 @@ class AuthController extends Controller
             ]);
         }
 
+        $user = auth()->user();
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
-            'token' => $token
+            'token' => $token,
+            'user' => new UserResource($user)
         ]);
         return response()->json(compact('token'));
     }

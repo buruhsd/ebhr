@@ -49,6 +49,8 @@ class UserController extends Controller
         $this->validate($request, [
             "name" => "required",
             "email" => "required|email",
+            "is_access_product" => "required|boolean",
+            "is_access_price" => "required|boolean",
             "password" => "nullable|min:8"
         ]);
         if($request->password){
@@ -56,7 +58,7 @@ class UserController extends Controller
             $request->merge(['password' => $password]);
             $data = $user->update($request->all());
         }else{
-            $data = $user->update($request->only('name','email'));
+            $data = $user->update($request->except('password'));
         }
 
         return new UserResource($user);

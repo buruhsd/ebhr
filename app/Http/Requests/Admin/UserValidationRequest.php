@@ -26,8 +26,9 @@ class UserValidationRequest extends FormRequest
         return [
             "name" => "required",
             "email" => "required|email|unique:users",
+            "is_access_product" => "required|boolean",
+            "is_access_price" => "required|boolean",
             "password" => "required|min:8"
-
         ];
     }
 }
