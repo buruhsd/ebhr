@@ -51,6 +51,7 @@ class OrganizationLevelController extends Controller
             "code" => "required|unique:organization_levels,code",
             "name" => "required",
             "management" => "required",
+            "back_date" => "required|integer",
             "data_order" => "required|integer"
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -83,6 +84,7 @@ class OrganizationLevelController extends Controller
             "code" => "required|unique:organization_levels,code,".$id,
             "name" => "required",
             "management" => "required",
+            "back_date" => "required|integer",
             "data_order" => "required|integer"
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);

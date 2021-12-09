@@ -74,6 +74,10 @@ Route::get('/purchaseNecessary', [MasterController::class, 'purchaseNecessary'])
 Route::get('/work_status/list', [MasterController::class, 'workStatus'])->name('api.workStatus');
 
 Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
+    Route::resource('company', 'CompanyInfoController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+
     Route::resource('branch', 'BranchController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -390,4 +394,11 @@ Route::group(['namespace' => 'Accounting','prefix'=>'accounting'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
     Route::get('chart_of_accounts/data/parent', [App\Http\Controllers\Accounting\ChartOfAccountController::class, 'getDataParents']);
+});
+
+// Reports
+Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
+    Route::group(['namespace' => 'purchase','prefix'=>'purchase'], function() {
+        Route::get('order/export/pdf/{order_id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'exportPdf']);
+    });
 });

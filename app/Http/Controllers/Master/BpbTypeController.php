@@ -126,12 +126,21 @@ class BpbTypeController extends Controller
 
     public function customType()
     {
+        $items = [];
+        $types = BpbType::select('name')->get();
+        foreach($types as $value){
+            $item = [
+                'id'=>'BPB - '.$value->name,
+                'label'=>'BPB - '.$value->name
+            ];
+            array_push($items,$item);
+        }
         $data = array(
             ['id'=>'TTB','label'=>'TTB'],
-            ['id'=>'BPB','label'=>'BPB'],
             ['id'=>'PBP','label'=>'PBP'],
             ['id'=>'Memorial','label'=>'Memorial']
         );
+        $data = array_merge($items,$data);
         return response()->json($data);
     }
 }

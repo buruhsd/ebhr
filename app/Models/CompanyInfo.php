@@ -5,24 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrganizationLevel extends Model
+class CompanyInfo extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'code',
         'name',
-        'management',
-        'back_date',
-        'data_order',
+        'address',
+        'phone_number',
+        'fax',
         'insertedBy',
         'updatedBy',
     ];
-    protected $appends = ['label'];
-
-    public function getLabelAttribute()
-    {
-        return $this->name;
-    }
 
     public function insertedBy()
     {
