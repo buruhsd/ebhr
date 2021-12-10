@@ -241,6 +241,11 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
 
+    Route::resource('reason_correction', 'ReasonCorrectionController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('/reason_corrections', [App\Http\Controllers\Master\ReasonCorrectionController::class, 'getData']);
+
     Route::resource('journal_code', 'JournalCodeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
@@ -357,6 +362,11 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
         'index','show', 'store', 'update', 'destroy'
     ]]);
     Route::get('return_bpb/number/{branch_id}', [App\Http\Controllers\Inventory\ReturnBpbController::class, 'getAutoNumber']);
+
+    Route::resource('stock_correction', 'StockCorrectionController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    Route::get('stock_correction/number/{branch_id}', [App\Http\Controllers\Inventory\StockCorrectionController::class, 'getAutoNumber']);
 });
 
 Route::get('/purchase/orders/search', [App\Http\Controllers\Purchase\OrderController::class, 'getData'])->name('api.purchase.order.search');

@@ -161,7 +161,7 @@ class ChartOfAccountController extends Controller
 
     public function getDataParents()
     {
-        $data = ChartOfAccount::where('detail_general','U')->get();
+        $data = ChartOfAccount::where('detail_general','U')->orderByRaw('SUBSTR(code, 1 ,14)')->get();
         return response()->json($data);
     }
 }
