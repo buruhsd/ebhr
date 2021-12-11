@@ -15,7 +15,7 @@ class AddLevelOrganitationOnUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('organitation_id')->after('password')->nullable();
-            $table->foreign('organitation_id')->references('id')->on('product_expenditures');
+            $table->foreign('organitation_id')->references('id')->on('organization_levels');
         });
     }
 
