@@ -43,7 +43,7 @@ class StockCorrection extends Model
     public static function generateNumber($id)
     {
         $branch = Branch::find($id)->alias_name;
-        $string = 'ADJ'.date('y').'/'.date('m').'/'.$branch;
+        $string = 'KRS'.date('y').'/'.date('m').'/'.$branch;
         $format = $string.'0000';
         $latest = self::where('branch_id',$id)
             ->whereMonth('created_at',date('m'))->orderBy('id','desc')->first();
