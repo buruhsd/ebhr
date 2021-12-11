@@ -18,7 +18,7 @@
                 color: #212529;
                 text-align: left;
                 background-color: #fff;
-                font-size: 12px;
+                font-size: 10px;
                 margin: 24pt;
             }
 
@@ -56,7 +56,7 @@
             }
 
             h4, .h4 {
-                font-size: 1rem;
+                font-size: 12px;
             }
 
             .table {
@@ -72,12 +72,12 @@
             }
 
             .table.table-items td {
-                border-top: 1px solid #dee2e6;
+                border-top: 1.5px solid #dee2e6;
             }
 
             .table thead th {
                 vertical-align: bottom;
-                border-bottom: 2px solid #dee2e6;
+                border-bottom: 1.5px solid #dee2e6;
             }
 
             .mt-5 {
@@ -116,11 +116,11 @@
                 line-height: 1;
             }
             .party-header {
-                font-size: 1.5rem;
+                font-size: 12px;
                 font-weight: 400;
             }
             .total-amount {
-                font-size: 12px;
+                font-size: 10px;
                 font-weight: 700;
             }
             .border-0 {
@@ -135,7 +135,12 @@
     <body>
         {{-- Header --}}
         @if($invoice->logo)
-            <img src="{{ $invoice->getLogo() }}" alt="logo" height="100">
+            <img src="{{ $invoice->getLogo() }}" alt="logo" height="35">
+        @endif
+        @if($invoice->seller->name)
+            <h4 class="text-uppercase">
+                <strong>{{ $invoice->seller->name }}</strong>
+            </h4>
         @endif
 
         <table class="table">
@@ -235,10 +240,10 @@
         </table>
 
         {{-- Table --}}
-        <table class="table table-items">
+        <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.serial') }}</th>
+                    <th width="4%" scope="col" class="border-0 pl-0">{{ __('invoices::invoice.serial') }}</th>
                     <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.description') }}</th>
                     @if($invoice->hasItemUnits)
                         <th scope="col" class="text-center border-0">{{ __('invoices::invoice.units') }}</th>
@@ -293,7 +298,7 @@
                 @endforeach
                 {{-- Summary --}}
                 @if($invoice->taxable_amount)
-                    <tr>
+                    <tr class="table table-items">
                         <td colspan="{{ $invoice->table_columns - 1 }}" class="border-0"></td>
                         <td class="text-right pl-0">{{ __('invoices::invoice.taxable_amount') }}</td>
                         <td class="text-right pr-0">

@@ -409,6 +409,7 @@ Route::group(['namespace' => 'Accounting','prefix'=>'accounting'], function() {
 // Reports
 Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
     Route::group(['namespace' => 'purchase','prefix'=>'purchase'], function() {
+        Route::get('order/order_not_ttb', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'order_not_ttb']);
         Route::get('order/export/pdf/{order_id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'exportPdf']);
     });
 });
