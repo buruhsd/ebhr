@@ -10,7 +10,17 @@ class Menu extends Model
 {
     use HasFactory;
 
+    protected $appends = ['childs'];
+
+    public function getChildsAttribute(){
+        return $this->child()->get();
+    }
+
     public function permission(){
         return $this->hasOne(Permission::class, 'permission_id');
+    }
+
+    public function child(){
+        return $this->hasMany(Menu::class, 'parent_id');
     }
 }

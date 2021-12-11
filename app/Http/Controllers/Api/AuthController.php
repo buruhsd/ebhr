@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\UserResource;
 use App\Http\Requests\ValidateUserRegistration;
 use App\Http\Requests\ValidateUserLogin;
 use App\Models\User;
+use App\Models\Menu;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -30,7 +31,7 @@ class AuthController extends Controller
     public function login(ValidateUserLogin $request){
 
         $credentials = request(['email', 'password']);
-        $permission = Auth::User()->getPermissions();
+
         if (!$token = auth()->attempt($credentials)) {
             return  response()->json([
                 'type' =>'failed',

@@ -19,6 +19,7 @@ class CreateMenusTable extends Migration
             $table->string('path');
             $table->string('label');
             $table->integer('parent_id')->index();
+            $table->integer('order')->nullable();
             $table->unsignedBigInteger('permission_id');
             $table->timestamps();
         });
