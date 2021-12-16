@@ -43,9 +43,9 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        $menus = Menu::where('parent_id', 0)->get();
+        $menu = Menu::where('parent_id', 0)->get();
 
-       
+
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
