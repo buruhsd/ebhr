@@ -8,6 +8,8 @@ use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
+use App\Exports\Purchase\OderExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -18,25 +20,16 @@ class OrderController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function order_not_ttb(Request $request)
+    public function index(Request $request)
     {
     	$from_date = $request->from_date;
     	$to_date = $request->to_date;
     	$branch = $request->branch;
-    	$search = $request->search;
     	$status = $request->status;
-        $sortBy = $request->input('sortby');
-        $orderBy = $request->input('orderby');
-        if(is_null($orderBy)){
-            $orderBy = 'id';
-        }
-        if(is_null($sortBy)){
-            $sortBy = 'desc';
-        }
 
         if(is_null($from_date) || is_null($to_date)){
-            $to_date = date('Y-m-d');
-            $from_date = date('Y-m-d', strtotime($to_date. '-10 months'));
+            $to_date = $to_date ? $to_date : date('Y-m-d');
+            $from_date = $from_date ? $from_date :date('Y-m-d', strtotime($to_date. '-10 months'));
         }
 
     	$data = PurchaseOrder::with('branch:id,name',
@@ -58,6 +51,7 @@ class OrderController extends Controller
                     'insertedBy:id,name',
                     'updatedBy:id,name')
                 ->when($status, function ($query) use ($status){
+                    $statusIn = [0,1,2,3,4,6];
                     if($status == 'new'){
                         $statusIn = [0];
                     }elseif($status == 'app'){
@@ -79,9 +73,6 @@ class OrderController extends Controller
                     }
                     $query->whereIn('status',$statusIn);
                 })
-                ->when($search, function ($query) use ($search){
-                    $query->where('no_op','LIKE',"{$search}%");
-                })
                 ->when($branch, function ($query) use ($branch){
                     $query->whereHas('branch',function ($q) use ($branch){
                         $q->where('branches.id',$branch);
@@ -89,10 +80,24 @@ class OrderController extends Controller
                 })
                 ->whereDate('date_op','>=',$from_date)
                 ->whereDate('date_op','<=',$to_date)
-                ->orderBy($orderBy, $sortBy)
                 ->paginate(20);
         return response()->json($data);
     }
+
+    public function export_excel(Request $request)
+	{
+    	$branch = $request->branch;
+    	$status = $request->status;
+    	$from_date = $request->from_date;
+    	$to_date = $request->to_date;
+        if(is_null($from_date) || is_null($to_date)){
+            $request->merge([
+                'to_date' => $to_date ? $to_date : date('Y-m-d'),
+                'from_date' => $from_date ? $from_date : date('Y-m-d', strtotime($to_date. '-10 months')),
+            ]);
+        }
+		return Excel::download(new OderExport($request->all()), 'purchace_order_'.time().'.xlsx');
+	}
 
     public function exportPdf(Request $request,$order_id)
     {

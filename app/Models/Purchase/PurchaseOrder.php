@@ -171,6 +171,11 @@ class PurchaseOrder extends Model
         return $this->belongsTo(User::class, 'closed_by');
     }
 
+    public function inserted_by()
+    {
+        return $this->belongsTo(User::class, 'insertedBy');
+    }
+
     public function insertedBy()
     {
         return $this->belongsTo(User::class, 'insertedBy');
