@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reports\Purchase;
 
+use Auth;
 use App\Models\CompanyInfo;
 use App\Models\Purchase\PurchaseOrder;
 use LaravelDaily\Invoices\Invoice;
@@ -106,21 +107,22 @@ class OrderController extends Controller
             return response()->json(['succces'=>false,'message'=>'Data tidak ada']);
         }
         $company = CompanyInfo::first();
-        $client = new Party([
-            'name'          => $company->name,
-            'address'       => $company->address,
-            'custom_fields' => [
-                'Phone/Fax'         => $company->phone_number.'/'.$company->fax,
-            ],
-        ]);
-
         $supplier = $order->supplier->partner;
-        $customer = new Party([
+        $client = new Party([
+            'user'          => Auth::user()->name,
+            'name'          => $company->name,
             'custom_fields' => [
                 'Tanggal'   => date('d-m-Y', strtotime($order->date_op)),
                 'Kepada'   => $supplier->agency.' '.$supplier->name,
                 'Alamat'   => $supplier->address,
-                // 'Phone/Fax'         => '(024) 658-4888/024-658-2123',
+            ],
+        ]);
+
+        $customer = new Party([
+            'custom_fields' => [
+                'TOP'   => $order->term_of_payment.' Hari',
+                'Estimasi Kirim'   => date('d-m-Y', strtotime($order->date_estimate)),
+                'Keterangan'   => $order->noted
             ],
         ]);
 

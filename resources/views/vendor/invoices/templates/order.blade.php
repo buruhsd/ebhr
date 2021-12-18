@@ -56,7 +56,7 @@
             }
 
             h4, .h4 {
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .table {
@@ -135,7 +135,7 @@
     <body>
         {{-- Header --}}
         @if($invoice->logo)
-            <img src="{{ $invoice->getLogo() }}" alt="logo" height="35">
+            <img src="{{ $invoice->getLogo() }}" alt="logo" height="30">
         @endif
         @if($invoice->seller->name)
             <h4 class="text-uppercase">
@@ -161,36 +161,6 @@
             <tbody>
                 <tr>
                     <td class="px-0">
-                        @if($invoice->seller->name)
-                            <p class="seller-name">
-                                {{ $invoice->seller->name }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->address)
-                            <p class="seller-address">
-                                {{ $invoice->seller->address }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->code)
-                            <p class="seller-code">
-                                {{ __('invoices::invoice.code') }}: {{ $invoice->seller->code }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->vat)
-                            <p class="seller-vat">
-                                {{ __('invoices::invoice.vat') }}: {{ $invoice->seller->vat }}
-                            </p>
-                        @endif
-
-                        @if($invoice->seller->phone)
-                            <p class="seller-phone">
-                                {{ __('invoices::invoice.phone') }}: {{ $invoice->seller->phone }}
-                            </p>
-                        @endif
-
                         @foreach($invoice->seller->custom_fields as $key => $value)
                             <p class="seller-custom-field">
                                 {{ ucfirst($key) }}: {{ $value }}
@@ -199,36 +169,6 @@
                     </td>
                     <td class="border-0" width="15%"></td>
                     <td class="px-0">
-                        @if($invoice->buyer->name)
-                            <p class="buyer-name">
-                                <strong>{{ $invoice->buyer->name }}</strong>
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->address)
-                            <p class="buyer-address">
-                                {{ __('invoices::invoice.address') }}: {{ $invoice->buyer->address }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->code)
-                            <p class="buyer-code">
-                                {{ __('invoices::invoice.code') }}: {{ $invoice->buyer->code }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->vat)
-                            <p class="buyer-vat">
-                                {{ __('invoices::invoice.vat') }}: {{ $invoice->buyer->vat }}
-                            </p>
-                        @endif
-
-                        @if($invoice->buyer->phone)
-                            <p class="buyer-phone">
-                                {{ __('invoices::invoice.phone') }}: {{ $invoice->buyer->phone }}
-                            </p>
-                        @endif
-
                         @foreach($invoice->buyer->custom_fields as $key => $value)
                             <p class="buyer-custom-field">
                                 {{ ucfirst($key) }}: {{ $value }}
@@ -244,11 +184,11 @@
             <thead>
                 <tr>
                     <th width="4%" scope="col" class="border-0 pl-0">{{ __('invoices::invoice.serial') }}</th>
-                    <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.description') }}</th>
+                    <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.name_product') }}</th>
+                    <th scope="col" class="text-center border-0">{{ __('invoices::invoice.quantity') }}</th>
                     @if($invoice->hasItemUnits)
                         <th scope="col" class="text-center border-0">{{ __('invoices::invoice.units') }}</th>
                     @endif
-                    <th scope="col" class="text-center border-0">{{ __('invoices::invoice.quantity') }}</th>
                     <th scope="col" class="text-right border-0">{{ __('invoices::invoice.price') }}</th>
                     @if($invoice->hasItemDiscount)
                         <th scope="col" class="text-right border-0">{{ __('invoices::invoice.discount') }}</th>
@@ -273,10 +213,10 @@
                             <p class="cool-gray">{{ $item->description }}</p>
                         @endif
                     </td>
+                    <td class="text-center">{{ $item->quantity }}</td>
                     @if($invoice->hasItemUnits)
                         <td class="text-center">{{ $item->units }}</td>
                     @endif
-                    <td class="text-center">{{ $item->quantity }}</td>
                     <td class="text-right">
                         {{ $invoice->formatCurrency($item->price_per_unit) }}
                     </td>
@@ -346,11 +286,11 @@
         </table>
 
         <script type="text/php">
-            if (isset($pdf) && $PAGE_COUNT > 1) {
-                $text = "{{date('Y-m-d H:i:s')}} - {{$invoice->getSerialNumber()}} - Page {PAGE_NUM} / {PAGE_COUNT}";
-                $size = 8;
+            if (isset($pdf) && $PAGE_COUNT >= 0) {
+                $text = "{{ $invoice->seller->user }} - {{date('Y-m-d H:i:s')}} - {{$invoice->getSerialNumber()}} - Page {PAGE_NUM} / {PAGE_COUNT}";
+                $size = 7;
                 $font = $fontMetrics->getFont("Verdana");
-                $width = $fontMetrics->get_text_width($text, $font, $size) / 1.4;
+                $width = $fontMetrics->get_text_width($text, $font, $size) / 1.3;
                 $x = ($pdf->get_width() - $width);
                 $y = $pdf->get_height() - 35;
                 $pdf->page_text($x, $y, $text, $font, $size);
