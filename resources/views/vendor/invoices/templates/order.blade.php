@@ -184,7 +184,7 @@
             <thead>
                 <tr>
                     <th width="4%" scope="col" class="border-0 pl-0">{{ __('invoices::invoice.serial') }}</th>
-                    <th scope="col" class="border-0 pl-0">{{ __('invoices::invoice.name_product') }}</th>
+                    <th width="35%" scope="col" class="border-0 pl-0">{{ __('invoices::invoice.name_product') }}</th>
                     <th scope="col" class="text-center border-0">{{ __('invoices::invoice.quantity') }}</th>
                     @if($invoice->hasItemUnits)
                         <th scope="col" class="text-center border-0">{{ __('invoices::invoice.units') }}</th>
