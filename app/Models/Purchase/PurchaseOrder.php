@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Currency;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseOrder extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'branch_id',
         'transaction_type_id',

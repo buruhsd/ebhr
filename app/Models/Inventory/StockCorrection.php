@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Master\Warehouse;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockCorrection extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'branch_id',
         'warehouse_id',

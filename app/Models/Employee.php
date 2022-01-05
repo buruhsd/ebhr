@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use App\Models\Branch;
 use App\Models\WorkType;
 use App\Models\DevelopmentStatus;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'branch_id',
         'tgl_surat',

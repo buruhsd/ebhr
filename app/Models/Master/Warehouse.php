@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Warehouse extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'code',
         'name',
@@ -18,7 +19,7 @@ class Warehouse extends Model
         'insertedBy',
         'updatedBy',
     ];
-    
+
     protected $appends = ['label'];
 
     public function getLabelAttribute()

@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockCorrectionDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'stock_correction_id',
         'product_id',

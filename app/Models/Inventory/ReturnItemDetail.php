@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReturnItemDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'return_item_id',
         'product_expenditure_detail_id',

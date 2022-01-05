@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Master\Products;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseLetterItem extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'purchase_letter_id',
         'product_id',
@@ -31,7 +32,7 @@ class PurchaseLetterItem extends Model
     {
         return round($this->attributes['rest_qty'],2);
     }
-    
+
     public function getLabelAttribute()
     {
         // return $this->products ? $this->products->register_number.' '.$this->products->second_name : '';

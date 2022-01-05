@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\Observable;
 class OrganizationLevel extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'code',
         'name',

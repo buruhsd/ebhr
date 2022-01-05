@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\BpbType;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RequestItem extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'branch_id',
         'organization_id',

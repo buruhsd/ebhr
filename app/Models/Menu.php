@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Permission;
 
 class Menu extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
 
     protected $appends = ['childs'];
 

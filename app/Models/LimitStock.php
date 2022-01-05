@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use App\Models\Master\Warehouse;
 use App\Models\Master\Products;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LimitStock extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'product_id',
         'warehouse_id',

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use App\Models\Accounting\ChartOfAccount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ReasonCorrection extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'code',
         'name',

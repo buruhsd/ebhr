@@ -2,13 +2,14 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SerialNumberDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'serial_number_id',
         'no_seri',

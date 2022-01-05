@@ -2,6 +2,7 @@
 
 namespace App\Models\Accounting;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChartOfAccount extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'parent_id',
         'code',

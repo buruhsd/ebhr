@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use App\Models\Master\ProductStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SupplierStatus extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'supplier_id',
         'product_status_id',

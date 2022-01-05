@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Observable;
 use App\Models\Master\Products;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AuthoritySpb extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'product_id',
         'approval_level_id',

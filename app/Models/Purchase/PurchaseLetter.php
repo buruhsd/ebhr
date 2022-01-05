@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Master\Warehouse;
@@ -11,7 +12,7 @@ use App\Models\Purchase\PurchaseLetterItem;
 
 class PurchaseLetter extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'tgl_pp',
         'no_pp',

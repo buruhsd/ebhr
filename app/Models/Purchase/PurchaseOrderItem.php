@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchase;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseOrderItem extends Model
 {
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'purchase_letter_id',
         'purchase_letter_item_id',

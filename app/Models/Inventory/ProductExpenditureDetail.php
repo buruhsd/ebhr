@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Master\Unit;
 use App\Models\Master\Products;
@@ -13,7 +14,7 @@ class ProductExpenditureDetail extends Model
 {
     // status 0 => belum di buatkan nomer seri, 1 => sudah dibuatkan nomor seri
 
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'product_expenditure_id',
         'request_item_detail_id',

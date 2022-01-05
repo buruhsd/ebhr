@@ -2,6 +2,7 @@
 
 namespace App\Models\Inventory;
 
+use App\Traits\Observable;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\BpbType;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductExpenditure extends Model
 {
     // status 0 => belum di buatkan nomer seri, 1 => sudah dibuatkan nomor seri , 2 => dibuatkan penerimaan barang bukan pembelian
-    use HasFactory;
+    use HasFactory,Observable;
     protected $fillable = [
         'branch_id',
         'request_item_id',
