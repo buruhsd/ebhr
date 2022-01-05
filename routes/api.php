@@ -410,7 +410,14 @@ Route::group(['namespace' => 'Accounting','prefix'=>'accounting'], function() {
 Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
     Route::group(['namespace' => 'purchase','prefix'=>'purchase'], function() {
         Route::get('order', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'index']);
-        Route::get('order/export/pdf/{order_id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'exportPdf']);
+        Route::get('order/export/pdf/{id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'exportPdf']);
         Route::get('order/export/excel', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'export_excel']);
+    });
+
+    Route::group(['namespace' => 'inventory','prefix'=>'inventory'], function() {
+        Route::get('receipt/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ReceiptController::class, 'exportPdf']);
+        Route::get('receipt/warehouse/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ReceiptController::class, 'warehouseExportPdf']);
+        Route::get('request/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'exportPdf']);
+        Route::get('expenditure/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ProductExpenditureController::class, 'exportPdf']);
     });
 });

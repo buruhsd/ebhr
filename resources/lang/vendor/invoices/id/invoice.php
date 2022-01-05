@@ -19,7 +19,7 @@ return [
     'name_product'           => 'Nama Barang',
     'description'            => 'Keterangan',
     'units'                  => 'Satuan',
-    'quantity'               => 'Qty',
+    'quantity'               => 'Jumlah',
     'price'                  => 'Harga Satuan',
     'discount'               => 'Diskon',
     'tax'                    => 'Tax',
@@ -36,4 +36,7 @@ return [
     'shipping'               => 'Shipping',
     'paid'                   => 'Paid',
     'due'                    => 'Due',
+    'register_number'        => 'No Register',
+    'product_status'         => 'Status Barang',
+    'item_value'             => 'Nilai Barang',
 ];

@@ -36,4 +36,7 @@ return [
     'shipping'               => 'Shipping',
     'paid'                   => 'Paid',
     'due'                    => 'Due',
+    'register_number'        => 'Register Number',
+    'product_status'         => 'Product Status',
+    'item_value'             => 'Item Value',
 ];
