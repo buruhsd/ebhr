@@ -34,6 +34,7 @@ class RequestItemController extends Controller
             'organization:id,code,name',
             'bpb_type:id,code,name,is_warehouse,is_number_pkb',
             'usage_group:id,code,name',
+            'user_unit:id,code,name',
             'detail_items',
             'detail_items.product:id,register_number,name,second_name,product_number',
             'detail_items.unit:id,name',
@@ -94,6 +95,7 @@ class RequestItemController extends Controller
             'organization_id' => 'required|exists:organizations,id',
             'bpb_type_id' => 'required|exists:bpb_types,id',
             'usage_group_id' => 'required|exists:usage_groups,id',
+            'user_unit_id' => 'required|exists:user_units,id',
             'date_spb' => 'required|date',
             'number_pkb' => 'required|string|max:15',
             'date_pkb' => 'required|date',
@@ -125,11 +127,13 @@ class RequestItemController extends Controller
             'organization_id' => 'required|exists:organizations,id',
             'bpb_type_id' => 'required|exists:bpb_types,id',
             'usage_group_id' => 'required|exists:usage_groups,id',
+            'user_unit_id' => 'required|exists:user_units,id',
             'date_spb' => 'required|date',
             'number_pkb' => 'required|string|max:15',
             'date_pkb' => 'required|date',
             'note' => 'required|string',
             'item' => 'required',
+            'item.*.request_item_detail_id' => 'nullable',
             'item.*.product_id' => 'required|distinct|exists:products,id',
             'item.*.qty' => 'required|numeric|min:1'
         ]);
@@ -144,11 +148,18 @@ class RequestItemController extends Controller
         ]);
 
     	$requestItem->update($request->all());
-        $requestItem->detail_items()->delete();
+        // $requestItem->detail_items()->delete();
         foreach($request->item as $value){
-            $value['insertedBy'] = Auth::id();
-            $value['updatedBy'] = Auth::id();
-            $requestItem->detail_items()->create($value);
+            if(isset($value['request_item_detail_id'])){
+                $update = $requestItem->detail_items()->where('id',$value['request_item_detail_id'])->first();
+                $value['insertedBy'] = Auth::id();
+                $value['updatedBy'] = Auth::id();
+                $update->update($value);
+            }else{
+                $value['insertedBy'] = Auth::id();
+                $value['updatedBy'] = Auth::id();
+                $requestItem->detail_items()->create($value);
+            }
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }
@@ -180,6 +191,7 @@ class RequestItemController extends Controller
                 'organization:id,code,name',
                 'bpb_type:id,code,name,is_warehouse,is_number_pkb',
                 'usage_group:id,code,name',
+                'user_unit:id,code,name',
                 'detail_items',
                 'detail_items.product:id,register_number,name,second_name,product_number',
                 'detail_items.product.serial_number',

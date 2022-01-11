@@ -25,8 +25,9 @@ class ProductExpenditureController extends Controller
     public function index(Request $request){
         $search = $request->search;
         $data = ProductExpenditure::with(
-            'request_item:id,bpb_type_id,number_spb,date_spb',
+            'request_item:id,bpb_type_id,user_unit_id,number_spb,date_spb',
             'request_item.bpb_type:id,code,name,is_warehouse,is_number_pkb',
+            'request_item.user_unit:id,code,name',
             'branch:id,code,name',
             'warehouse:id,code,name',
             'destination_warehouse:id,code,name',

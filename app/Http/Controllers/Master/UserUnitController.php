@@ -105,7 +105,7 @@ class UserUnitController extends Controller
     }
 
     public function getData(){
-        $data = UserUnit::get();
+        $data = UserUnit::orderBy('name')->get();
         return response()->json(['data' => $data]);
     }
 }

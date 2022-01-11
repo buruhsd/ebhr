@@ -4,6 +4,7 @@ namespace App\Models\Inventory;
 
 use App\Traits\Observable;
 use App\Models\User;
+use App\Models\UserUnit;
 use App\Models\Branch;
 use App\Models\BpbType;
 use App\Models\Organization;
@@ -19,6 +20,7 @@ class RequestItem extends Model
         'organization_id',
         'bpb_type_id',
         'usage_group_id',
+        'user_unit_id',
         'number_spb',
         'date_spb',
         'number_pkb',
@@ -104,6 +106,11 @@ class RequestItem extends Model
     public function usage_group()
     {
         return $this->belongsTo(UsageGroup::class, 'usage_group_id');
+    }
+
+    public function user_unit()
+    {
+        return $this->belongsTo(UserUnit::class, 'user_unit_id');
     }
 
     public function detail_items()

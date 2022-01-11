@@ -35,6 +35,7 @@ class RequestItemController extends Controller
                 'Peminta'   => $data->organization->name,
                 'Jenis SPB'   => $data->bpb_type->name,
                 'Kel Penggunaan'   => $data->usage_group->name,
+                'Unit Pemakai'   => $data->user_unit ? $data->user_unit->name : '-',
             ],
         ]);
 
