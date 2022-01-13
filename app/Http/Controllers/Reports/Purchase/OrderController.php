@@ -229,7 +229,7 @@ class OrderController extends Controller
 
     public function detail_receipt(Request $request,$id)
     {
-        $data = ReceiptItems::select('id','receipt_id','unit_op_id','unit_id','unit_conversion','qty_op','qty', DB::raw('qty / unit_conversion as qty_conversion'))
+        $data = ReceiptItems::select('id','receipt_id','unit_op_id','unit_id','unit_conversion','qty_op','qty', DB::raw('ROUND(qty / unit_conversion,2) as qty_conversion'))
             ->with(
                 'receipt:id,warehouse_id,number,date',
                 'receipt.warehouse:id,name',
