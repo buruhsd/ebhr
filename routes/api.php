@@ -412,12 +412,16 @@ Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
         Route::get('order', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'index']);
         Route::get('order/export/pdf/{id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'exportPdf']);
         Route::get('order/export/excel', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'export_excel']);
+        Route::get('order/detail', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'detail']);
+        Route::get('order/detail/receipt/{id}', [App\Http\Controllers\Reports\Purchase\OrderController::class, 'detail_receipt']);
     });
 
     Route::group(['namespace' => 'inventory','prefix'=>'inventory'], function() {
         Route::get('receipt/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ReceiptController::class, 'exportPdf']);
         Route::get('receipt/warehouse/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ReceiptController::class, 'warehouseExportPdf']);
         Route::get('request/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'exportPdf']);
+        Route::get('request/detail', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'detail']);
+        Route::get('request/detail/item/{id}', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'detail_item']);
         Route::get('expenditure/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ProductExpenditureController::class, 'exportPdf']);
     });
 });

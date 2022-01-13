@@ -35,9 +35,14 @@ class RequestItemDetail extends Model
         });
     }
 
-    public function request_item_id()
+    public function request_item()
     {
         return $this->belongsTo(RequestItem::class, 'request_item_id');
+    }
+
+    public function expenditure_detail()
+    {
+        return $this->hasMany(ProductExpenditureDetail::class, 'request_item_detail_id');
     }
 
     public function product()

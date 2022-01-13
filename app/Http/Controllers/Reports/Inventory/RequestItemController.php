@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Reports\Inventory;
 
+use DB;
 use Auth;
 use App\Models\CompanyInfo;
 use App\Models\Inventory\RequestItem;
+use App\Models\Inventory\RequestItemDetail;
+use App\Models\Inventory\ProductExpenditureDetail;
 use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\Party;
@@ -77,5 +80,56 @@ class RequestItemController extends Controller
 
         // return $invoice->download();
         return $invoice->stream();
+    }
+
+    public function detail(Request $request)
+    {
+        $from_date = $request->from_date;
+    	$to_date = $request->to_date;
+    	$branch = $request->branch;
+    	$type = $request->type;
+
+        if(is_null($from_date) || is_null($to_date)){
+            $to_date = $to_date ? $to_date : date('Y-m-d');
+            $from_date = $from_date ? $from_date :date('Y-m-d', strtotime($to_date. '-10 months'));
+        }
+        $data = RequestItemDetail::select('id','request_item_id','product_id','unit_id','qty')
+            ->with(
+                'request_item:id,branch_id,number_spb,date_spb',
+                'request_item.branch:id,name',
+                'product:id,register_number,name,second_name',
+                'unit:id,name'
+            )
+            ->withCount([
+                'expenditure_detail AS qty_bpb' => function ($query) {
+                    $query->select(DB::raw("SUM(qty) as qty"));
+                }
+            ])
+            ->whereHas('request_item', function ($query) use ($type,$branch,$from_date,$to_date){
+                $query->when($type, function ($query) use ($type){
+                    if($type != 'all'){
+                        $query->where('bpb_type_id',$type);
+                    }
+                })
+                ->when($branch, function ($query) use ($branch){
+                    $query->whereHas('branch',function ($q) use ($branch){
+                        $q->where('branches.id',$branch);
+                    });
+                })
+                ->whereDate('date_spb','>=',$from_date)
+                ->whereDate('date_spb','<=',$to_date);
+            })->paginate(10);
+        return response()->json($data);
+    }
+
+    public function detail_item(Request $request,$id)
+    {
+        $data = ProductExpenditureDetail::select('id','product_expenditure_id','product_status_id','qty')
+            ->with(
+                'product_expenditure:id,warehouse_id,number_bpb,date_bpb',
+                'product_expenditure.warehouse:id,name',
+                'product_status:id,name',
+            )->where('request_item_detail_id',$id)->paginate(10);
+        return response()->json($data);
     }
 }
