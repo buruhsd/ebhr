@@ -107,7 +107,7 @@ class RequestItemController extends Controller
             ])
             ->whereHas('request_item', function ($query) use ($type,$branch,$from_date,$to_date){
                 $query->when($type, function ($query) use ($type){
-                    if($type != 'all'){
+                    if($type > 0){
                         $query->where('bpb_type_id',$type);
                     }
                 })
