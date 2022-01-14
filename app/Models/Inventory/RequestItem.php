@@ -118,6 +118,11 @@ class RequestItem extends Model
         return $this->hasMany(RequestItemDetail::class, 'request_item_id');
     }
 
+    public function expenditure()
+    {
+        return $this->hasMany(ProductExpenditure::class, 'request_item_id');
+    }
+
     public function approved_by()
     {
         return $this->belongsTo(User::class, 'approved_by');

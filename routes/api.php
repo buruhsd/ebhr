@@ -423,5 +423,6 @@ Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
         Route::get('request/detail', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'detail']);
         Route::get('request/detail/item/{id}', [App\Http\Controllers\Reports\Inventory\RequestItemController::class, 'detail_item']);
         Route::get('expenditure/export/pdf/{id}', [App\Http\Controllers\Reports\Inventory\ProductExpenditureController::class, 'exportPdf']);
+        Route::get('product/ppic', [App\Http\Controllers\Reports\Inventory\ProductController::class, 'index']);
     });
 });

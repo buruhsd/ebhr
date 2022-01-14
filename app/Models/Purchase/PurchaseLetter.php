@@ -109,7 +109,7 @@ class PurchaseLetter extends Model
 
     public function orders()
     {
-        return $this->hasMany(PurchaseOrder::class, 'purchase_letter_id');
+        return $this->hasMany(PurchaseOrderItem::class, 'purchase_letter_id');
     }
 
     public function closedBy()

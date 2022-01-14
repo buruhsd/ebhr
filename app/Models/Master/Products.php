@@ -4,6 +4,10 @@ namespace App\Models\Master;
 
 use App\Traits\Observable;
 use App\Models\User;
+use App\Models\LimitStock;
+use App\Models\Purchase\PurchaseOrderItem;
+use App\Models\Purchase\PurchaseLetterItem;
+use App\Models\Inventory\RequestItemDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,7 +38,6 @@ class Products extends Model
     protected static function boot()
     {
         parent::boot();
-
         static::creating(function ($model) {
             try {
                 $model->register_number = self::register_number();
@@ -110,5 +113,36 @@ class Products extends Model
         return $places < 0 ?
         ceil($value / $mult) * $mult :
             ceil($value * $mult) / $mult;
+    }
+
+    public function minmax()
+    {
+        return $this->hasOne(LimitStock::class, 'product_id')
+            ->whereDate('expired_at','<=', date('Y-m-d'))->orderBy('id','desc');
+    }
+
+    public function items_pp()
+    {
+        return $this->hasMany(PurchaseLetterItem::class, 'product_id')
+            ->whereHas('purchase', function ($query){
+                $query->where('purchase_letters.status',0)
+                ->doesntHave('orders');
+            });
+    }
+
+    public function items_op()
+    {
+        return $this->hasMany(PurchaseOrderItem::class, 'product_id')
+            ->whereHas('purchase_order', function ($query){
+                $query->whereIn('purchase_orders.status',[0,1,3,6]);
+            });
+    }
+
+    public function items_spb()
+    {
+        return $this->hasMany(RequestItemDetail::class, 'product_id')
+            ->whereHas('request_item', function ($query){
+                $query->doesntHave('expenditure');
+            });
     }
 }
