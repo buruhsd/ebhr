@@ -427,5 +427,6 @@ Route::group(['namespace' => 'reports','prefix'=>'reports'], function() {
         Route::get('product/ppic/detail/purchase/{id}', [App\Http\Controllers\Reports\Inventory\ProductController::class, 'detail_purchase']);
         Route::get('product/ppic/detail/order/{id}', [App\Http\Controllers\Reports\Inventory\ProductController::class, 'detail_order']);
         Route::get('product/ppic/detail/request/{id}', [App\Http\Controllers\Reports\Inventory\ProductController::class, 'detail_request']);
+        Route::get('update', [App\Http\Controllers\Reports\Inventory\ProductController::class, 'update']);
     });
 });
