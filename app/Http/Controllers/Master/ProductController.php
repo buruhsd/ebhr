@@ -24,6 +24,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
+        $approve = $request->approve;
         $sortBy = $request->input('sortby');
         $orderBy = $request->input('orderby');
         if(is_null($orderBy)){
@@ -38,8 +39,12 @@ class ProductController extends Controller
             'category:id,code,name,parent_id',
             'insertedBy:id,name',
             'updatedBy:id,name')
-            ->where('name','LIKE',"%{$search}%")
-            ->orWhere('second_name','LIKE',"%{$search}%")
+            ->when($search, function($query) use ($search,$orderBy){
+                $query->where($orderBy,'LIKE',"%{$search}%");
+            })
+            ->when($approve, function($query) use ($approve){
+                $query->where('is_approve',$approve);
+            })
             ->orderBy($orderBy, $sortBy)
             ->paginate(10);
         return response()->json($data);

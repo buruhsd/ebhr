@@ -19,7 +19,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
     }
 
     public function index(Request $request)
@@ -67,6 +67,29 @@ class ProductController extends Controller
                 });
             })
             ->paginate(20);
+        return response()->json($data);
+    }
+
+    public function detail (Request $request,$id)
+    {
+        $data = Products::select('id','register_number','second_name')
+            ->where('id',$id)
+            ->with(
+                'items_pp:id,purchase_letter_id,product_id,qty,unit',
+                'items_pp.purchase:id,no_pp,tgl_pp',
+                'items_pp.products:id,register_number,second_name',
+                'items_op:id,purchase_order_id,qty,unit_id,product_id',
+                'items_op.product:id,register_number,second_name',
+                'items_op.unit:id,name',
+                'items_op.purchase_order:id,supplier_id,no_op,date_op',
+                'items_op.purchase_order.supplier:id,partner_id',
+                'items_op.purchase_order.supplier.partner:id,name',
+                'items_spb:id,request_item_id,product_id,unit_id,qty',
+                'items_spb.product:id,register_number,second_name',
+                'items_spb.unit:id,name',
+                'items_spb.request_item:id,number_spb,date_spb',
+            )
+            ->first();
         return response()->json($data);
     }
 }
