@@ -33,14 +33,34 @@ class ProductController extends Controller
                 'minmax:id,product_id,warehouse_id,min,max,expired_at',
             )
             ->withCount([
-                'items_pp AS qty_pp' => function ($query) {
-                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"));
+                'items_pp AS qty_pp' => function ($query) use ($warehouse,$branch) {
+                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"))
+                    ->when($warehouse, function ($query) use ($warehouse) {
+                        $query->whereHas('purchase', function ($pp) use ($warehouse) {
+                            $pp->where('purchase_letters.warehouse_id', $warehouse);
+                        });
+                    })
+                    ->when($branch, function ($query) use ($branch) {
+                        $query->whereHas('purchase', function ($pp) use ($branch) {
+                            $pp->where('purchase_letters.branch_id', $branch);
+                        });
+                    });
                 },
-                'items_op AS qty_op' => function ($query) {
-                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"));
+                'items_op AS qty_op' => function ($query) use ($branch) {
+                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"))
+                    ->when($branch, function ($query) use ($branch) {
+                        $query->whereHas('purchase_order', function ($pp) use ($branch) {
+                            $pp->where('purchase_orders.branch_id', $branch);
+                        });
+                    });
                 },
-                'items_spb AS qty_spb' => function ($query) {
-                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"));
+                'items_spb AS qty_spb' => function ($query) use ($branch) {
+                    $query->select(DB::raw("CAST(COALESCE(SUM(qty),0) as UNSIGNED) as qty"))
+                    ->when($branch, function ($query) use ($branch) {
+                        $query->whereHas('request_item', function ($pp) use ($branch) {
+                            $pp->where('request_items.branch_id', $branch);
+                        });
+                    });
                 }
             ])
             ->when($warehouse, function ($query) use ($warehouse) {
@@ -76,6 +96,8 @@ class ProductController extends Controller
 
     public function detail (Request $request,$id)
     {
+    	$branch = $request->branch;
+    	$warehouse = $request->warehouse;
         $data = Products::select('id','register_number','second_name')
             ->where('id',$id)
             ->with(
@@ -93,6 +115,28 @@ class ProductController extends Controller
                 'items_spb.unit:id,name',
                 'items_spb.request_item:id,number_spb,date_spb',
             )
+            ->when($warehouse, function ($query) use ($warehouse) {
+                $query->whereHas('items_pp', function ($q) use ($warehouse) {
+                    $q->whereHas('purchase', function ($pp) use ($warehouse) {
+                        $pp->where('purchase_letters.warehouse_id', $warehouse);
+                    });
+                });
+            })
+            ->when($branch, function ($query) use ($branch) {
+                $query->whereHas('items_pp', function ($q) use ($branch) {
+                    $q->whereHas('purchase', function ($pp) use ($branch) {
+                        $pp->where('purchase_letters.branch_id', $branch);
+                    });
+                })->orWhereHas('items_op', function ($q) use ($branch) {
+                    $q->whereHas('purchase_order', function ($op) use ($branch) {
+                        $op->where('purchase_orders.branch_id', $branch);
+                    });
+                })->orWhereHas('items_spb', function ($q) use ($branch) {
+                    $q->whereHas('request_item', function ($spb) use ($branch) {
+                        $spb->where('request_items.branch_id', $branch);
+                    });
+                });
+            })
             ->first();
         return response()->json($data);
     }
