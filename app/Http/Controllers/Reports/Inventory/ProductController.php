@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Reports\Inventory;
 
 use DB;
 use Auth;
-use App\Models\Purchase\PurchaseLetter;
 use App\Models\Purchase\PurchaseOrderItem;
 use App\Models\Purchase\PurchaseLetterItem;
 use App\Models\Inventory\RequestItemDetail;
@@ -24,7 +23,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
     }
 
     public function index(Request $request)
@@ -173,20 +172,5 @@ class ProductController extends Controller
             })
             ->get();
         return response()->json($data);
-    }
-
-    public function update(){
-        $data = PurchaseLetter::get();
-        foreach ($data as $key => $value) {
-            if($value->purchase_items()->count() == $value->purchase_items()->where('status',1)->count()){
-                $value->status = 2;
-            }else{
-                $value->status = 0;
-                if($value->purchase_items()->where('status',1)->count() > 0){
-                    $value->status = 1;
-                }
-            }
-            $value->save();
-        }
     }
 }
