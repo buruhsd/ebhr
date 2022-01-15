@@ -27,7 +27,7 @@ class ProductController extends Controller
     	$date = $request->date;
     	$branch = $request->branch;
     	$warehouse = $request->warehouse;
-        $data = Products::select('id','register_number','second_name', DB::raw('FLOOR(RAND()*(100-5+1)+5) as stock'))
+        $data = Products::select('id','register_number','second_name', DB::raw('FLOOR(0+1) as stock'))
             ->with(
                 'minmax:id,product_id,warehouse_id,min,max,expired_at',
             )
