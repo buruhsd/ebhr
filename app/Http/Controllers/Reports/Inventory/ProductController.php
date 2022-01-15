@@ -46,12 +46,28 @@ class ProductController extends Controller
             ->when($warehouse, function ($query) use ($warehouse) {
                 $query->whereHas('minmax', function ($q) use ($warehouse) {
                     $q->where('limit_stocks.warehouse_id', $warehouse);
+                })->whereHas('items_pp', function ($q) use ($warehouse) {
+                    $q->whereHas('purchase', function ($pp) use ($warehouse) {
+                        $pp->where('purchase_letters.warehouse_id', $warehouse);
+                    });
                 });
             })
             ->when($branch, function ($query) use ($branch) {
                 $query->whereHas('minmax', function ($q) use ($branch) {
-                    $id = Warehouse::where('branch_id',$branch)->pluck('id');
-                    $q->whereIn('limit_stocks.warehouse_id', $id);
+                    $whereInId = Warehouse::where('branch_id',$branch)->pluck('id');
+                    $q->whereIn('limit_stocks.warehouse_id', $whereInId);
+                })->whereHas('items_pp', function ($q) use ($branch) {
+                    $q->whereHas('purchase', function ($pp) use ($branch) {
+                        $pp->where('purchase_letters.branch_id', $branch);
+                    });
+                })->whereHas('items_op', function ($q) use ($branch) {
+                    $q->whereHas('purchase_order', function ($op) use ($branch) {
+                        $op->where('purchase_orders.branch_id', $branch);
+                    });
+                })->whereHas('items_spb', function ($q) use ($branch) {
+                    $q->whereHas('request_item', function ($spb) use ($branch) {
+                        $spb->where('request_items.branch_id', $branch);
+                    });
                 });
             })
             ->paginate(20);

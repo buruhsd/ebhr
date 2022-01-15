@@ -39,7 +39,16 @@ class PurchaseLetter extends Model
 
     public function getStatusTextAttribute()
     {
-        return $this->status == 0 ? 'New' : 'Close';
+        if($this->status == 0){
+            $status ='New';
+        }else if($this->status == 1){
+            $status ='On Proses';
+        }else if($this->status == 2){
+            $status ='Done';
+        }else if($this->status == 3){
+            $status ='Close';
+        }
+        return $status;
     }
 
     protected static function boot()

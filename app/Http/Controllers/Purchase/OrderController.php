@@ -264,6 +264,12 @@ class OrderController extends Controller
             }
             $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
             $purchase_item->save();
+            $purchase_check = PurchaseLetterItem::where(['purchase_letter_id'=>$value['purchase_letter_id'],'status'=>0])->first();
+            if($purchase_check){
+                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 2]);
+            }else{
+                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 1]);
+            }
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
@@ -461,6 +467,13 @@ class OrderController extends Controller
                 }
                 $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
                 $purchase_item->save();
+            }
+
+            $purchase_check = PurchaseLetterItem::where(['purchase_letter_id'=>$value['purchase_letter_id'],'status'=>0])->first();
+            if($purchase_check){
+                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 2]);
+            }else{
+                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 1]);
             }
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);

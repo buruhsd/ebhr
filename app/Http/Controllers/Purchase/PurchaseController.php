@@ -13,7 +13,7 @@ use App\Http\Resources\Purchase\PurchaseResourceCollection;
 
 class PurchaseController extends Controller
 {
-    // status 0 = active, 1 = closed
+    // status 0 = new, 1 = On Proses, 2 = Done, 3 = closed
 
     public function index(Request $request){
     	$search = $request->search;
@@ -154,7 +154,7 @@ class PurchaseController extends Controller
     public function close(Request $request,$id)
     {
         $order = PurchaseLetter::find($id);
-        $order->status = 1;
+        $order->status = 3;
         $order->closed_by = Auth::id();
         $order->closed_at = now();
         $order->save();
