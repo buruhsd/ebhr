@@ -264,12 +264,17 @@ class OrderController extends Controller
             }
             $purchase_item->rest_qty = $purchase_item->rest_qty - $nilai;
             $purchase_item->save();
-            $purchase_check = PurchaseLetterItem::where(['purchase_letter_id'=>$value['purchase_letter_id'],'status'=>0])->first();
-            if($purchase_check){
-                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 2]);
+
+            $purchase_check = PurchaseLetter::find($value['purchase_letter_id']);
+            if($purchase_check->purchase_items()->count() == $purchase_check->purchase_items()->where('status',1)->count()){
+                $purchase_check->status = 2;
             }else{
-                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 1]);
+                $purchase_check->status = 0;
+                if($purchase_check->purchase_items()->where('status',1)->count() > 0){
+                    $purchase_check->status = 1;
+                }
             }
+            $purchase_check->save();
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
@@ -469,12 +474,16 @@ class OrderController extends Controller
                 $purchase_item->save();
             }
 
-            $purchase_check = PurchaseLetterItem::where(['purchase_letter_id'=>$value['purchase_letter_id'],'status'=>0])->first();
-            if($purchase_check){
-                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 2]);
+            $purchase_check = PurchaseLetter::find($value['purchase_letter_id']);
+            if($purchase_check->purchase_items()->count() == $purchase_check->purchase_items()->where('status',1)->count()){
+                $purchase_check->status = 2;
             }else{
-                PurchaseLetter::find($value['purchase_letter_id'])->update(['status' => 1]);
+                $purchase_check->status = 0;
+                if($purchase_check->purchase_items()->where('status',1)->count() > 0){
+                    $purchase_check->status = 1;
+                }
             }
+            $purchase_check->save();
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil diperbaharui']);
     }

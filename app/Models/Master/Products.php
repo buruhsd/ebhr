@@ -125,8 +125,7 @@ class Products extends Model
     {
         return $this->hasMany(PurchaseLetterItem::class, 'product_id')
             ->whereHas('purchase', function ($query){
-                $query->where('purchase_letters.status',0)
-                ->doesntHave('orders');
+                $query->whereIn('purchase_letters.status',[0,1]);
             });
     }
 
