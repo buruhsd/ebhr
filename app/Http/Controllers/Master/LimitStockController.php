@@ -73,11 +73,11 @@ class LimitStockController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_id' => 'required|exists:products,id|unique:limit_stocks,product_id,'.$request->product_id.',id,warehouse_id,'.$request->warehouse_id,
-            'warehouse_id' => 'required|exists:warehouses,id|unique:limit_stocks,warehouse_id,'.$request->warehouse_id.',id,product_id,'.$request->product_id,
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
             "min" => "required|numeric",
             "max" => "required|numeric",
-            "expired_at" => "required|date",
+            'expired_at' => 'required|date',
         ]);
         $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
         $data = LimitStock::create($request->all());
@@ -110,8 +110,8 @@ class LimitStockController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_id' => 'required|exists:products,id|unique:limit_stocks,product_id,'.$id.',id,warehouse_id,'.$request->warehouse_id,
-            'warehouse_id' => 'required|exists:warehouses,id|unique:limit_stocks,warehouse_id,'.$id.',id,product_id,'.$request->product_id,
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
             "min" => "required|numeric",
             "max" => "required|numeric",
             "expired_at" => "required|date",

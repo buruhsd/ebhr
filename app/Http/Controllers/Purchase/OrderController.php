@@ -137,6 +137,9 @@ class OrderController extends Controller
             'item.*.price_hc' => 'required',
             'item.*.discount' => 'required|numeric',
         ]);
+        if($request->date_estimate <= $request->date_op){
+            return response()->json(['success' => false, 'message' => 'Tanggal Est Serah harus lebih besar dari Tanggal OP']);
+        }
         $total = 0;
         $total_fc = 0;
         $total_hc = 0;
@@ -297,6 +300,9 @@ class OrderController extends Controller
             'item.*.price' => 'required',
             'item.*.discount' => 'required|numeric',
         ]);
+        if($request->date_estimate <= $request->date_op){
+            return response()->json(['success' => false, 'message' => 'Tanggal Est Serah harus lebih besar dari Tanggal OP']);
+        }
 
         $order = PurchaseOrder::find($id);
         if(is_null($order)){
