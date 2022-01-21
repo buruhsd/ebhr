@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Master\WorkStatusController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProductController;
@@ -284,6 +285,10 @@ Route::get('/admin/roles/{role}', [RoleController::class, 'show']);
 Route::patch('/admin/roles/{role}', [RoleController::class, 'update']);
 Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy']);
 Route::get('/admin/permissions/list', [RoleController::class, 'permissionList']);
+Route::post('/admin/permissions', [PermissionController::class, 'store']);
+Route::get('/admin/permissions/{id}', [PermissionController::class, 'show']);
+Route::put('/admin/permissions/{id}', [PermissionController::class, 'update']);
+Route::delete('/admin/permissions/{id}', [PermissionController::class, 'delete']);
 
 //HR Identity
 Route::get('identity/search', [EmployeeController::class, 'searchIdentityCard'])->name('api.employee.searchIdentityCard');
