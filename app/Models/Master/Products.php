@@ -121,6 +121,11 @@ class Products extends Model
             ->whereDate('expired_at','<=', date('Y-m-d'))->orderBy('id','desc');
     }
 
+    public function min_max()
+    {
+        return $this->hasMany(LimitStock::class, 'product_id');
+    }
+
     public function items_pp()
     {
         return $this->hasMany(PurchaseLetterItem::class, 'product_id')

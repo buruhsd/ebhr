@@ -32,10 +32,35 @@ class ProductController extends Controller
     	$branch = $request->branch;
     	$warehouse = $request->warehouse;
         $data = Products::select('id','register_number','second_name', DB::raw('FLOOR(0+1) as stock'))
-            ->with(
-                'minmax:id,product_id,warehouse_id,min,max,expired_at',
-            )
             ->withCount([
+                'min_max AS min' => function ($query) use ($branch,$warehouse) {
+                    $query->select(DB::raw("CAST(COALESCE(SUM(min),0) as UNSIGNED) as min"))
+                    ->when($warehouse, function ($query) use ($warehouse) {
+                        $query->where('limit_stocks.warehouse_id', $warehouse);
+                    })
+                    ->when($branch, function ($query) use ($branch,$warehouse) {
+                        $whereInId = Warehouse::where('branch_id',$branch)->pluck('id');
+                        if($warehouse){
+                            $query->where('limit_stocks.warehouse_id', $warehouse);
+                        }else{
+                            $query->whereIn('limit_stocks.warehouse_id', $whereInId);
+                        }
+                    });
+                },
+                'min_max AS max' => function ($query) use ($branch,$warehouse) {
+                    $query->select(DB::raw("CAST(COALESCE(SUM(max),0) as UNSIGNED) as max"))
+                    ->when($warehouse, function ($query) use ($warehouse) {
+                        $query->where('limit_stocks.warehouse_id', $warehouse);
+                    })
+                    ->when($branch, function ($query) use ($branch,$warehouse) {
+                        $whereInId = Warehouse::where('branch_id',$branch)->pluck('id');
+                        if($warehouse){
+                            $query->where('limit_stocks.warehouse_id', $warehouse);
+                        }else{
+                            $query->whereIn('limit_stocks.warehouse_id', $whereInId);
+                        }
+                    });
+                },
                 'items_pp AS qty_pp' => function ($query) use ($warehouse,$branch) {
                     $query->select(DB::raw("CAST(COALESCE(SUM(rest_qty),0) as UNSIGNED) as qty"))
                     ->when($warehouse, function ($query) use ($warehouse) {
@@ -66,37 +91,6 @@ class ProductController extends Controller
                     });
                 }
             ])
-            ->when($branch, function ($query) use ($branch,$warehouse) {
-                $query->whereHas('minmax', function ($q) use ($branch,$warehouse) {
-                    $whereInId = Warehouse::where('branch_id',$branch)->pluck('id');
-                    if($warehouse){
-                        $q->where('limit_stocks.warehouse_id', $warehouse);
-                    }else{
-                        $q->whereIn('limit_stocks.warehouse_id', $whereInId);
-                    }
-                })->orWhereHas('items_pp', function ($q) use ($branch) {
-                    $q->whereHas('purchase', function ($pp) use ($branch) {
-                        $pp->where('purchase_letters.branch_id', $branch);
-                    });
-                })->orWhereHas('items_op', function ($q) use ($branch) {
-                    $q->whereHas('purchase_order', function ($op) use ($branch) {
-                        $op->where('purchase_orders.branch_id', $branch);
-                    });
-                })->orWhereHas('items_spb', function ($q) use ($branch) {
-                    $q->whereHas('request_item', function ($spb) use ($branch) {
-                        $spb->where('request_items.branch_id', $branch);
-                    });
-                });
-            })
-            ->when($warehouse, function ($query) use ($warehouse) {
-                $query->whereHas('minmax', function ($q) use ($warehouse) {
-                    $q->where('limit_stocks.warehouse_id', $warehouse);
-                })->orWhereHas('items_pp', function ($q) use ($warehouse) {
-                    $q->whereHas('purchase', function ($pp) use ($warehouse) {
-                        $pp->where('purchase_letters.warehouse_id', $warehouse);
-                    });
-                });
-            })
             ->paginate(20);
         return response()->json($data);
     }
