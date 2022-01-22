@@ -66,10 +66,14 @@ class ProductController extends Controller
                     });
                 }
             ])
-            ->when($branch, function ($query) use ($branch) {
-                $query->whereHas('minmax', function ($q) use ($branch) {
+            ->when($branch, function ($query) use ($branch,$warehouse) {
+                $query->whereHas('minmax', function ($q) use ($branch,$warehouse) {
                     $whereInId = Warehouse::where('branch_id',$branch)->pluck('id');
-                    $q->whereIn('limit_stocks.warehouse_id', $whereInId);
+                    if($warehouse){
+                        $q->where('limit_stocks.warehouse_id', $warehouse);
+                    }else{
+                        $q->whereIn('limit_stocks.warehouse_id', $whereInId);
+                    }
                 })->orWhereHas('items_pp', function ($q) use ($branch) {
                     $q->whereHas('purchase', function ($pp) use ($branch) {
                         $pp->where('purchase_letters.branch_id', $branch);
