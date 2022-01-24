@@ -277,10 +277,10 @@ class ProductExpenditureController extends Controller
         $search = $request->search;
         $data = ProductExpenditure::select('id','warehouse_id','number_bpb as label','date_bpb')->with(
                 'warehouse:id,code,name',
-                'detail_return_items',
-                'detail_return_items.product:id,register_number,name,second_name',
-                'detail_return_items.product_status:id,name',
-                'detail_return_items.unit:id,name',
+                'detail_items',
+                'detail_items.product:id,register_number,name,second_name',
+                'detail_items.product_status:id,name',
+                'detail_items.unit:id,name',
             )
             ->where('is_return_bpb',0)
             ->when($branch, function ($query) use ($branch){
