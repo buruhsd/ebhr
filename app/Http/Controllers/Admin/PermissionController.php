@@ -48,7 +48,7 @@ class PermissionController extends Controller
     public function delete(Request $request, $id)
     {
         $data = Permission::find($id)->update($request->all());
-        return response()->json(['success' => false, 'message' => 'Data dihapus']));
-    }    
+        return response()->json(['success' => false, 'message' => 'Data dihapus']);
+    }
 
 }
