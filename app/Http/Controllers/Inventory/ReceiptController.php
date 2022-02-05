@@ -149,7 +149,7 @@ class ReceiptController extends Controller
             $op->status = 6;
         }
         $chekc_receipt = Receipt::select('id','status')
-            ->has('receipt_items_active')
+            ->has('receipt_items_serial')
             ->where('id',$receipt->id)->first();
         if(is_null($chekc_receipt)){
             $op->status = 7;
