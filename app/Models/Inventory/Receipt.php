@@ -121,6 +121,12 @@ class Receipt extends Model
             ->where(['status'=> 0,'is_serial_number'=> 1]);
     }
 
+    public function receipt_items_active()
+    {
+        return $this->hasMany(ReceiptItems::class, 'receipt_id')
+            ->where(['status'=> 0]);
+    }
+
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_id');
