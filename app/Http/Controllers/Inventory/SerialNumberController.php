@@ -299,4 +299,14 @@ class SerialNumberController extends Controller
             ->orderBy('created_at', 'desc')->get();
         return response()->json($data);
     }
+
+    public function checkNoseri(Request $request)
+    {
+        $no_seri = $request->no_seri;
+        $data = SerialNumberDetail::where('no_seri',$no_seri)->exists();
+        if($data){
+            return response()->json(['message' => 'Nomor seri sudah ada','success'=>false]);
+        }
+        return response()->json(['message' => 'Nomor seri tidak ada','success'=>true]);
+    }
 }

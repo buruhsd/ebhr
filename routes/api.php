@@ -332,6 +332,7 @@ Route::group(['namespace' => 'Inventory','prefix'=>'inventory'], function() {
     Route::get('serial_numbers/products/{product_id}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'getDataNoseriByProduct']);
     Route::get('serial_numbers/detail/{type}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'getDataNoseri']);
     Route::patch('serial_numbers/detail/{id}', [App\Http\Controllers\Inventory\SerialNumberController::class, 'updateNoseri']);
+    Route::get('serial_numbers/check', [App\Http\Controllers\Inventory\SerialNumberController::class, 'checkNoseri']);
 
     Route::resource('request_item', 'RequestItemController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
