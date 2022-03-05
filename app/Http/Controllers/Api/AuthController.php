@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Menu;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -42,16 +43,20 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
-
         $menu = Menu::where('parent_id', 0)->get();
 
+        $response = Http::asForm()->post('http://ebs-accounting.test/api/auth/login', [
+            'email' => 'developer@gmail.com',
+            'password' => '12345678',
+        ]);
 
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
             'token' => $token,
             'menu' => $menu,
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
+            'accounting_access' => $response->json()
         ]);
         return response()->json(compact('token'));
     }
