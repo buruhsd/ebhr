@@ -37,7 +37,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
-Route::get('/user1', [AuthController::class, 'user'])->name('api.user');
+Route::get('/user', [AuthController::class, 'user'])->name('api.user');
 
 //Master
 Route::get('/detail/nik', [MasterController::class, 'detailNik'])->name('api.detailNik');
