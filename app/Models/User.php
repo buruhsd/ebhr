@@ -26,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'is_access_product',
         'is_access_price',
         'password',
+        'branch_id'
     ];
 
     /**
@@ -54,5 +55,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 }
