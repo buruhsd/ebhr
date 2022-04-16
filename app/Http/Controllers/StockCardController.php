@@ -17,4 +17,10 @@ class StockCardController extends Controller
 
         return response()->json($data);
     }
+
+    public function store(){
+        $data = StockCard::create($request->all());
+
+        return response()->json('success', true);
+    }
 }
