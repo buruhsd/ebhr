@@ -227,7 +227,7 @@ class MasterController extends Controller
 
     // Purchase
     public function branch(){
-        $data = Branch::select('id','name')->get();
+        $data = Branch::select('id','name','alias_name')->get();
         return response()->json(['data' => $data]);
     }
 
