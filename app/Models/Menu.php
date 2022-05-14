@@ -11,6 +11,14 @@ class Menu extends Model
 {
     use HasFactory,Observable;
 
+    protected $fillable = [
+        "name",
+        "path",
+        "label",
+        "parent_id",
+        "permission_id" 
+    ];
+
     protected $appends = ['childs'];
 
     public function getChildsAttribute(){

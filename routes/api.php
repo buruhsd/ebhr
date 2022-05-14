@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 // use App\Http\Controllers\HrController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Hr\EmployeeController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -289,6 +290,10 @@ Route::post('/admin/permissions', [PermissionController::class, 'store']);
 Route::get('/admin/permissions/{id}', [PermissionController::class, 'show']);
 Route::put('/admin/permissions/{id}', [PermissionController::class, 'update']);
 Route::delete('/admin/permissions/{id}', [PermissionController::class, 'delete']);
+
+//menu
+Route::get('/admin/menu', [MenuController::class, 'index']);
+Route::post('/admin/menu', [MenuController::class, 'store']);
 
 //HR Identity
 Route::get('identity/search', [EmployeeController::class, 'searchIdentityCard'])->name('api.employee.searchIdentityCard');
