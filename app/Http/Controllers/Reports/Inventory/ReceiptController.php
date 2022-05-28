@@ -18,6 +18,7 @@ class ReceiptController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('permission:report-receipt');
     }
 
     public function exportPdf(Request $request,$id)

@@ -22,6 +22,7 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('permission:report-purchase-order');
     }
 
     public function index(Request $request)

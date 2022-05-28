@@ -10,6 +10,7 @@ class StockCardController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('permission:stock-card');
     }
 
     public function stockCard(){

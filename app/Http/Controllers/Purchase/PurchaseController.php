@@ -15,6 +15,12 @@ class PurchaseController extends Controller
 {
     // status 0 = new, 1 = On Proses, 2 = Done, 3 = closed
 
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('permission:purchase');
+    }
+
     public function index(Request $request){
     	$search = $request->search;
     	$status = $request->status;

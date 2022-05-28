@@ -12,6 +12,12 @@ use App\Http\Resources\Hr\IdentityCardResourceCollection;
 
 class EmployeeController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('permission:employee-management');
+    }
+
     public function searchIdentityCard(Request $request)
     {
         $search = $request->q;
