@@ -294,6 +294,8 @@ Route::delete('/admin/permissions/{id}', [PermissionController::class, 'delete']
 //menu
 Route::get('/admin/menu', [MenuController::class, 'index']);
 Route::post('/admin/menu', [MenuController::class, 'store']);
+Route::put('/admin/menu/{id}', [MenuController::class, 'update']);
+Route::delete('/admin/menu/{id}', [MenuController::class, 'delete']);
 
 //HR Identity
 Route::get('identity/search', [EmployeeController::class, 'searchIdentityCard'])->name('api.employee.searchIdentityCard');
