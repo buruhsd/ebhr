@@ -106,6 +106,7 @@ class ReceiptController extends Controller
                 $item['insertedBy'] = Auth::id();
                 $item['updatedBy'] = Auth::id();
                 array_push($arrItem, $item);
+
             }
 
             $supplier = Supplier::find($supplier_id);
@@ -135,6 +136,12 @@ class ReceiptController extends Controller
             ]);
 
             $receipt = Receipt::create($payload);
+
+            // foreach($request->item as $item){
+            //     $po_item = PurchaseOrderItem::find($item['purchase_order_item_id']);
+
+            // }
+
             foreach($arrItem as $item){
                 $receipt->receipt_items()->create($item);
                 $po_item = PurchaseOrderItem::find($item['purchase_order_item_id']);
@@ -147,6 +154,27 @@ class ReceiptController extends Controller
                 }
                 $po_item->rest_qty = $po_item->rest_qty - $qty;
                 $po_item->save();
+
+                $stock = StockCard::create([
+                    'trx_code' => $receipt->number,
+                    'trx_urut' => $receipt->id,
+                    'trx_date' => $receipt->date,
+                    'trx_jenis' => 'BP',
+                    'trx_dbcr' => 'D',
+                    'scu_code' => $receipt->supplier_id,
+                    'scu_code_tipe' => Supplier::class,
+                    'inv_code' => $item['no_register'],
+                    'loc_code' => $receipt->warehouse_id,
+                    'statusProduct' => $item['product_status_id'],
+                    'trx_kuan' => $item['qty'],
+                    'hargaSatuan' => $po_item->price_hc,
+                    'trx_amnt' => $po_item->price_hc * $item['qty'],
+                    'trx_totl' => 0,
+                    'trx_hpok' => 0,
+                    'trx_havg' => 0,
+                    'pos_date' => '-',
+                    'sal_code' => '-'
+                ]);
             }
             $total_qty_op = PurchaseOrderItem::where('purchase_order_id',$request->purchase_order_id)->sum(DB::raw('qty * unit_conversion'));
             $total_qty_ttb = DB::table('receipts')
@@ -163,12 +191,15 @@ class ReceiptController extends Controller
                 $op->status = 7;
             }
             $op->save();
-            
+
             $currency_code = '';
             $currency = Currency::find($receipt->currency_id);
             if($currency){
                 $currency_code = $currency->code;
             }
+
+
+
             $debtCard = new DebtCard();
             $payloadCard = [
                 "item_id" => $receipt->id,
