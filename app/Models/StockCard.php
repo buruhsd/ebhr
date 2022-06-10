@@ -26,6 +26,7 @@ class StockCard extends Model
         'trx_hpok',
         'trx_havg',
         'pos_date',
-        'sal_code'
+        'sal_code',
+        'scu_code_tipe'
     ];
 }
