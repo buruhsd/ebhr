@@ -45,15 +45,16 @@ class AuthController extends Controller
         $user = auth()->user();
         $menu = Menu::where('parent_id', 0)->get();
 
-        // $url = 'http://ebs-accounting.test/';
-        // if(env('APP_ENV') == 'production'){
+        $url = 'http://ebs-accounting.test/';
+        if(env('APP_ENV') == 'production'){
             $url = 'https://accebs.wirasana.id/';
-        // }
+        }
         $response = Http::asForm()->post($url.'api/auth/login', [
             'email' => 'developer@gmail.com',
             'password' => '12345678',
         ])->json();
-        session(['accounting_access' => $response['access_token']]);
+        $user->access_token = $response['access_token'];
+        $user->save();
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
@@ -67,8 +68,8 @@ class AuthController extends Controller
 
     public function user()
     {
-        return response()->json(['data' => auth()->user()]);
-    //    return new UserResource(auth()->user());
+        // return response()->json(['data' => auth()->user()]);
+        return new UserResource(auth()->user());
     }
 
     public function logout() {
