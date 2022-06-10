@@ -52,15 +52,15 @@ class AuthController extends Controller
         $response = Http::asForm()->post($url.'api/auth/login', [
             'email' => 'developer@gmail.com',
             'password' => '12345678',
-        ]);
-
+        ])->json();
+        session(['accounting_access' => $response['access_token']]);
         return response()->json([
             'type' =>'success',
             'message' => 'Logged in.',
             'token' => $token,
             'menu' => $menu,
             'user' => new UserResource($user),
-            'accounting_access' => $response->json()
+            'accounting_access' => $response
         ]);
         return response()->json(compact('token'));
     }
