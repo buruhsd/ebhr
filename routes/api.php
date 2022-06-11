@@ -407,6 +407,9 @@ Route::post('purchase/{order}/close-order', [PurchaseController::class, 'closeOr
 Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
 
 Route::get('stock/card', [StockCardController::class, 'stockCard'])->name('api.stockCard');
+Route::get('se', function(){
+    return 'd';
+});
 
 //Receipt
 // Route::post('purchase/{purchase}/close-purchase', [PurchaseController::class, 'closePurchaseLetter'])->name('api.purchase.closePurchaseLetter');
