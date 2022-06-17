@@ -208,10 +208,10 @@ class ReceiptController extends Controller
                 "debit_kredit" => "D",
                 "type" => "LP",
                 "group" => "P1",
-                "amount_trx_fc" => $receipt->total_idr,
-                "amount_trx_hc" => $receipt->total_valas,
-                "amount_proof_fc" => $receipt->total_idr,
-                "amount_proof_hc" => $receipt->total_valas,
+                "amount_trx_fc" => $receipt->total_valas,
+                "amount_trx_hc" => $receipt->total_idr,
+                "amount_proof_fc" => $receipt->total_valas,
+                "amount_proof_hc" => $receipt->total_idr,
                 "kurs" => $receipt->kurs,
                 "currency" => $currency_code,
                 "description" => $receipt->noted,
@@ -231,7 +231,7 @@ class ReceiptController extends Controller
             return response()->json(['success' => false, 'message' => 'Gagal menambahkan data penerimaan barang']);
         }
     }
-    // noted masih belum bener
+    
     public function update(Request $request,$id){
         $this->validate($request, [
             'branch_id' => 'required',
@@ -245,7 +245,7 @@ class ReceiptController extends Controller
             'item.*.qty' => 'required|min:1',
             'item.*.product_status_id' => 'required',
         ]);
-
+        return response()->json(['success' => true, 'message' => 'Berhasil memperbaharui data penerimaan barang']);
         DB::beginTransaction();
         try {
             $op = PurchaseOrder::find($request->purchase_order_id);
@@ -292,7 +292,6 @@ class ReceiptController extends Controller
                 $item['insertedBy'] = Auth::id();
                 $item['updatedBy'] = Auth::id();
                 array_push($arrItem, $item);
-
             }
 
             $supplier = Supplier::find($supplier_id);
@@ -320,7 +319,8 @@ class ReceiptController extends Controller
                 'updatedBy' => Auth::User()->id,
             ]);
 
-            $receipt = Receipt::find($id)->update($payload);
+            $receipt = Receipt::find($id);
+            $receipt->update($payload);
             $receipt->receipt_items()->delete();
             foreach($arrItem as $item){
                 $receipt->receipt_items()->create($item);
@@ -332,7 +332,11 @@ class ReceiptController extends Controller
                 if($po_item->unit_conversion > 1){
                     $qty = $item['qty']/$po_item->unit_conversion;
                 }
-                $po_item->rest_qty = $po_item->rest_qty - $qty;
+                if($qty < $po_item->qty){
+                    $po_item->rest_qty = $po_item->rest_qty + ($po_item->qty - $qty);
+                }else{
+                    $po_item->rest_qty = $po_item->rest_qty - $qty;
+                }
                 $po_item->save();
             }
             $total_qty_op = PurchaseOrderItem::where('purchase_order_id',$request->purchase_order_id)->sum(DB::raw('qty * unit_conversion'));
@@ -371,16 +375,16 @@ class ReceiptController extends Controller
                 "debit_kredit" => "D",
                 "type" => "LP",
                 "group" => "P1",
-                "amount_trx_fc" => $receipt->total_idr,
-                "amount_trx_hc" => $receipt->total_valas,
-                "amount_proof_fc" => $receipt->total_idr,
-                "amount_proof_hc" => $receipt->total_valas,
+                "amount_trx_fc" => $receipt->total_valas,
+                "amount_trx_hc" => $receipt->total_idr,
+                "amount_proof_fc" => $receipt->total_valas,
+                "amount_proof_hc" => $receipt->total_idr,
                 "kurs" => $receipt->kurs,
                 "currency" => $currency_code,
                 "description" => $receipt->noted,
                 "source" => "TTB"
             ];
-            $response = $debtCard->update($id,$payloadCard);
+            $response = $debtCard->update($receipt->id,$payloadCard);
             if(!$response['success']){
                 Log::error($response);
                 DB::rollback();
