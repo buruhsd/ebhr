@@ -63,7 +63,7 @@ class UserController extends Controller
             $data = $user->update($request->except('password'));
         }
 
-        $data->syncRole($request->role);
+        $user->syncRoles($request->role);
 
         return new UserResource($user);
     }
