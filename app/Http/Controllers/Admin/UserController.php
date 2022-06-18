@@ -42,6 +42,8 @@ class UserController extends Controller
         $password = bcrypt($request->password);
         $request->merge(['password' => $password]);
         $data = User::create($request->all());
+
+        $data->assignRole($request->role);
         return new UserResource($data);
     }
 
@@ -60,6 +62,8 @@ class UserController extends Controller
         }else{
             $data = $user->update($request->except('password'));
         }
+
+        $data->syncRole($request->role);
 
         return new UserResource($user);
     }

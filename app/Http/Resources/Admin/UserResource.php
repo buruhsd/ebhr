@@ -14,6 +14,10 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $null = [
+            'id' => 0,
+            'name' => null
+        ];
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -21,6 +25,7 @@ class UserResource extends JsonResource
             'branch' => $this->branch,
             'is_access_product' => $this->is_access_product,
             'is_access_price' => $this->is_access_price,
+            'role' => $this->roles()->first() ? $this->roles()->first() : $null
         ];
     }
 }
