@@ -251,6 +251,14 @@ Route::group(['namespace' => 'Master','prefix'=>'master'], function() {
     Route::resource('journal_code', 'JournalCodeController', ['only' => [
         'index','show', 'store', 'update', 'destroy'
     ]]);
+
+    Route::resource('customer', 'CustomerController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
+    
+    Route::resource('customer_group', 'CustomerGroupController', ['only' => [
+        'index','show', 'store', 'update', 'destroy'
+    ]]);
 });
 
 Route::get('/suppliers', [App\Http\Controllers\Master\SupplierController::class, 'getData'])->name('api.supplier.data');
@@ -258,6 +266,13 @@ Route::get('/suppliers/status', [App\Http\Controllers\Master\SupplierController:
 Route::get('/supplier_categories', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getData'])->name('api.supplier_category.data');
 Route::get('/supplier_category/parent', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getParent'])->name('api.supplier_category.parent');
 Route::get('/supplier_category/childs', [App\Http\Controllers\Master\SupplierCategoryController::class, 'getChilds'])->name('api.supplier_category.childs');
+
+Route::get('/customers', [App\Http\Controllers\Master\CustomerController::class, 'getData'])->name('api.customers.data');
+Route::get('/customers/status', [App\Http\Controllers\Master\CustomerController::class, 'getDataNotStatus'])->name('api.customers.getDataNotStatus');
+Route::get('/customer_groups', [App\Http\Controllers\Master\CustomerGroupController::class, 'getData'])->name('api.customer_groups.data');
+Route::get('/customer_groups/parent', [App\Http\Controllers\Master\CustomerGroupController::class, 'getParent'])->name('api.customer_groups.parent');
+Route::get('/customer_groups/childs', [App\Http\Controllers\Master\CustomerGroupController::class, 'getChilds'])->name('api.customer_groups.childs');
+
 Route::get('/npwp/data', [App\Http\Controllers\Master\NpwpController::class, 'getData'])->name('api.npwp.data');
 Route::get('/partner/code', [App\Http\Controllers\Master\PartnerController::class, 'getCode'])->name('api.partner.code');
 Route::get('/partner/data', [App\Http\Controllers\Master\PartnerController::class, 'getData'])->name('api.partner.data');
