@@ -11,10 +11,7 @@ class DebtCard{
 
     public function save($payload)
     {
-        $url = 'http://ebs-accounting.test/';
-        if(env('APP_ENV') == 'production'){
-            $url = 'https://accebs.wirasana.id/';
-        }
+        $url = env('URL_ACCOUNTING');
         $token = Auth::user()->access_token;
         try {
             $client = new \GuzzleHttp\Client();
@@ -37,10 +34,7 @@ class DebtCard{
 
     public function update($id,$payload)
     {
-        $url = 'http://ebs-accounting.test/';
-        if(env('APP_ENV') == 'production'){
-            $url = 'https://accebs.wirasana.id/';
-        }
+        $url = env('URL_ACCOUNTING');
         $token = Auth::user()->access_token;
         try {
             $client = new \GuzzleHttp\Client();

@@ -45,10 +45,7 @@ class AuthController extends Controller
         $user = auth()->user();
         $menu = Menu::where('parent_id', 0)->get();
 
-        $url = 'http://ebs-accounting.test/';
-        if(env('APP_ENV') == 'production'){
-            $url = 'https://accebs.wirasana.id/';
-        }
+        $url = env('URL_ACCOUNTING');
         $response = Http::asForm()->post($url.'api/auth/login', [
             'email' => 'developer@gmail.com',
             'password' => '12345678',
