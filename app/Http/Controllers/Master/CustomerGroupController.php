@@ -49,13 +49,24 @@ class CustomerGroupController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "code" => "required|unique:customer_groups,code",
+            "code" => "required",
             "name" => "required",
             "parent_id" => "nullable",
         ]);
-        $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
-        $data = CustomerGroup::create($request->all());
-        return response()->json(['data'=>$data]);
+        try {
+            $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
+            $data = CustomerGroup::create($request->all());
+            return response()->json(['data'=>$data]);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json([
+                    "message" => "The given data was invalid.",
+                    'errors'=> [
+                        'code' => ['Kode sudah digunakan']
+                    ]
+                ],422);
+            }
+        }
     }
 
     /**
@@ -84,10 +95,22 @@ class CustomerGroupController extends Controller
             "name" => "required",
             "parent_id" => "nullable",
         ]);
-        $request->merge(['updatedBy'=>Auth::id()]);
-        $data = CustomerGroup::find($id);
-        $data->update($request->all());
-        return response()->json(['data'=>$data]);
+
+        try {
+            $request->merge(['updatedBy'=>Auth::id()]);
+            $data = CustomerGroup::find($id);
+            $data->update($request->except(['insertName']));
+            return response()->json(['data'=>$data]);
+        }catch(\Illuminate\Database\QueryException $ex) {
+            if($ex->getCode() === '23000') {
+                return response()->json([
+                    "message" => "The given data was invalid.",
+                    'errors'=> [
+                        'code' => ['Kode sudah digunakan']
+                    ]
+                ],422);
+            }
+        }
     }
 
     /**

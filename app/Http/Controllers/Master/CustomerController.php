@@ -120,7 +120,7 @@ class CustomerController extends Controller
     {
         $search = $request->q;
         $data = Customer::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-        'currency:id,name','category:id,name')
+        'currency:id,name,code','group:id,name')
                 ->whereHas('partner',function ($query) use ($search){
                     $query->where('partners.code','LIKE',"%{$search}%")
                     ->orWhere('partners.name','LIKE',"%{$search}%");
@@ -134,7 +134,7 @@ class CustomerController extends Controller
     {
         $search = $request->q;
         $data = Customer::with('partner.npwp:id,number_npwp,name','partner.postal_code:id,postal_code','partner.village:id,name','partner.district:id,name','partner.regency:id,name','partner.province:id,name',
-                'currency:id,name','category:id,name')
+                'currency:id,name,code','group:id,name')
                 ->whereHas('partner',function ($query) use ($search){
                     $query->where('partners.code','LIKE',"%{$search}%")
                     ->orWhere('partners.name','LIKE',"%{$search}%");
