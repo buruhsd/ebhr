@@ -51,7 +51,8 @@ class CustomerGroupController extends Controller
         $this->validate($request, [
             "code" => "required",
             "name" => "required",
-            "parent_id" => "nullable",
+            "parent_id" => "nullable|numeric",
+            "detail_umum" => "required|string|in:D,U"
         ]);
         try {
             $request->merge(['insertedBy' => Auth::id(),'updatedBy'=>Auth::id()]);
@@ -93,7 +94,8 @@ class CustomerGroupController extends Controller
         $this->validate($request, [
             "code" => "required|unique:customer_groups,code,".$id,
             "name" => "required",
-            "parent_id" => "nullable",
+            "parent_id" => "nullable|numeric",
+            "detail_umum" => "required|string|in:D,U"
         ]);
 
         try {
@@ -133,7 +135,10 @@ class CustomerGroupController extends Controller
 
     public function getData(Request $request)
     {
-        $data = CustomerGroup::get();
+        $type = $request->type;
+        $data = CustomerGroup::when($type, function ($query) use ($type){
+            $query->where('detail_umum',$type);
+        })->get();
         return response()->json(['data' => $data]);
     }
 

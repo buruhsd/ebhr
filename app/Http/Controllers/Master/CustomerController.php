@@ -93,6 +93,9 @@ class CustomerController extends Controller
             'is_tt'=> 'required'
         ]);
         $request->merge(['updatedBy'=>Auth::id()]);
+        if(is_null($request->currency_id)){
+            $request->merge(['currency_id'=>NULL]);
+        }
         $data = Customer::find($id);
         $data->update($request->all());
         return response()->json(['data'=>$data]);

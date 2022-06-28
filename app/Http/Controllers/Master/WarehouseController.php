@@ -23,7 +23,7 @@ class WarehouseController extends Controller
             },
             'Nama gudang sudah ada di cabang'
         );
-        $this->middleware('permission:master-warehouse');
+        $this->middleware('permission:master-warehouse')->only(['index','show','store','update','destroy']);
     }
 
     /**

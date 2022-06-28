@@ -13,6 +13,7 @@ class CustomerGroup extends Model
         'code',
         'name',
         'parent_id',
+        'detail_umum',
         'insertedBy',
         'updatedBy',
     ];
