@@ -12,7 +12,7 @@ class RankController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-rank');
+        $this->middleware('permission:master-rank', ['except' => ['index']]);
     }
 
     /**

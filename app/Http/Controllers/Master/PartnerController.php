@@ -12,7 +12,7 @@ class PartnerController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-partner');
+        $this->middleware('permission:master-partner', ['except' => ['index']]);
     }
 
     /**

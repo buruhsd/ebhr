@@ -13,7 +13,7 @@ class PlafonController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-plafon');
+        $this->middleware('permission:master-plafon', ['except' => ['index']]);
     }
 
     /**

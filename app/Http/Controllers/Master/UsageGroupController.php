@@ -12,7 +12,7 @@ class UsageGroupController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-usage-group');
+        $this->middleware('permission:master-usage-group', ['except' => ['index']]);
     }
 
     /**

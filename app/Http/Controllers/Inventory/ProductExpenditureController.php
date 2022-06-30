@@ -115,6 +115,27 @@ class ProductExpenditureController extends Controller
             }
             $requestItemDetail->rest_qty = $requestItemDetail->rest_qty - $value['qty'];
             $requestItemDetail->save();
+
+            $stock = StockCard::create([
+                'trx_code' => $productExpenditure->number_bpb,
+                'trx_urut' => $productExpenditure->id,
+                'trx_date' => $productExpenditure->date_bpb,
+                'trx_jenis' => 'BK',
+                'trx_dbcr' => 'D',
+                'scu_code' => NULL,
+                'scu_code_tipe' => NULL,
+                'inv_code' => $value['no_register'],
+                'loc_code' => $request->warehouse_id,
+                'statusProduct' => $item['product_status_id'],
+                'trx_kuan' => $value['qty'],
+                'hargaSatuan' => 0,
+                'trx_amnt' => 0,
+                'trx_totl' => 0,
+                'trx_hpok' => 0,
+                'trx_havg' => 0,
+                'pos_date' => '-',
+                'sal_code' => '-'
+            ]);
         }
         $check = RequestItemDetail::where(['request_item_id'=>$request->request_item_id])->sum('rest_qty');
         if($check == 0){

@@ -24,7 +24,7 @@ class ReceiptController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:inventory');
+        // $this->middleware('permission:inventory');
     }
 
     public function index(Request $request){

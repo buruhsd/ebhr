@@ -13,7 +13,7 @@ class BranchController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-branch');
+        $this->middleware('permission:master-branch', ['except' => ['index']]);
     }
 
     /**

@@ -12,7 +12,7 @@ class PointHireController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-point-hire');
+        $this->middleware('permission:master-point-hire', ['except' => ['index']]);
     }
 
     /**

@@ -12,7 +12,7 @@ class SupplierStatusController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-supplier-status');
+        $this->middleware('permission:master-supplier-status', ['except' => ['index']]);
     }
 
     /**

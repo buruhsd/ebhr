@@ -12,7 +12,7 @@ class CompanyInfoController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-company-info');
+        $this->middleware('permission:master-company-info', ['except' => ['index']]);
     }
 
     /**

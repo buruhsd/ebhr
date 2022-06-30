@@ -12,7 +12,7 @@ class WorkStatusController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-work-status');
+        $this->middleware('permission:master-work-status', ['except' => ['index']]);
     }
 
     /**

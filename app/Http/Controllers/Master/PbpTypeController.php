@@ -12,7 +12,7 @@ class PbpTypeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-pbp-type');
+        $this->middleware('permission:master-pbp-type', ['except' => ['index']]);
     }
 
     /**

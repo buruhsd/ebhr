@@ -13,7 +13,7 @@ class KursTypeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-kurs-type');
+        $this->middleware('permission:master-kurs-type', ['except' => ['index']]);
     }
 
     /**

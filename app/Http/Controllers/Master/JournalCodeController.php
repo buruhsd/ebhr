@@ -12,7 +12,7 @@ class JournalCodeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-journal-code');
+        $this->middleware('permission:master-journal-code', ['except' => ['index']]);
     }
 
     /**
