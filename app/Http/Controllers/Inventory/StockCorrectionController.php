@@ -85,7 +85,33 @@ class StockCorrectionController extends Controller
         foreach($request->item as $value){
             $value['insertedBy'] = Auth::id();
             $value['updatedBy'] = Auth::id();
-            $saveData->detail_items()->create($value);
+            $itemvalue = $saveData->detail_items()->create($value);
+
+            try {
+                $stock = StockCard::create([
+                    'trx_code' => '',
+                    'trx_urut' => $itemvalue->id,
+                    'trx_date' => $request->date,
+                    'trx_jenis' => 'BK',
+                    'trx_dbcr' => 'D',
+                    'scu_code' => NULL,
+                    'scu_code_tipe' => NULL,
+                    'inv_code' => $value['no_register'],
+                    'loc_code' => $request->warehouse_id,
+                    'statusProduct' => $item['product_status_id'],
+                    'trx_kuan' => $value['qty'],
+                    'hargaSatuan' => 0,
+                    'trx_amnt' => 0,
+                    'trx_totl' => 0,
+                    'trx_hpok' => 0,
+                    'trx_havg' => 0,
+                    'pos_date' => '-',
+                    'sal_code' => '-'
+                ]);
+            } catch (\Throwable $th) {
+                return;
+            }
+            
         }
         return response()->json(['success' => true, 'message' => 'Data berhasil disimpan']);
     }
