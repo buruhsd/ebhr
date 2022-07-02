@@ -18,7 +18,7 @@ class ProductExpenditureController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:report-inventory');
+        $this->middleware('permission:report-inventory', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     public function exportPdf(Request $request,$id)

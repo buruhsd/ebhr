@@ -21,7 +21,7 @@ class RequestItemController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:report-request-item');
+        $this->middleware('permission:report-request-item', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     public function exportPdf(Request $request,$id)
