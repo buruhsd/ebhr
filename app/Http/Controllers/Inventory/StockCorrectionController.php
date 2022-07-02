@@ -92,7 +92,7 @@ class StockCorrectionController extends Controller
                     'trx_code' => '',
                     'trx_urut' => $itemvalue->id,
                     'trx_date' => $request->date,
-                    'trx_jenis' => 'BK',
+                    'trx_jenis' => 'KP',
                     'trx_dbcr' => 'D',
                     'scu_code' => NULL,
                     'scu_code_tipe' => NULL,
