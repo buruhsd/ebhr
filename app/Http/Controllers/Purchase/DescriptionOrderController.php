@@ -12,7 +12,7 @@ class DescriptionOrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:purchase-description-order');
+        $this->middleware('permission:purchase-description-order', ['except' => ['index']]);
     }
 
     public function index(Request $request)

@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:purchase-order');
+        $this->middleware('permission:purchase-order', ['except' => ['index']]);
     }
 
     public function index(Request $request)

@@ -16,7 +16,7 @@ class RequestItemController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:inventory');
+        $this->middleware('permission:inventory', ['except' => ['index']]);
     }
 
     public function index(Request $request)

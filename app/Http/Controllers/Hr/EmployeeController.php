@@ -15,7 +15,7 @@ class EmployeeController extends Controller
     function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:employee-management');
+        $this->middleware('permission:employee-management', ['except' => ['index']]);
     }
 
     public function searchIdentityCard(Request $request)
