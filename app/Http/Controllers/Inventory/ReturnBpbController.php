@@ -87,6 +87,27 @@ class ReturnBpbController extends Controller
             if($value['qty'] == $check_data->qty){
                 array_push($is_return,$value['product_expenditure_detail_id']);
             }
+
+            $stock = StockCard::create([
+                'trx_code' => $productExpenditure->number_bpb,
+                'trx_urut' => $productExpenditure->id,
+                'trx_date' => $productExpenditure->date_bpb,
+                'trx_jenis' => 'BK',
+                'trx_dbcr' => 'D',
+                'scu_code' => NULL,
+                'scu_code_tipe' => NULL,
+                'inv_code' => $value['no_register'],
+                'loc_code' => $request->warehouse_id,
+                'statusProduct' => $item['product_status_id'],
+                'trx_kuan' => $value['qty'],
+                'hargaSatuan' => 0,
+                'trx_amnt' => 0,
+                'trx_totl' => 0,
+                'trx_hpok' => 0,
+                'trx_havg' => 0,
+                'pos_date' => '-',
+                'sal_code' => '-'
+            ]);
         }
 
         $request->merge([
