@@ -14,7 +14,7 @@ class PositionController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-position', ['except' => ['index']]);
+        $this->middleware('permission:master-position', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

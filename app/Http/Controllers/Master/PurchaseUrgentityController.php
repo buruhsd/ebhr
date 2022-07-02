@@ -12,7 +12,7 @@ class PurchaseUrgentityController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-purchase-urgentity', ['except' => ['index']]);
+        $this->middleware('permission:master-purchase-urgentity', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

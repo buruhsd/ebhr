@@ -12,7 +12,7 @@ class ProductSerialNumberController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-product-serial-number', ['except' => ['index']]);
+        $this->middleware('permission:master-product-serial-number', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

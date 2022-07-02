@@ -12,7 +12,7 @@ class UnitController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-unit', ['except' => ['index']]);
+        $this->middleware('permission:master-unit', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

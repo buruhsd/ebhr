@@ -12,7 +12,7 @@ class WorkGroupController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-work-group', ['except' => ['index']]);
+        $this->middleware('permission:master-work-group', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

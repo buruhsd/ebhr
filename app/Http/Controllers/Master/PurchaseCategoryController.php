@@ -12,7 +12,7 @@ class PurchaseCategoryController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-purchase-category', ['except' => ['index']]);
+        $this->middleware('permission:master-purchase-category', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**
