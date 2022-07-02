@@ -12,7 +12,7 @@ class CustomerGroupController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-supplier-category');
+        $this->middleware('permission:master-supplier-category',['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

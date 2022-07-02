@@ -12,7 +12,7 @@ class BpbTypeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-bpb', ['except' => ['index']]);
+        $this->middleware('permission:master-bpb', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**

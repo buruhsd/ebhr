@@ -14,7 +14,7 @@ class LimitStockController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:master-limit-stock', ['except' => ['index']]);
+        $this->middleware('permission:master-limit-stock', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
     }
 
     /**
