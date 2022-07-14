@@ -23,9 +23,17 @@ class StockBalanceController extends Controller
             'warehouse:id,name,code',
             'product:id,name,registe_number',
             'product_status:id,name,code',
-        )->where($orderBy,'LIKE',"{$search}%")
-        ->when($orderBy, function ($query) use ($orderBy,$sortBy){
-            $query->orderBy($orderBy, $sortBy);
+        )
+        ->when($orderBy, function ($query) use ($orderBy,$sortBy,$search){
+            $query->whereHas($orderBy, function($q) use ($orderBy,$search){
+                $field = 'branches.name';
+                if($orderBy == 'product'){
+                    $field = 'products.name';
+                }elseif($orderBy == 'warehouse'){
+                    $field = 'warehouses.name';
+                }
+                $q->where($field,'LIKE',"{$search}%");
+            })->orderBy($orderBy, $sortBy);
         })
         ->paginate(20);;
         return response()->json($data);        

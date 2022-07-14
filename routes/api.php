@@ -13,6 +13,7 @@ use App\Http\Controllers\Master\WorkStatusController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockCardController;
+use App\Http\Controllers\StockBalanceController;
 
 use App\Http\Controllers\Purchase\PurchaseController;
 /*
