@@ -7,6 +7,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\BpbType;
+use App\Models\StockBalance;
 use App\Models\Inventory\RequestItem;
 use App\Models\Inventory\RequestItemDetail;
 use App\Models\Inventory\ProductExpenditure;
@@ -87,6 +88,22 @@ class ProductExpenditureController extends Controller
             $requestItemDetail = RequestItemDetail::find($value['request_item_detail_id']);
             if($value['qty'] > $requestItemDetail->qty){
                 return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah SPB']);
+            }
+
+            $stockReady = 0;
+            $stockQty = StockBalance::select('qty_temp')->where([
+                'branch_id' => $request->branch_id,
+                'warehouse_id' => $request->warehouse_id,
+                'product_id' => $value['product_id'],
+                'product_status_id' => $value['product_status_id']
+            ])->first();
+
+            if($stockQty){
+                $stockReady = $stockQty->qty_temp;
+            }
+
+            if($value['qty'] > $stockReady){
+                return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah Stok']);
             }
         }
 
@@ -171,6 +188,22 @@ class ProductExpenditureController extends Controller
             $requestItemDetail = RequestItemDetail::find($value['request_item_detail_id']);
             if($value['qty'] > $requestItemDetail->qty){
                 return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah SPB']);
+            }
+
+            $stockReady = 0;
+            $stockQty = StockBalance::select('qty_temp')->where([
+                'branch_id' => $request->branch_id,
+                'warehouse_id' => $request->warehouse_id,
+                'product_id' => $value['product_id'],
+                'product_status_id' => $value['product_status_id']
+            ])->first();
+
+            if($stockQty){
+                $stockReady = $stockQty->qty_temp;
+            }
+
+            if($value['qty'] > $stockReady){
+                return response()->json(['success' => false, 'message' => 'Jumlah BPB tidak boleh melebihi dari jumlah Stok']);
             }
         }
 
