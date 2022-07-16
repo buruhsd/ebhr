@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Branch;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StockCard extends Model
 {
@@ -27,6 +29,21 @@ class StockCard extends Model
         'trx_havg',
         'pos_date',
         'sal_code',
-        'scu_code_tipe'
+        'scu_code_tipe',
+        'branch_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot(); //
+
+        self::creating(function ($model) {
+            $model->branch_id = Auth::User()->branch_id;
+        });
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id')->select('id','name','alias_name','code');
+    }
 }
