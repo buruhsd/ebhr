@@ -21,19 +21,20 @@ class StockBalanceController extends Controller
         $data = StockBalance::with(
             'branch:id,name,code,alias_name',
             'warehouse:id,name,code',
-            'product:id,name,registe_number',
+            'product:id,name,register_number',
             'product_status:id,name,code',
         )
         ->when($orderBy, function ($query) use ($orderBy,$sortBy,$search){
-            $query->whereHas($orderBy, function($q) use ($orderBy,$search){
+            $query->whereHas($orderBy, function($q) use ($orderBy,$sortBy,$search){
                 $field = 'branches.name';
                 if($orderBy == 'product'){
                     $field = 'products.name';
                 }elseif($orderBy == 'warehouse'){
                     $field = 'warehouses.name';
                 }
-                $q->where($field,'LIKE',"{$search}%");
-            })->orderBy($orderBy, $sortBy);
+                $q->where($field,'LIKE',"{$search}%")
+                ->orderBy($field, $sortBy);
+            });
         })
         ->paginate(20);;
         return response()->json($data);        

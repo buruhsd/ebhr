@@ -37,9 +37,9 @@ class StockCard extends Model
     {
         parent::boot(); //
 
-        self::creating(function ($model) {
-            $model->branch_id = Auth::User()->branch_id;
-        });
+        // self::creating(function ($model) {
+        //     $model->branch_id = Auth::User()->branch_id;
+        // });
     }
 
     public function branch()

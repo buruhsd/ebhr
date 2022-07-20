@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\Currency;
 use App\Helpers\DebtCard;
 use App\Models\StockCard;
+use App\Models\StockBalance;
 use App\Models\Inventory\Receipt;
 use App\Models\Inventory\ReceiptItems;
 use App\Models\Purchase\PurchaseOrder;
@@ -152,6 +153,7 @@ class ReceiptController extends Controller
                 $po_item->save();
 
                 $stock = StockCard::create([
+                    'branch_id'=> $request->branch_id,
                     'trx_code' => $receipt->number,
                     'trx_urut' => $receipt->id,
                     'trx_date' => $receipt->date,
@@ -171,6 +173,25 @@ class ReceiptController extends Controller
                     'pos_date' => '-',
                     'sal_code' => '-'
                 ]);
+
+                $stockBalance = StockBalance::where([
+                    'branch_id' => $request->branch_id,
+                    'warehouse_id' => $request->warehouse_id,
+                    'product_id' => $item['product_id'],
+                    'product_status_id' => $item['product_status_id']
+                ])->first();
+                if($stockBalance){
+                    $stockBalance->qty_temp = $stockBalance->qty_temp + $item['qty'];
+                    $stockBalance->save();
+                }else{
+                    StockBalance::create([
+                        'branch_id' => $request->branch_id,
+                        'warehouse_id' => $request->warehouse_id,
+                        'product_id' => $item['product_id'],
+                        'product_status_id' => $item['product_status_id'],
+                        'qty_temp' => $item['qty']
+                    ]);
+                }
             }
             $total_qty_op = PurchaseOrderItem::where('purchase_order_id',$request->purchase_order_id)->sum(DB::raw('qty * unit_conversion'));
             $total_qty_ttb = DB::table('receipts')
@@ -245,7 +266,7 @@ class ReceiptController extends Controller
             'item.*.qty' => 'required|min:1',
             'item.*.product_status_id' => 'required',
         ]);
-        return response()->json(['success' => true, 'message' => 'Berhasil memperbaharui data penerimaan barang']);
+        // return response()->json(['success' => true, 'message' => 'Berhasil memperbaharui data penerimaan barang']);
         DB::beginTransaction();
         try {
             $op = PurchaseOrder::find($request->purchase_order_id);
@@ -255,10 +276,12 @@ class ReceiptController extends Controller
             $total_idr = 0;
             $arrItem = [];
             foreach($request->item as $item){
+                $receiptItem = ReceiptItems::where('id',$item['id'])->first();
                 $po_item = PurchaseOrderItem::find($item['purchase_order_item_id']);
+                $receiptItemQty = $receiptItem->qty * $po_item->unit_conversion;
                 $total_qty = $po_item->unit_conversion * $po_item->rest_qty;
                 $item['total_qty'] = $total_qty;
-                if($item['qty'] > $total_qty){
+                if($item['qty'] > ($total_qty + $receiptItemQty)){
                     return response()->json(['success' => false, 'message' => 'Jumlah TTB tidak boleh melebihi dari jumlah OP']);
                 }
                 $net = $po_item->net;
@@ -321,23 +344,60 @@ class ReceiptController extends Controller
 
             $receipt = Receipt::find($id);
             $receipt->update($payload);
-            $receipt->receipt_items()->delete();
             foreach($arrItem as $item){
-                $receipt->receipt_items()->create($item);
-                $po_item = PurchaseOrderItem::find($item['purchase_order_item_id']);
-                if($item['total_qty'] == $item['qty']){
-                    $po_item->update(['status'=>1]);
-                }
+                $receiptItem = $receipt->receipt_items()->where('id',$item['id'])->first();
+                $receiptItem->update($item);
+                $po_item = PurchaseOrderItem::where('id',$item['purchase_order_item_id'])->first();
                 $qty = $item['qty'];
+                $receiptItemQty = $receiptItem->qty;
                 if($po_item->unit_conversion > 1){
                     $qty = $item['qty']/$po_item->unit_conversion;
+                    $receiptItemQty = $receiptItem->qty/$po_item->unit_conversion;
                 }
-                if($qty < $po_item->qty){
-                    $po_item->rest_qty = $po_item->rest_qty + ($po_item->qty - $qty);
+                $status = 0;
+                $qtyRest = ($po_item->rest_qty + $receiptItemQty) - $qty;
+                if($item['total_qty'] == $item['qty']){
+                    $status = 1;
+                }
+                $po_item->update([
+                    'rest_qty' => $qtyRest,
+                    'status' => $status,
+                ]);
+
+                $stock = StockCard::where([
+                    'branch_id'=> $request->branch_id,
+                    'trx_code' => $receipt->number,
+                    'trx_urut' => $receipt->id,
+                    'trx_date' => $receipt->date,
+                    'scu_code' => $receipt->supplier_id,
+                    'loc_code' => $receipt->warehouse_id,
+                    'inv_code' => $item['no_register'],
+                ])->update([
+                    'statusProduct' => $item['product_status_id'],
+                    'trx_kuan' => $item['qty'],
+                    'hargaSatuan' => $po_item->price_hc,
+                    'trx_amnt' => $po_item->price_hc * $item['qty']
+                ]);
+
+                $stockBalance = StockBalance::where([
+                    'branch_id' => $request->branch_id,
+                    'warehouse_id' => $request->warehouse_id,
+                    'product_id' => $item['product_id'],
+                    'product_status_id' => $item['product_status_id']
+                ])->first();
+                if($stockBalance){
+                    $qtyBalance = ($stockBalance->qty_temp - $receiptItem->qty) + $item['qty'];
+                    $stockBalance->qty_temp = $qtyBalance;
+                    $stockBalance->save();
                 }else{
-                    $po_item->rest_qty = $po_item->rest_qty - $qty;
+                    StockBalance::create([
+                        'branch_id' => $request->branch_id,
+                        'warehouse_id' => $request->warehouse_id,
+                        'product_id' => $item['product_id'],
+                        'product_status_id' => $item['product_status_id'],
+                        'qty_temp' => $item['qty']
+                    ]);
                 }
-                $po_item->save();
             }
             $total_qty_op = PurchaseOrderItem::where('purchase_order_id',$request->purchase_order_id)->sum(DB::raw('qty * unit_conversion'));
             $total_qty_ttb = DB::table('receipts')

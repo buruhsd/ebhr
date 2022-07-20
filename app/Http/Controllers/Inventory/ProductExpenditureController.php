@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Branch;
 use App\Models\BpbType;
 use App\Models\StockBalance;
+use App\Models\Master\Products;
 use App\Models\Inventory\RequestItem;
 use App\Models\Inventory\RequestItemDetail;
 use App\Models\Inventory\ProductExpenditure;
@@ -132,7 +133,7 @@ class ProductExpenditureController extends Controller
             }
             $requestItemDetail->rest_qty = $requestItemDetail->rest_qty - $value['qty'];
             $requestItemDetail->save();
-
+            $product = Products::find($value['product_id']);
             $stock = StockCard::create([
                 'trx_code' => $productExpenditure->number_bpb,
                 'trx_urut' => $productExpenditure->id,
@@ -141,7 +142,7 @@ class ProductExpenditureController extends Controller
                 'trx_dbcr' => 'D',
                 'scu_code' => NULL,
                 'scu_code_tipe' => NULL,
-                'inv_code' => $value['no_register'],
+                'inv_code' => $product->register_number,
                 'loc_code' => $request->warehouse_id,
                 'statusProduct' => $item['product_status_id'],
                 'trx_kuan' => $value['qty'],
@@ -153,6 +154,17 @@ class ProductExpenditureController extends Controller
                 'pos_date' => '-',
                 'sal_code' => '-'
             ]);
+
+            $stockBalance = StockBalance::where([
+                'branch_id' => $request->branch_id,
+                'warehouse_id' => $request->warehouse_id,
+                'product_id' => $item['product_id'],
+                'product_status_id' => $item['product_status_id']
+            ])->first();
+            if($stockBalance){
+                $stockBalance->qty_temp = $stockBalance->qty_temp - $item['qty'];
+                $stockBalance->save();
+            }
         }
         $check = RequestItemDetail::where(['request_item_id'=>$request->request_item_id])->sum('rest_qty');
         if($check == 0){
@@ -222,7 +234,6 @@ class ProductExpenditureController extends Controller
         foreach($request->item as $value){
             $detail = ProductExpenditureDetail::find($value['id']);
             if($detail){
-                $value['insertedBy'] = Auth::id();
                 $value['updatedBy'] = Auth::id();
                 $detail->update($value);
 
@@ -235,6 +246,30 @@ class ProductExpenditureController extends Controller
                 $itemDetail->rest_qty = $itemDetail->qty - $usedQty;
                 $itemDetail->status = $status;
                 $itemDetail->save();
+
+                $product = Products::find($value['product_id']);
+                $stock = StockCard::where([
+                    'trx_code' => $productExpenditure->number_bpb,
+                    'trx_urut' => $productExpenditure->id,
+                    'trx_date' => $productExpenditure->date_bpb,
+                    'loc_code' => $request->warehouse_id,
+                    'inv_code' => $product->register_number,
+                ])->update([
+                    'statusProduct' => $value['product_status_id'],
+                    'trx_kuan' => $value['qty'],
+                ]);
+    
+                $stockBalance = StockBalance::where([
+                    'branch_id' => $request->branch_id,
+                    'warehouse_id' => $request->warehouse_id,
+                    'product_id' => $value['product_id'],
+                    'product_status_id' => $value['product_status_id']
+                ])->first();
+                if($stockBalance){
+                    $qtyBalance = ($stockBalance->qty_temp + $detail->qty) - $value['qty'];
+                    $stockBalance->qty_temp = $qtyBalance;
+                    $stockBalance->save();
+                }
             }
         }
 
